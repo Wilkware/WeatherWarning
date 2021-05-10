@@ -146,42 +146,42 @@ class WeatherWarningModule extends IPSModule
         $varWarning = $this->ReadPropertyBoolean('IndicatorVariable');
         $timeUpdate = $this->ReadPropertyInteger('UpdateInterval');
         // Debug
-        $this->SendDebug(__FUNCTION__, 'Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity . 
+        $this->SendDebug(__FUNCTION__, 'Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity .
                         ', DE-MAP=' . $deActiv . ', BL-MAP=' . $blActiv . ', BL-STATE=' . $blIdent .
                         ', Tmp=' . $tmpActiv . ', Img=' . $imgActiv . ', Mov=' . $movActiv);
         // Profile
-        $this->RegisterProfile(vtInteger, 'UWW.Level', 'Warning', '', '', 1, 4, 1, 0, DWD_SEVERITY);    
+        $this->RegisterProfile(vtInteger, 'UWW.Level', 'Warning', '', '', 1, 4, 1, 0, DWD_SEVERITY);
         // Maintain variables
         $this->MaintainVariable('Table', $this->Translate('Warning messages'), vtString, '~HTMLBox', 1, true);
         $this->MaintainVariable('Text', $this->Translate('Warning text'), vtString, '', 2, $varText == 1);
         // - Map
         $this->MaintainVariable('MapCountry', $this->Translate('Storm map country'), vtString, '~HTMLBox', 11, $deActiv);
-        if($deActiv) {
+        if ($deActiv) {
             $src = str_replace('<STATE>', 'de', DWD_LINKS['MAPS']);
             $val = '<img src="' . $src . '" style="' . $deStyle . '" />';
             $this->SetValueString('MapCountry', $val);
         }
         $this->MaintainVariable('MapState', $this->Translate('Storm map state'), vtString, '~HTMLBox', 12, $blActiv);
-        if($deActiv) {
+        if ($deActiv) {
             $src = str_replace('<STATE>', $blIdent, DWD_LINKS['MAPS']);
             $val = '<img src="' . $src . '" style="' . $blStyle . '" />';
             $this->SetValueString('MapState', $val);
         }
         // - Images & Movie
         $this->MaintainVariable('ActTemp', $this->Translate('Current temperatures'), vtString, '~HTMLBox', 21, $tmpActiv);
-        if($tmpActiv) {
+        if ($tmpActiv) {
             $src = str_replace('<STATE>', $tmpIdent, DWD_LINKS['TEMP']);
             $val = '<img src="' . $src . '" style="' . $tmpStyle . '" />';
             $this->SetValueString('ActTemp', $val);
         }
         $this->MaintainVariable('ImgRadar', $this->Translate('Precipitation radar image'), vtString, '~HTMLBox', 22, $imgActiv);
-        if($imgActiv) {
+        if ($imgActiv) {
             $src = str_replace('<STATE>', $imgIdent, DWD_LINKS['RADAR']);
             $val = '<img src="' . $src . '" style="' . $imgStyle . '" />';
             $this->SetValueString('ImgRadar', $val);
         }
         $this->MaintainVariable('MovRadar', $this->Translate('Precipitation radar film'), vtString, '~HTMLBox', 23, $movActiv);
-        if($movActiv) {
+        if ($movActiv) {
             $src = str_replace('<STATE>', $imgIdent, DWD_LINKS['MOVIE']);
             $val = '<img src="' . $src . '" style="' . $movStyle . '" />';
             $this->SetValueString('MovRadar', $val);
@@ -189,7 +189,7 @@ class WeatherWarningModule extends IPSModule
         // - Indicator
         $this->MaintainVariable('Level', $this->Translate('Warning level'), vtInteger, 'UWW.Level', 0, $varWarning);
         // Status
-        if(($warnState == 'null') || ($warnCounty == 'null') || (($warnType == 8) && ($warnCommunity == 'null'))) {
+        if (($warnState == 'null') || ($warnCounty == 'null') || (($warnType == 8) && ($warnCommunity == 'null'))) {
             $this->SetStatus(104);
             $this->SetTimerInterval('UpdateWeatherWarning', 0);
             return;
@@ -272,7 +272,7 @@ class WeatherWarningModule extends IPSModule
         $warnCommunity = $this->ReadPropertyString('WarningCommunity');
         // WarnCellID
         $warnCellID = $warnCounty;
-        if($warnType == 8) {
+        if ($warnType == 8) {
             $warnCellID = $warnCommunity;
         }
         // Build URL
@@ -407,7 +407,6 @@ class WeatherWarningModule extends IPSModule
         return $options;
     }
 
-
     /**
      * Updates the level indicator
      *
@@ -418,10 +417,12 @@ class WeatherWarningModule extends IPSModule
     {
         $varWarning = $this->ReadPropertyBoolean('IndicatorVariable');
         $this->SendDebug(__FUNCTION__, 'IndicatorVariable: ' . $varWarning);
-        if($varWarning) {
+        if ($varWarning) {
             $level = 0;
-            foreach($warnings as $value) {
-                if($value['LEVEL'] > $level) $level = $value['LEVEL'];
+            foreach ($warnings as $value) {
+                if ($value['LEVEL'] > $level) {
+                    $level = $value['LEVEL'];
+                }
             }
             $this->SetValueInteger('Level', $level);
         }
@@ -440,7 +441,7 @@ class WeatherWarningModule extends IPSModule
         $isNotify = $this->ReadPropertyInteger('NotificationMessage');
         $isVariable = $this->ReadPropertyInteger('TextVariable');
         // Check output
-        if(!$isDashboard && !$isNotify && !$isVariable) {
+        if (!$isDashboard && !$isNotify && !$isVariable) {
             // nothing to do
             return;
         }
@@ -467,8 +468,8 @@ class WeatherWarningModule extends IPSModule
             // format date item
             $output = $this->FormatWarning($value, $format);
             // send to dashboard
-            if($isDashboard && $script != 0) {
-                if($value['LEVEL'] >= $levelDashboard) {
+            if ($isDashboard && $script != 0) {
+                if ($value['LEVEL'] >= $levelDashboard) {
                     if ($time > 0) {
                         $msg = IPS_RunScriptWaitEx($script, ['action' => 'add', 'text' => $output, 'expires' => time() + $time, 'removable' => true, 'type' => 2, 'image' => 'WindSpeed']);
                     } else {
@@ -477,8 +478,8 @@ class WeatherWarningModule extends IPSModule
                 }
             }
             // send to webfront
-            if($isNotify && $webfront != 0) {
-                if($value['LEVEL'] >= $levelNotify) {
+            if ($isNotify && $webfront != 0) {
+                if ($value['LEVEL'] >= $levelNotify) {
                     WFC_PushNotification($webfront, $this->Translate('"Weather Warning"'), $output, 'WindSpeed', 0);
                 }
             }
@@ -492,7 +493,7 @@ class WeatherWarningModule extends IPSModule
         }
         // write to variable
         if ($isVariable) {
-            if($lines == '') {
+            if ($lines == '') {
                 $lines = $this->Translate('None');
             }
             $this->SetValueString('Text', $lines);
@@ -533,34 +534,34 @@ class WeatherWarningModule extends IPSModule
         $html = $style;
         $html = $html . '<table class=\'uww\'>';
         // Exist Warnings
-        $count = 0;	
+        $count = 0;
         foreach ($warnings as $value) {
             $url = '';
-            foreach(DWD_EVENT_MAP as $event => $map) {
+            foreach (DWD_EVENT_MAP as $event => $map) {
                 if (in_array($value['CODE'], $map)) {
                     $url = str_replace('<EVENT>', $event, DWD_ICONS['LEVEL']);
                     $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
                 }
             }
-            $time = strftime("%a, %d.%b, %H:%M - ", strtotime($value['START']));
-            if($value['END'] != '') {
-                $time += strftime("%a, %d.%b, %H:%M Uhr", strtotime ($value['END']));
+            $time = strftime('%a, %d.%b, %H:%M - ', strtotime($value['START']));
+            if ($value['END'] != '') {
+                $time += strftime('%a, %d.%b, %H:%M Uhr', strtotime($value['END']));
             }
-            $html .= '<tr>'; 
-            $html .= '<td class=\'img\'><img src=\''. $url . '\' /></td>'; 
-            $html .= '<td class=\'txt\'><div class=\'hl\'>'.$value['HEADLINE'].'</div><div class=\'ts\'>'.$time.'</div><div class=\'desc\'>'.$value['DESCRIPTION'].'</div></td>'; 
+            $html .= '<tr>';
+            $html .= '<td class=\'img\'><img src=\'' . $url . '\' /></td>';
+            $html .= '<td class=\'txt\'><div class=\'hl\'>' . $value['HEADLINE'] . '</div><div class=\'ts\'>' . $time . '</div><div class=\'desc\'>' . $value['DESCRIPTION'] . '</div></td>';
             $html .= '</tr>';
             $count++;
-        } 
+        }
         // Count Warnings
-        if($count == 0) {
+        if ($count == 0) {
             $head = 'Letzte Aktualisierung';
-            $time = 'am '. strftime("%a, %d.%b, %H:%M Uhr", $ts);
+            $time = 'am ' . strftime('%a, %d.%b, %H:%M Uhr', $ts);
             $desc = 'Keine Warnungen vorhanden!';
-            $html .= '<tr>'; 
-            $html .= '<td class=\'img\'><div><img src=\'https://api.asmium.de/images/warning_check.png\' alt=\'No warning\'></div></td>'; 
-            $html .= '<td class=\'txt\'><div class=\'hl\'>'.$head.'</div><div class=\'ts\'>'.$time.'</div><div class=\'desc\'>'.$desc.'</div></td>'; 
-            $html .= '</tr>'; 
+            $html .= '<tr>';
+            $html .= '<td class=\'img\'><div><img src=\'https://api.asmium.de/images/warning_check.png\' alt=\'No warning\'></div></td>';
+            $html .= '<td class=\'txt\'><div class=\'hl\'>' . $head . '</div><div class=\'ts\'>' . $time . '</div><div class=\'desc\'>' . $desc . '</div></td>';
+            $html .= '</tr>';
         }
 
         $html = $html . '</table>';

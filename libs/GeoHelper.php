@@ -35,64 +35,64 @@ const DWD_GEO_PRAMS = [
  * DWD Event Codes
  */
 const DWD_EVENT_CODE = [
-    '11' => 'Böen',
-    '12' => 'Wind',
-    '13' => 'Sturm',
-    '14' => 'Starkwind',
-    '15' => 'Sturm',
-    '16' => 'Schwerer Sturm',
-    '22' => 'Frost',
-    '24' => 'Glätte',
-    '31' => 'Gewitter',
-    '33' => 'Starkes Gewitter',
-    '34' => 'Starkes Gewitter',
-    '36' => 'Starkes Gewitter',
-    '38' => 'Starkes Gewitter',
-    '40' => 'Schweres Gewitter mit Orkanböen',
-    '41' => 'Schweres Gewitter mit extremen Orkanböen',
-    '42' => 'Schweres Gewitter mit heftigem Starkregen',
-    '44' => 'Schweres Gewitter mit Orkanböen und heftigem Starkregen',
-    '45' => 'Schweres Gewitter mit extremen Orkanböen und heftigem Starkregen',
-    '46' => 'Schweres Gewitter mit heftigem Starkregen und Hagel',
-    '48' => 'Schweres Gewitter mit Orkanböen, heftigem Starkregen und Hagel',
-    '49' => 'Schweres Gewitter mit extremen Orkanböen, heftigem Starkregen und Hagel',
-    '51' => 'Windböen',
-    '52' => 'Sturmböen',
-    '53' => 'Schwere Sturmböen',
-    '54' => 'Orkanartige Böen',
-    '55' => 'Orkanböen',
-    '56' => 'Extreme Orkanböen',
-    '57' => 'Starkwind',
-    '58' => 'Sturm',
-    '59' => 'Nebel',
-    '61' => 'Starkregen',
-    '62' => 'Heftiger Starkregen',
-    '63' => 'Dauerregen',
-    '64' => 'Ergiebiger Dauerregen',
-    '65' => 'Extrem ergiebiger Dauerregen',
-    '66' => 'Extrem heftiger Starkregen',
-    '70' => 'Leichter Schneefall',
-    '71' => 'Schneefall',
-    '72' => 'Starker Schneefall',
-    '73' => 'Extrem starker Schneefall',
-    '74' => 'Schneeverwehung',
-    '75' => 'Starke Schneeverwehung',
-    '76' => 'Extrem starke Schneeverwehung',
-    '79' => 'Leiterseilschwingungen',
-    '82' => 'Strenger Frost',
-    '84' => 'Glätte',
-    '85' => 'Glatteis',
-    '87' => 'Glatteis',
-    '88' => 'Tauwetter',
-    '89' => 'Starkes Tauwetter',
-    '90' => 'Gewitter',
-    '91' => 'Starkes Gewitter',
-    '92' => 'Schweres Gewitter',
-    '93' => 'Extremes Gewitter',
-    '95' => 'Schweres Gewitter mit extrem heftigem Starkregen und Hagel',
-    '96' => 'Extremes Gewitter mit Orkanböen, extrem heftigem Starkregen und Hagel',
-    '98' => 'Test-Warnung',
-    '99' => 'Test-Unwetterwarnung',
+    '11'  => 'Böen',
+    '12'  => 'Wind',
+    '13'  => 'Sturm',
+    '14'  => 'Starkwind',
+    '15'  => 'Sturm',
+    '16'  => 'Schwerer Sturm',
+    '22'  => 'Frost',
+    '24'  => 'Glätte',
+    '31'  => 'Gewitter',
+    '33'  => 'Starkes Gewitter',
+    '34'  => 'Starkes Gewitter',
+    '36'  => 'Starkes Gewitter',
+    '38'  => 'Starkes Gewitter',
+    '40'  => 'Schweres Gewitter mit Orkanböen',
+    '41'  => 'Schweres Gewitter mit extremen Orkanböen',
+    '42'  => 'Schweres Gewitter mit heftigem Starkregen',
+    '44'  => 'Schweres Gewitter mit Orkanböen und heftigem Starkregen',
+    '45'  => 'Schweres Gewitter mit extremen Orkanböen und heftigem Starkregen',
+    '46'  => 'Schweres Gewitter mit heftigem Starkregen und Hagel',
+    '48'  => 'Schweres Gewitter mit Orkanböen, heftigem Starkregen und Hagel',
+    '49'  => 'Schweres Gewitter mit extremen Orkanböen, heftigem Starkregen und Hagel',
+    '51'  => 'Windböen',
+    '52'  => 'Sturmböen',
+    '53'  => 'Schwere Sturmböen',
+    '54'  => 'Orkanartige Böen',
+    '55'  => 'Orkanböen',
+    '56'  => 'Extreme Orkanböen',
+    '57'  => 'Starkwind',
+    '58'  => 'Sturm',
+    '59'  => 'Nebel',
+    '61'  => 'Starkregen',
+    '62'  => 'Heftiger Starkregen',
+    '63'  => 'Dauerregen',
+    '64'  => 'Ergiebiger Dauerregen',
+    '65'  => 'Extrem ergiebiger Dauerregen',
+    '66'  => 'Extrem heftiger Starkregen',
+    '70'  => 'Leichter Schneefall',
+    '71'  => 'Schneefall',
+    '72'  => 'Starker Schneefall',
+    '73'  => 'Extrem starker Schneefall',
+    '74'  => 'Schneeverwehung',
+    '75'  => 'Starke Schneeverwehung',
+    '76'  => 'Extrem starke Schneeverwehung',
+    '79'  => 'Leiterseilschwingungen',
+    '82'  => 'Strenger Frost',
+    '84'  => 'Glätte',
+    '85'  => 'Glatteis',
+    '87'  => 'Glatteis',
+    '88'  => 'Tauwetter',
+    '89'  => 'Starkes Tauwetter',
+    '90'  => 'Gewitter',
+    '91'  => 'Starkes Gewitter',
+    '92'  => 'Schweres Gewitter',
+    '93'  => 'Extremes Gewitter',
+    '95'  => 'Schweres Gewitter mit extrem heftigem Starkregen und Hagel',
+    '96'  => 'Extremes Gewitter mit Orkanböen, extrem heftigem Starkregen und Hagel',
+    '98'  => 'Test-Warnung',
+    '99'  => 'Test-Unwetterwarnung',
     '246' => 'UV-Index',
     '247' => 'Starke Hitze',
     '248' => 'Extreme Hitze',
@@ -105,7 +105,7 @@ const DWD_EVENT_CODE = [
     '85' => 'VORABINFORMATION GLATTEIS',
     '89' => 'VORABINFORMATION STARKES TAUWETTER',
     '99' => 'TEST-VORABINFORMATION UNWETTER',
-*/
+ */
 
 /**
  * DWD Event Mapper
@@ -123,14 +123,13 @@ const DWD_EVENT_MAP = [
     'hitze'       => [247, 248],
 ];
 
-
 /**
  * Status of alert message
  */
 const DWD_MSGTYPE = [
-    'Alert' => 'Erstausgabe der Meldung',
-    'Update' => 'Aktualisierung der Meldung', 
-    'Cancel' => 'Stornierung der Meldung', 
+    'Alert'  => 'Erstausgabe der Meldung',
+    'Update' => 'Aktualisierung der Meldung',
+    'Cancel' => 'Stornierung der Meldung',
 ];
 
 /**
@@ -138,23 +137,23 @@ const DWD_MSGTYPE = [
  */
 const DWD_STATUS = [
     'Actual' => 'Aktuelle Meldung',
-    'Test' => 'Technischer Test', 
+    'Test'   => 'Technischer Test',
 ];
 
 /**
  * Categorie of alert message
  */
 const DWD_CATEGORY = [
-    'Met' => 'Meteorologische Meldung',
+    'Met'    => 'Meteorologische Meldung',
     'Health' => 'Medizin-Meteorologische Meldung', // e.g. Hitzewarnung
 ];
- 
+
 /**
  * Time frame of the message
  */
 const DWD_URGENCY = [
     'Immediate' => 'Warnung',
-    'Future' => 'Vorabinformation'
+    'Future'    => 'Vorabinformation'
 ];
 
 /**
@@ -205,9 +204,8 @@ const DWD_SEVERITY = [
  */
 const DWD_CERTAINTY = [
     'Observed' => 'Beobachtung',
-    'Likely' => 'Vorhersage, Auftreten wahrscheinlich (p > ~50%)', 
+    'Likely'   => 'Vorhersage, Auftreten wahrscheinlich (p > ~50%)',
 ];
-
 
 trait GeoHelper
 {
@@ -220,7 +218,6 @@ trait GeoHelper
      */
     private static $BASEURL = 'https://api.asmium.de/warning/de/';
 
-
     /**
      * Get and extract data from json format.
      *
@@ -228,7 +225,7 @@ trait GeoHelper
      * @param string $id Warn Cell ID
      * @return string GeoServer request URL
      */
-    private function BuildURL(string $type, string $id) : string
+    private function BuildURL(string $type, string $id): string
     {
         // Debug output
         $this->SendDebug(__FUNCTION__, 'Type: ' . $type . ', WarnCellID: ' . $id);
@@ -237,7 +234,7 @@ trait GeoHelper
         $param = str_replace('<WARNCELLID>', $id, DWD_GEO_PRAMS[intval($type)][1]);
         // return the url
         $this->SendDebug(__FUNCTION__, $base . $param);
-        return ($base . $param);
+        return $base . $param;
     }
 
     /**
@@ -255,11 +252,17 @@ trait GeoHelper
         // Build URL
         $url = self::$BASEURL;
         // Add Type
-        if ( $type != null) $url = $url . $type . DIRECTORY_SEPARATOR;
+        if ($type != null) {
+            $url = $url . $type . DIRECTORY_SEPARATOR;
+        }
         // Add State
-        if ( $state != null) $url = $url . $state . DIRECTORY_SEPARATOR;
+        if ($state != null) {
+            $url = $url . $state . DIRECTORY_SEPARATOR;
+        }
         // Add County
-        if ( $county != null) $url = $url . $county . DIRECTORY_SEPARATOR;
+        if ($county != null) {
+            $url = $url . $county . DIRECTORY_SEPARATOR;
+        }
         // Request data
         $json = @file_get_contents($url);
         // error handling
@@ -273,12 +276,12 @@ trait GeoHelper
         // Transform to options
         $options = [];
         // Cells ?
-        if(isset($data['data']['cells'])) {
+        if (isset($data['data']['cells'])) {
             foreach ($data['data']['cells'] as $cell) {
                 $options[] = ['caption' => $cell['name'], 'value' => $cell['cell']];
             }
         }
-        if(isset($data['data']['links'])) {
+        if (isset($data['data']['links'])) {
             foreach ($data['data']['links'] as $link) {
                 $path = parse_url($link['link'], PHP_URL_PATH);
                 $path = explode(DIRECTORY_SEPARATOR, $path);
@@ -292,26 +295,28 @@ trait GeoHelper
 
     /**
      * Replace capitalization with normal spelling
-     * 
+     *
      * @param string $json Json formated warnings
      * @return array Normalized warnings
      */
-    private function PrepareWarnings(string $json) : array
+    private function PrepareWarnings(string $json): array
     {
         // Json decode
         $geo = json_decode($json, true);
         // Build new array
         $data = [];
-        foreach($geo['features'] as $idx => $feature) {
+        foreach ($geo['features'] as $idx => $feature) {
             $prop = [];
-            foreach($feature['properties'] as $key => $value) {
+            foreach ($feature['properties'] as $key => $value) {
                 // $this->SendDebug(__FUNCTION__, $key . ': ' . $value);
-                switch($key) {
+                switch ($key) {
                     case 'NAME':
                         $prop['AREA'] = $value;
                         break;
                     case 'AREADESC':
-                        if(!isset($prop['AREA'])) $prop['AREA'] = $value;
+                        if (!isset($prop['AREA'])) {
+                            $prop['AREA'] = $value;
+                        }
                         break;
                     case 'WARNCELLID':
                     case 'GC_WARNCELLID':
@@ -347,13 +352,14 @@ trait GeoHelper
                         $prop['CODE'] = $value . ':' . DWD_EVENT_CODE[$value];
                         break;
                     case 'EC_GROUP':
-                        $prop['GROUP'] = $value; 
+                        $prop['GROUP'] = $value;
                         break;
                     case 'EFFECTIVE':
                         $ts = new DateTime($value);
                         $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
+                        // FIXME: No break. Please add proper comment if intentional
                     case 'SENT':
-                        if(!isset($prop['TIMESTAMP'])) {
+                        if (!isset($prop['TIMESTAMP'])) {
                             $ts = new DateTime($value);
                             $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
                         }
@@ -363,11 +369,10 @@ trait GeoHelper
                         $prop['START'] = $ts->format('Y-m-d H:i:s');
                         break;
                     case 'EXPIRES':
-                        if($value != null) {
+                        if ($value != null) {
                             $ts = new DateTime($value);
                             $prop['END'] = $ts->format('Y-m-d H:i:s');
-                        }
-                        else {
+                        } else {
                             $prop['END'] = '';
                         }
                         break;
@@ -375,75 +380,75 @@ trait GeoHelper
                         $prop['HEADLINE'] = $this->ReplaceCaseSensitiveWords($value);
                         break;
                     case 'DESCRIPTION':
-                        $prop['DESCRIPTION'] = $value; 
+                        $prop['DESCRIPTION'] = $value;
                         break;
                     case 'INSTRUCTION':
-                        $prop['INSTRUCTION'] = $value == null? '': $value; 
+                        $prop['INSTRUCTION'] = $value == null ? '' : $value;
                         break;
                 }
             }
             $data[] = $prop;
         }
-        $this->SendDebug(__FUNCTION__,'Features #' . $geo['totalFeatures']);
+        $this->SendDebug(__FUNCTION__, 'Features #' . $geo['totalFeatures']);
         return $data;
     }
 
     /**
      * Replace capitalization with normal spelling
-     * 
+     *
      * @param string $str Text with capitalization
      * @return string Normal spelling
      */
     private function ReplaceCaseSensitiveWords(string $str): string
     {
-        $str = str_replace("VORABINFORMATION SCHWERES GEWITTER","Vorabinformation schweres Gewitter",$str);
-        $str = str_replace("VORABINFORMATION UNWETTER vor SCHWEREM GEWITTER","Vorabinformation Unwetter vor schwerem Gewitter",$str);
-        $str = str_replace("VORABINFORMATION UNWETTER vor ORKANBÖEN","Vorabinformation Unwetter vor Orkanböen",$str);
+        $str = str_replace('VORABINFORMATION SCHWERES GEWITTER', 'Vorabinformation schweres Gewitter', $str);
+        $str = str_replace('VORABINFORMATION UNWETTER vor SCHWEREM GEWITTER', 'Vorabinformation Unwetter vor schwerem Gewitter', $str);
+        $str = str_replace('VORABINFORMATION UNWETTER vor ORKANBÖEN', 'Vorabinformation Unwetter vor Orkanböen', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace("Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL","Unwetterwarnung vor schwerem Gewitter mit heftigem Starkregen und Hagel",$str);
-        $str = str_replace("Amtliche UNWETTERWARNUNG vor ORKANBÖEN","Unwetterwarnung vor Orkanböen",$str);
+        $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit heftigem Starkregen und Hagel', $str);
+        $str = str_replace('Amtliche UNWETTERWARNUNG vor ORKANBÖEN', 'Unwetterwarnung vor Orkanböen', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace("Amtliche WARNUNG vor GEWITTER","Warnung vor Gewitter",$str);
-        $str = str_replace("Amtliche WARNUNG vor STARKWIND","Warnung vor Starkwind",$str);
-        $str = str_replace("Amtliche WARNUNG vor STARKEM GEWITTER","Warnung vor starkem Gewitter",$str);
-        $str = str_replace("Amtliche WARNUNG vor SCHWEREM GEWITTER","Warnung vor schwerem Gewitter",$str);
-        $str = str_replace("Amtliche WARNUNG vor WINDBÖEN","Warnung vor Windböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor STARKEN WINDBÖEN","Warnung vor starken Windböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor SCHWEREN WINDBÖEN","Warnung vor schweren Windböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor STURMBÖEN","Warnung vor Sturmböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor ORKANBÖEN","Warnung vor Orkanböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor STARKEN STURMBÖEN","Warnung vor starken Sturmböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor SCHWEREN STURMBÖEN","Warnung vor schweren Sturmböen",$str);
-        $str = str_replace("Amtliche WARNUNG vor DAUERREGEN","Warnung vor Dauerregen",$str);
-        $str = str_replace("Amtliche WARNUNG vor NEBEL","Warnung vor Nebel",$str);
-        $str = str_replace("Amtliche WARNUNG vor GLÄTTE","Warnung vor Glätte",$str);
-        $str = str_replace("Amtliche WARNUNG vor GLATTEIS","Warnung vor Glatteis",$str);
-        $str = str_replace("Amtliche WARNUNG vor FROST","Warnung vor Frost",$str);
-        $str = str_replace("Amtliche WARNUNG vor LEICHTEM SCHNEEFALL","Warnung vor leichtem Schneefall",$str);
-        $str = str_replace("Amtliche WARNUNG vor SCHNEEFALL","Warnung vor Schneefall",$str);
-        $str = str_replace("Amtliche WARNUNG vor STARKEM SCHNEEFALL","Warnung vor starkem Schneefall",$str);
-        $str = str_replace("Amtliche WARNUNG vor HITZE","Warnung vor extremer Hitze",$str);
+        $str = str_replace('Amtliche WARNUNG vor GEWITTER', 'Warnung vor Gewitter', $str);
+        $str = str_replace('Amtliche WARNUNG vor STARKWIND', 'Warnung vor Starkwind', $str);
+        $str = str_replace('Amtliche WARNUNG vor STARKEM GEWITTER', 'Warnung vor starkem Gewitter', $str);
+        $str = str_replace('Amtliche WARNUNG vor SCHWEREM GEWITTER', 'Warnung vor schwerem Gewitter', $str);
+        $str = str_replace('Amtliche WARNUNG vor WINDBÖEN', 'Warnung vor Windböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor STARKEN WINDBÖEN', 'Warnung vor starken Windböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor SCHWEREN WINDBÖEN', 'Warnung vor schweren Windböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor STURMBÖEN', 'Warnung vor Sturmböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor ORKANBÖEN', 'Warnung vor Orkanböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor STARKEN STURMBÖEN', 'Warnung vor starken Sturmböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor SCHWEREN STURMBÖEN', 'Warnung vor schweren Sturmböen', $str);
+        $str = str_replace('Amtliche WARNUNG vor DAUERREGEN', 'Warnung vor Dauerregen', $str);
+        $str = str_replace('Amtliche WARNUNG vor NEBEL', 'Warnung vor Nebel', $str);
+        $str = str_replace('Amtliche WARNUNG vor GLÄTTE', 'Warnung vor Glätte', $str);
+        $str = str_replace('Amtliche WARNUNG vor GLATTEIS', 'Warnung vor Glatteis', $str);
+        $str = str_replace('Amtliche WARNUNG vor FROST', 'Warnung vor Frost', $str);
+        $str = str_replace('Amtliche WARNUNG vor LEICHTEM SCHNEEFALL', 'Warnung vor leichtem Schneefall', $str);
+        $str = str_replace('Amtliche WARNUNG vor SCHNEEFALL', 'Warnung vor Schneefall', $str);
+        $str = str_replace('Amtliche WARNUNG vor STARKEM SCHNEEFALL', 'Warnung vor starkem Schneefall', $str);
+        $str = str_replace('Amtliche WARNUNG vor HITZE', 'Warnung vor extremer Hitze', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace("Warnhinweis vor STARKWIND ","Warnhinweis vor Starkwind",$str);
+        $str = str_replace('Warnhinweis vor STARKWIND ', 'Warnhinweis vor Starkwind', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace("\n","",$str);
+        $str = str_replace("\n", '', $str);
         return $str;
     }
 
     /**
      * Replace capitalization with normal spelling
-     * 
+     *
      * @param string $value Textual expression of the value
      * @param array $profile Profile assoziation array
      * @return integer Associated key
      */
-    private function GetKeyFromProfile($value, $profile) : int
+    private function GetKeyFromProfile($value, $profile): int
     {
-        if(is_null($profile) || empty($profile)) {
+        if (is_null($profile) || empty($profile)) {
             return 0;
         }
-        foreach($profile as $asso) {
-            if($asso[1] == $value) {
+        foreach ($profile as $asso) {
+            if ($asso[1] == $value) {
                 return $asso[0];
             }
         }
