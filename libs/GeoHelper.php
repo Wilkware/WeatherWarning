@@ -161,13 +161,13 @@ const DWD_URGENCY = [
  */
 const DWD_LINKS = [
     # Temperatur Image
-    'TEMP'  => 'https://www.dwd.de/DWD/wetter/aktuell/deutschland/bilder/wx_<STATE>_akt.jpg',
+    'TEMP'      => 'https://www.dwd.de/DWD/wetter/aktuell/deutschland/bilder/wx_<STATE>_akt.jpg',
     # Niederschlag Radar
-    'RADAR' => 'https://www.dwd.de/DWD/wetter/radar/rad_<STATE>_akt.jpg',
+    'RADAR'     => 'https://www.dwd.de/DWD/wetter/radar/rad_<STATE>_akt.jpg',
     # Niederschlag Radarfilm
-    'MOVIE' => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
+    'MOVIE'     => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
     # Karte mit allen Warnungen
-    'MAPS'  => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png'
+    'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png'
 ];
 
 /**
@@ -253,15 +253,15 @@ trait GeoHelper
         $url = self::$BASEURL;
         // Add Type
         if ($type != null) {
-            $url = $url . $type . DIRECTORY_SEPARATOR;
+            $url = $url . $type . '/';
         }
         // Add State
         if ($state != null) {
-            $url = $url . $state . DIRECTORY_SEPARATOR;
+            $url = $url . $state . '/';
         }
         // Add County
         if ($county != null) {
-            $url = $url . $county . DIRECTORY_SEPARATOR;
+            $url = $url . $county . '/';
         }
         // Request data
         $json = @file_get_contents($url);

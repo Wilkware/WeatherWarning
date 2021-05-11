@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.0.20210313-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.1.20210511-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -124,6 +124,36 @@ Aktion         | Beschreibung
 -------------- | ------------------------------------------------------------
 AKTUALISIEREN  | Ruft die aktuellen Unwetterwarnungen von DWD ab (Update)
 
+### 5. Statusvariablen und Profile
+
+Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
+
+Name                          | Typ       | Beschreibung
+------------------------------| --------- | ----------------
+Warnstufe                     | Integer   | Höchste Warnstufe aller verfügbaren Meldungen
+Warnmeldung                   | String    | Darstellung aller Meldungen als HTML Tabelle
+Warnnachricht                 | String    | Darstellung aller Meldungen in textuellen Format
+Unwetterkarte Land            | String    | HTML-Link auf Unwetterkarte Deutschland
+Unwetterkarte Bundesland      | String    | HTML-Link auf Unwetterkarte ausgewähltes Bundesland
+Temperaturen aktuell          | String    | HTML-Link auf aktuelle Temperaturübersichtskarte für ausgewähltes Bundesland
+Niederschlag Radarbild        | String    | HTML-Link auf aktuelles Radarbild (Niederschlag) für ausgewähltes Bundesland
+Niederschlag Radarfilm        | String    | HTML-Link auf aktuellen Radarfilm (Niederschlag) für ausgewähltes Bundesland
+Temperaturen aktuell (de)     | String    | HTML-Link auf aktuelle Temperaturübersichtskarte für Deutschland
+Niederschlag Radarbild (de)   | String    | HTML-Link auf aktuelles Radarbild (Niederschlag) für Deutschland
+Niederschlag Radarfilm (de)   | String    | HTML-Link auf aktuellen Radarfilm (Niederschlag) für Deutschland
+
+Folgendes Profil wird angelegt:
+
+Name                 | Typ       | Beschreibung
+-------------------- | --------- | ----------------
+UWW.Level            | Integer   | Warnstufen (0 - 4)
+
+> 0: Keine Warnung  
+> 1: Wetterwarnung  
+> 2: Markante Wetterwarnung  
+> 3: Unwetterwarnung  
+> 4: Extreme Unwetterwarnung  
+
 ### 6. WebFront
 
 Man kann die Statusvariablen direkt im WF verlinken.
@@ -172,6 +202,12 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v1.1.20210511
+
+* _NEU_: Temperatur, Niederschlag und Radarfilm auch für ganz Deutschland auswählbar
+* _FIX_: Keine Auswahl des Warngebietes möglich, Instanz blieb inaktiv
+* _FIX_: Dokumentation vervollständigt
 
 v1.0.20210313
 

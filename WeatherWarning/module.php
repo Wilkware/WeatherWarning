@@ -32,6 +32,15 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyString('MapStateIdent', 'baw');
         $this->RegisterPropertyString('MapStateStyle', 'max-height:100%;max-width:100%;');
         // Image & films
+        $this->RegisterPropertyBoolean('ISOActTempActivated', false);
+        $this->RegisterPropertyString('ISOActTempIdent', 'de');
+        $this->RegisterPropertyString('ISOActTempStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyBoolean('ISOImgRadarActivated', false);
+        $this->RegisterPropertyString('ISOImgRadarIdent', 'de');
+        $this->RegisterPropertyString('ISOImgRadarStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyBoolean('ISOMovRadarActivated', false);
+        $this->RegisterPropertyString('ISOMovRadarIdent', 'de');
+        $this->RegisterPropertyString('ISOMovRadarStyle', 'height: 100%; width: 100%; object-fit: fill;');
         $this->RegisterPropertyBoolean('ActTempActivated', false);
         $this->RegisterPropertyString('ActTempIdent', 'baw');
         $this->RegisterPropertyString('ActTempStyle', 'height: 100%; width: 100%; object-fit: fill;');
@@ -131,6 +140,15 @@ class WeatherWarningModule extends IPSModule
         $blIdent = $this->ReadPropertyString('MapStateIdent');
         $blStyle = $this->ReadPropertyString('MapStateStyle');
         // Image & films
+        $isoTmpActiv = $this->ReadPropertyBoolean('ISOActTempActivated');
+        $isoTmpIdent = $this->ReadPropertyString('ISOActTempIdent');
+        $isoTmpStyle = $this->ReadPropertyString('ISOActTempStyle');
+        $isoImgActiv = $this->ReadPropertyBoolean('ISOImgRadarActivated');
+        $isoImgIdent = $this->ReadPropertyString('ISOImgRadarIdent');
+        $isoImgStyle = $this->ReadPropertyString('ISOImgRadarStyle');
+        $isoMovActiv = $this->ReadPropertyBoolean('ISOMovRadarActivated');
+        $isoMovIdent = $this->ReadPropertyString('ISOMovRadarIdent');
+        $isoMovStyle = $this->ReadPropertyString('ISOMovRadarStyle');
         $tmpActiv = $this->ReadPropertyBoolean('ActTempActivated');
         $tmpIdent = $this->ReadPropertyString('ActTempIdent');
         $tmpStyle = $this->ReadPropertyString('ActTempStyle');
@@ -186,10 +204,29 @@ class WeatherWarningModule extends IPSModule
             $val = '<img src="' . $src . '" style="' . $movStyle . '" />';
             $this->SetValueString('MovRadar', $val);
         }
+        $this->MaintainVariable('ISOActTemp', $this->Translate('Current temperatures') . ' (' . $isoTmpIdent . ')', vtString, '~HTMLBox', 31, $isoTmpActiv);
+        if ($isoTmpActiv) {
+            $src = str_replace('<STATE>', 'brd', DWD_LINKS['TEMP']);
+            $val = '<img src="' . $src . '" style="' . $isoTmpStyle . '" />';
+            $this->SetValueString('ISOActTemp', $val);
+        }
+        $this->MaintainVariable('ISOImgRadar', $this->Translate('Precipitation radar image') . ' (' . $isoImgIdent . ')', vtString, '~HTMLBox', 32, $isoImgActiv);
+        if ($isoImgActiv) {
+            $src = str_replace('<STATE>', 'brd', DWD_LINKS['RADAR']);
+            $val = '<img src="' . $src . '" style="' . $isoImgStyle . '" />';
+            $this->SetValueString('ISOImgRadar', $val);
+        }
+        $this->MaintainVariable('ISOMovRadar', $this->Translate('Precipitation radar film') . ' (' . $isoMovIdent . ')', vtString, '~HTMLBox', 33, $isoMovActiv);
+        if ($isoMovActiv) {
+            $src = str_replace('<STATE>', 'brd', DWD_LINKS['MOVIE']);
+            $val = '<img src="' . $src . '" style="' . $isoMovStyle . '" />';
+            $this->SetValueString('ISOMovRadar', $val);
+        }
         // - Indicator
         $this->MaintainVariable('Level', $this->Translate('Warning level'), vtInteger, 'UWW.Level', 0, $varWarning);
         // Status
         if (($warnState == 'null') || ($warnCounty == 'null') || (($warnType == 8) && ($warnCommunity == 'null'))) {
+            $this->SendDebug(__FUNCTION__, '104: Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity);
             $this->SetStatus(104);
             $this->SetTimerInterval('UpdateWeatherWarning', 0);
             return;

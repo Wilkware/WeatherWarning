@@ -97,6 +97,39 @@
             "items": [
                 {"type": "RowLayout",
                     "items": [
+                        {"type": "CheckBox", "name": "ISOActTempActivated", "caption": "Current temperature",  "width": "200px"},
+                        {"type": "Select", "name": "ISOActTempIdent", "caption": "Country:", "width": "250px",
+                            "options": [
+                                {"caption": "Deutschland", "value": "de"}
+                            ]
+                        },
+                        {"type": "ValidationTextBox", "name": "ISOActTempStyle", "caption": "Inline Style [style]:", "width": "425px"}
+                    ]
+                },
+                {"type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "ISOImgRadarActivated", "caption": "Rainfall radar image",  "width": "200px"},
+                        {"type": "Select", "name": "ISOImgRadarIdent", "caption": "Country:", "width": "250px",
+                            "options": [
+                                {"caption": "Deutschland", "value": "de"}
+                            ]
+                        },
+                        {"type": "ValidationTextBox", "name": "ISOImgRadarStyle", "caption": "Inline style [style]:", "width": "425px"}
+                    ]
+                },
+                {"type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "ISOMovRadarActivated", "caption": "Rainfall radar film",  "width": "200px"},
+                        {"type": "Select", "name": "ISOMovRadarIdent", "caption": "Country:", "width": "250px",
+                            "options": [
+                                {"caption": "Deutschland", "value": "de"}
+                            ]
+                        },
+                        {"type": "ValidationTextBox", "name": "ISOMovRadarStyle", "caption": "Inline style [style]:", "width": "425px"}
+                    ]
+                },
+                {"type": "RowLayout",
+                    "items": [
                         {"type": "CheckBox", "name": "ActTempActivated", "caption": "Current temperature",  "width": "200px"},
                         {"type": "Select", "name": "ActTempIdent", "caption": "State:", "width": "250px",
                             "options": [
