@@ -284,7 +284,7 @@ trait GeoHelper
         if (isset($data['data']['links'])) {
             foreach ($data['data']['links'] as $link) {
                 $path = parse_url($link['link'], PHP_URL_PATH);
-                $path = explode(DIRECTORY_SEPARATOR, $path);
+                $path = explode('/', $path);
                 $path = array_reverse($path);
                 $options[] = ['caption' => $link['title'], 'value' => $path[1]];
             }
