@@ -114,8 +114,8 @@ class WeatherWarningModule extends IPSModule
         $form['elements'][2]['items'][2]['items'][0]['options'] = $this->GetWarningCounties($type, $state);
         $form['elements'][2]['items'][2]['items'][1]['options'] = $this->GetWarningCommunities($type, $state, $county);
         // Visible
-        $form['elements'][2]['items'][2]['items'][0]['visible'] = ($county != 'null');
-        $form['elements'][2]['items'][2]['items'][1]['visible'] = ($community != 'null');
+        $form['elements'][2]['items'][2]['items'][0]['visible'] = ($state != 'null');
+        $form['elements'][2]['items'][2]['items'][1]['visible'] = ($type == 8 && $county != 'null');
         // Debug output
         //$this->SendDebug('GetConfigurationForm', $form);
         return json_encode($form);
@@ -582,7 +582,7 @@ class WeatherWarningModule extends IPSModule
             }
             $time = strftime('%a, %d.%b, %H:%M - ', strtotime($value['START']));
             if ($value['END'] != '') {
-                $time += strftime('%a, %d.%b, %H:%M Uhr', strtotime($value['END']));
+                $time = $time . strftime('%a, %d.%b, %H:%M Uhr', strtotime($value['END']));
             }
             $html .= '<tr>';
             $html .= '<td class=\'img\'><img src=\'' . $url . '\' /></td>';
