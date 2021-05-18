@@ -395,7 +395,7 @@ class WeatherWarningModule extends IPSModule
     {
         $this->SendDebug(__FUNCTION__, $value);
         // Enable?
-        $enable = ($value != "00");
+        $enable = ($value != '00');
         $this->UpdateFormField('MapArea', 'enabled', $enable);
         $this->UpdateFormField('MapBackground', 'enabled', $enable);
         $this->UpdateFormField('MapHeight', 'enabled', $enable);
@@ -650,7 +650,7 @@ class WeatherWarningModule extends IPSModule
         $mapSelected = $this->ReadPropertyString('MapSelected');
         $this->SendDebug(__FUNCTION__, 'MAP: ' . $mapSelected);
 
-        if($mapSelected == '00') {
+        if ($mapSelected == '00') {
             // Nothing to do
             return;
         }
@@ -659,10 +659,10 @@ class WeatherWarningModule extends IPSModule
         $mapBkgd = $this->ReadPropertyString('MapBackground');
         $mapWidth = $this->ReadPropertyInteger('MapWidth');
         $mapHeight = $this->ReadPropertyInteger('MapHeight');
-        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapWest'));
-        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapSouth'));
-        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapEast'));
-        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapNorth'));
+        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapWest'));
+        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapSouth'));
+        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapEast'));
+        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapNorth'));
         // Prepear GET parameters
         $service = '?service=WMS';
         $version = '&version=1.3';
@@ -681,99 +681,86 @@ class WeatherWarningModule extends IPSModule
         $la = [];
         $fa = [];
         // Background (mismatch layer and parameter)
-        if($mapBkgd == 'bluemarble') {
+        if ($mapBkgd == 'bluemarble') {
             $la[] = 'dwd:bluemarble';
             $fa[] = 'INCLUDE';
-        }
-        elseif ($mapBkgd == 'transparent') {
+        } elseif ($mapBkgd == 'transparent') {
             $transparent .= 'true';
-        }
-        else {
+        } else {
             $transparent .= 'false';
         }
         // Layers & Filter
-        if($mapSelected == '99') {
-            if($mapArea == 'Warngebiete_Gemeinden') {
+        if ($mapSelected == '99') {
+            if ($mapArea == 'Warngebiete_Gemeinden') {
                 $la[] = 'dwd:Warngebiete_Gemeinden';
                 $fa[] = 'INCLUDE';
                 $la[] = 'dwd:Warnungen_Gemeinden';
                 $fa[] = 'INCLUDE';
-            }
-            else {
+            } else {
                 $la[] = 'dwd:Warngebiete_Kreise';
                 $fa[] = 'INCLUDE';
                 $la[] = 'dwd:Warnungen_Landkreise';
                 $fa[] = 'INCLUDE';
             }
-        }
-        else if ($mapSelected == '17') {
-            if($mapArea == 'Warngebiete_Gemeinden') {
+        } elseif ($mapSelected == '17') {
+            if ($mapArea == 'Warngebiete_Gemeinden') {
                 $la[] = 'dwd:Warngebiete_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27810%25%27%20OR%20WARNCELLID%20LIKE%20%27807%25%27';
                 $la[] = 'dwd:Warnungen_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27810%25%27%20OR%20WARNCELLID%20LIKE%20%27807%25%27';
-                }
-            else {
+            } else {
                 $la[] = 'dwd:Warngebiete_Kreise';
                 $fa[] = 'WARNCELLID%20LIKE%20%27910%25%27%20OR%20WARNCELLID%20LIKE%20%27110%25%27%20OR%20WARNCELLID%20LIKE%20%27907%25%27%20OR%20WARNCELLID%20LIKE%20%27107%25%27';
                 $la[] = 'dwd:Warnungen_Landkreise';
                 $fa[] = 'GC_WARNCELLID%20LIKE%20%27910%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27110%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27907%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27107%25%27';
             }
-        }
-        else if ($mapSelected == '21') {
-            if($mapArea == 'Warngebiete_Gemeinden') {
+        } elseif ($mapSelected == '21') {
+            if ($mapArea == 'Warngebiete_Gemeinden') {
                 $la[] = 'dwd:Warngebiete_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27801%25%27%20OR%20WARNCELLID%20LIKE%20%27802%25%27';
                 $la[] = 'dwd:Warnungen_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27801%25%27%20OR%20WARNCELLID%20LIKE%20%27802%25%27';
-                }
-            else {
+            } else {
                 $la[] = 'dwd:Warngebiete_Kreise';
                 $fa[] = 'WARNCELLID%20LIKE%20%27901%25%27%20OR%20WARNCELLID%20LIKE%20%27101%25%27%20OR%20WARNCELLID%20LIKE%20%27902%25%27%20OR%20WARNCELLID%20LIKE%20%27102%25%27';
                 $la[] = 'dwd:Warnungen_Landkreise';
                 $fa[] = 'GC_WARNCELLID%20LIKE%20%27901%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27101%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27902%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27102%25%27';
             }
-        }
-        else if ($mapSelected == '23') {
-            if($mapArea == 'Warngebiete_Gemeinden') {
+        } elseif ($mapSelected == '23') {
+            if ($mapArea == 'Warngebiete_Gemeinden') {
                 $la[] = 'dwd:Warngebiete_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27811%25%27%20OR%20WARNCELLID%20LIKE%20%27812%25%27';
                 $la[] = 'dwd:Warnungen_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27811%25%27%20OR%20WARNCELLID%20LIKE%20%27812%25%27';
-                }
-            else {
+            } else {
                 $la[] = 'dwd:Warngebiete_Kreise';
                 $fa[] = 'WARNCELLID%20LIKE%20%27911%25%27%20OR%20WARNCELLID%20LIKE%20%27111%25%27%20OR%20WARNCELLID%20LIKE%20%27912%25%27%20OR%20WARNCELLID%20LIKE%20%27112%25%27';
                 $la[] = 'dwd:Warnungen_Landkreise';
                 $fa[] = 'GC_WARNCELLID%20LIKE%20%27911%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27111%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27912%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27112%25%27';
             }
-        }
-        else if ($mapSelected == '34') {
-            if($mapArea == 'Warngebiete_Gemeinden') {
+        } elseif ($mapSelected == '34') {
+            if ($mapArea == 'Warngebiete_Gemeinden') {
                 $la[] = 'dwd:Warngebiete_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27803%25%27%20OR%20WARNCELLID%20LIKE%20%27804%25%27';
                 $la[] = 'dwd:Warnungen_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%27803%25%27%20OR%20WARNCELLID%20LIKE%20%27804%25%27';
-                }
-            else {
+            } else {
                 $la[] = 'dwd:Warngebiete_Kreise';
                 $fa[] = 'WARNCELLID%20LIKE%20%27903%25%27%20OR%20WARNCELLID%20LIKE%20%27103%25%27%20OR%20WARNCELLID%20LIKE%20%27904%25%27%20OR%20WARNCELLID%20LIKE%20%27104%25%27';
                 $la[] = 'dwd:Warnungen_Landkreise';
                 $fa[] = 'GC_WARNCELLID%20LIKE%20%27903%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27103%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27904%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27104%25%27';
             }
-        }
-        else{
-            if($mapArea == 'Warngebiete_Gemeinden') {
+        } else {
+            if ($mapArea == 'Warngebiete_Gemeinden') {
                 $la[] = 'dwd:Warngebiete_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%278' . $mapSelected . '%25%27';
                 $la[] = 'dwd:Warnungen_Gemeinden';
                 $fa[] = 'WARNCELLID%20LIKE%20%278' . $mapSelected . '%25%27';
-                }
-            else {
+            } else {
                 $la[] = 'dwd:Warngebiete_Kreise';
-                $fa[] = 'WARNCELLID%20LIKE%20%279' . $mapSelected .'%25%27%20OR%20WARNCELLID%20LIKE%20%271' . $mapSelected . '%25%27';
+                $fa[] = 'WARNCELLID%20LIKE%20%279' . $mapSelected . '%25%27%20OR%20WARNCELLID%20LIKE%20%271' . $mapSelected . '%25%27';
                 $la[] = 'dwd:Warnungen_Landkreise';
-                $fa[] = 'GC_WARNCELLID%20LIKE%20%279' . $mapSelected .'%25%27%20OR%20GC_WARNCELLID%20LIKE%20%271' . $mapSelected . '%25%27';
+                $fa[] = 'GC_WARNCELLID%20LIKE%20%279' . $mapSelected . '%25%27%20OR%20GC_WARNCELLID%20LIKE%20%271' . $mapSelected . '%25%27';
             }
         }
         $layers .= implode(',', $la);
