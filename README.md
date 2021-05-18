@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.1.20210511-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.2.20210511-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -62,17 +62,24 @@ Gemeinde                   | Auswahl einer Gemeinde, wenn der Typ diese Auflösu
 
 > Unwetterkarten ...
 
-Hier können die Unwetterübersichtskarten (Bilder) aktiviert werden. Neben der großen Deutschlandkarte kann auch eine
-detailiertere Variant auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild kann über Stylesheet-Angaben beeinflußt werden.
+Hier kann eine Unwetterübersichtskarte aktiviert und konfiguriert werden. Neben der großen Deutschlandkarte kann auch eine
+detailiertere Variant auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild verschiedene Parameter angepasst werden.
 
 Name                    | Beschreibung
 ----------------------- | ---------------------------------
-Deutschland             | Aktiviert Statusvariable für Deutschlandkarte und das verwendete Stil-Attribut
-Bundesgebiet            | Aktiviert Statusvariable für ein Bundesland und das verwendete Stil-Attribut
+Auswahl                 | Aktiviert Statusvariable für Unwetterkarte bei Auswahl eines konkreten Gebietes
+Detailgrad              | Kreis- oder Gemeindeebene (Gemeinde dauert sehr lange zum Generieren)
+Hintergrund             | Auswahl des Hintergrundlayers oder transparent
+Bildbreite              | Breite in Pixel des zu generierenden Bildes (vordefiniert 500px und die Ration entsprechend in Richtung Höhe)
+Bildhöhe                | Höhe in Pixel des zu generierenden Bildes
+West                    | Westlicher Breitengrad
+Süd                     | Südlicher Längengrad
+Ost                     | Östlicher Breitengrad
+Süd                     | Nördlicher Längengrad
 
 > Bilder und Radarfilm ...
 
-Hier können Bildder bzw. der Radarfilm für die aktuellen Temperaturen und Niederschläge je Bundesland aktiviert werden.  
+Hier können Bildder bzw. der Radarfilm für die aktuellen Temperaturen und Niederschläge je Bundesland und/oder Detuschland aktiviert werden.  
 Das Erscheinungsbild kann wieder über die Stylesheet-Angaben beeinflußt werden.
 
 Name                    | Beschreibung
@@ -202,6 +209,13 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v1.2.20210518
+
+* _NEU_: Text-Formatierung um Warnstufe(Zahl) und Beschreibung erweitert
+* _NEU_: Unwetterkarte auf GeoWebservice umgestellt
+* _FIX_: Temperatur- und Niederschlagsbilder jetzt mit umschließendem DIV; IMG fixer Style
+* _FIX_: MV korrekt geschrieben
 
 v1.1.20210511
 

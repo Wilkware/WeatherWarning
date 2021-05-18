@@ -26,30 +26,34 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyString('WarningCounty', 'null');
         $this->RegisterPropertyString('WarningCommunity', 'null');
         // Map properties
-        $this->RegisterPropertyBoolean('MapCountryActivated', false);
-        $this->RegisterPropertyString('MapCountryStyle', 'max-height:100%;max-width:100%;');
-        $this->RegisterPropertyBoolean('MapStateActivated', false);
-        $this->RegisterPropertyString('MapStateIdent', 'baw');
-        $this->RegisterPropertyString('MapStateStyle', 'max-height:100%;max-width:100%;');
+        $this->RegisterPropertyString('MapSelected', '00');
+        $this->RegisterPropertyString('MapArea', 'Warngebiete_Kreise');
+        $this->RegisterPropertyString('MapBackground', 'transparent');
+        $this->RegisterPropertyInteger('MapWidth', 500);
+        $this->RegisterPropertyInteger('MapHeight', 500);
+        $this->RegisterPropertyFloat('MapWest', 0.000000);
+        $this->RegisterPropertyFloat('MapSouth', 0.000000);
+        $this->RegisterPropertyFloat('MapEast', 0.000000);
+        $this->RegisterPropertyFloat('MapNorth', 0.000000);
         // Image & films
         $this->RegisterPropertyBoolean('ISOActTempActivated', false);
         $this->RegisterPropertyString('ISOActTempIdent', 'de');
-        $this->RegisterPropertyString('ISOActTempStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyString('ISOActTempStyle', 'height: 225px;');
         $this->RegisterPropertyBoolean('ISOImgRadarActivated', false);
         $this->RegisterPropertyString('ISOImgRadarIdent', 'de');
-        $this->RegisterPropertyString('ISOImgRadarStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyString('ISOImgRadarStyle', 'height: 225px;');
         $this->RegisterPropertyBoolean('ISOMovRadarActivated', false);
         $this->RegisterPropertyString('ISOMovRadarIdent', 'de');
-        $this->RegisterPropertyString('ISOMovRadarStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyString('ISOMovRadarStyle', 'height: 225px;');
         $this->RegisterPropertyBoolean('ActTempActivated', false);
         $this->RegisterPropertyString('ActTempIdent', 'baw');
-        $this->RegisterPropertyString('ActTempStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyString('ActTempStyle', 'height: 225px;');
         $this->RegisterPropertyBoolean('ImgRadarActivated', false);
         $this->RegisterPropertyString('ImgRadarIdent', 'baw');
-        $this->RegisterPropertyString('ImgRadarStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyString('ImgRadarStyle', 'height: 225px;');
         $this->RegisterPropertyBoolean('MovRadarActivated', false);
         $this->RegisterPropertyString('MovRadarIdent', 'baw');
-        $this->RegisterPropertyString('MovRadarStyle', 'height: 100%; width: 100%; object-fit: fill;');
+        $this->RegisterPropertyString('MovRadarStyle', 'height: 225px;');
         // Stylesheet
         $this->RegisterPropertyString('table', '{width:100%;border-collapse: collapse;}');
         $this->RegisterPropertyString('tralt', '{background-color: rgba(0, 0, 0, 0.3);}');
@@ -98,6 +102,7 @@ class WeatherWarningModule extends IPSModule
         $state = $this->ReadPropertyString('WarningState');
         $county = $this->ReadPropertyString('WarningCounty');
         $community = $this->ReadPropertyString('WarningCommunity');
+        $map = $this->ReadPropertyString('MapSelected');
         // Debug output
         $this->SendDebug(__FUNCTION__, 'type=' . $type . ', state=' . $state . ', county=' . $county . ', community=' . $community);
         // Check properties
@@ -116,6 +121,15 @@ class WeatherWarningModule extends IPSModule
         // Visible
         $form['elements'][2]['items'][2]['items'][0]['visible'] = ($state != 'null');
         $form['elements'][2]['items'][2]['items'][1]['visible'] = ($type == 8 && $county != 'null');
+        // Enable
+        $form['elements'][3]['items'][1]['items'][0]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][1]['items'][1]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][1]['items'][2]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][1]['items'][3]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][3]['items'][0]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][3]['items'][1]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][3]['items'][2]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][3]['items'][3]['enabled'] = ($map != '00');
         // Debug output
         //$this->SendDebug('GetConfigurationForm', $form);
         return json_encode($form);
@@ -134,11 +148,7 @@ class WeatherWarningModule extends IPSModule
         $warnCounty = $this->ReadPropertyString('WarningCounty');
         $warnCommunity = $this->ReadPropertyString('WarningCommunity');
         // Map properties
-        $deActiv = $this->ReadPropertyBoolean('MapCountryActivated');
-        $deStyle = $this->ReadPropertyString('MapCountryStyle');
-        $blActiv = $this->ReadPropertyBoolean('MapStateActivated');
-        $blIdent = $this->ReadPropertyString('MapStateIdent');
-        $blStyle = $this->ReadPropertyString('MapStateStyle');
+        $mapSelected = $this->ReadPropertyString('MapSelected');
         // Image & films
         $isoTmpActiv = $this->ReadPropertyBoolean('ISOActTempActivated');
         $isoTmpIdent = $this->ReadPropertyString('ISOActTempIdent');
@@ -165,7 +175,7 @@ class WeatherWarningModule extends IPSModule
         $timeUpdate = $this->ReadPropertyInteger('UpdateInterval');
         // Debug
         $this->SendDebug(__FUNCTION__, 'Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity .
-                        ', DE-MAP=' . $deActiv . ', BL-MAP=' . $blActiv . ', BL-STATE=' . $blIdent .
+                        //', MAP=' . $deActiv . ', BL-MAP=' . $blActiv . ', BL-STATE=' . $blIdent .
                         ', Tmp=' . $tmpActiv . ', Img=' . $imgActiv . ', Mov=' . $movActiv);
         // Profile
         $this->RegisterProfile(vtInteger, 'UWW.Level', 'Warning', '', '', 1, 4, 1, 0, DWD_SEVERITY);
@@ -173,53 +183,42 @@ class WeatherWarningModule extends IPSModule
         $this->MaintainVariable('Table', $this->Translate('Warning messages'), vtString, '~HTMLBox', 1, true);
         $this->MaintainVariable('Text', $this->Translate('Warning text'), vtString, '', 2, $varText == 1);
         // - Map
-        $this->MaintainVariable('MapCountry', $this->Translate('Storm map country'), vtString, '~HTMLBox', 11, $deActiv);
-        if ($deActiv) {
-            $src = str_replace('<STATE>', 'de', DWD_LINKS['MAPS']);
-            $val = '<img src="' . $src . '" style="' . $deStyle . '" />';
-            $this->SetValueString('MapCountry', $val);
-        }
-        $this->MaintainVariable('MapState', $this->Translate('Storm map state'), vtString, '~HTMLBox', 12, $blActiv);
-        if ($deActiv) {
-            $src = str_replace('<STATE>', $blIdent, DWD_LINKS['MAPS']);
-            $val = '<img src="' . $src . '" style="' . $blStyle . '" />';
-            $this->SetValueString('MapState', $val);
-        }
+        $this->MaintainVariable('Map', $this->Translate('Storm map'), vtString, '~HTMLBox', 3, $mapSelected != '00');
         // - Images & Movie
         $this->MaintainVariable('ActTemp', $this->Translate('Current temperatures'), vtString, '~HTMLBox', 21, $tmpActiv);
         if ($tmpActiv) {
             $src = str_replace('<STATE>', $tmpIdent, DWD_LINKS['TEMP']);
-            $val = '<img src="' . $src . '" style="' . $tmpStyle . '" />';
+            $val = '<div style="' . $tmpStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ActTemp', $val);
         }
         $this->MaintainVariable('ImgRadar', $this->Translate('Precipitation radar image'), vtString, '~HTMLBox', 22, $imgActiv);
         if ($imgActiv) {
             $src = str_replace('<STATE>', $imgIdent, DWD_LINKS['RADAR']);
-            $val = '<img src="' . $src . '" style="' . $imgStyle . '" />';
+            $val = '<div style="' . $imgStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ImgRadar', $val);
         }
         $this->MaintainVariable('MovRadar', $this->Translate('Precipitation radar film'), vtString, '~HTMLBox', 23, $movActiv);
         if ($movActiv) {
-            $src = str_replace('<STATE>', $imgIdent, DWD_LINKS['MOVIE']);
-            $val = '<img src="' . $src . '" style="' . $movStyle . '" />';
+            $src = str_replace('<STATE>', $movIdent, DWD_LINKS['MOVIE']);
+            $val = '<div style="' . $movStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('MovRadar', $val);
         }
         $this->MaintainVariable('ISOActTemp', $this->Translate('Current temperatures') . ' (' . $isoTmpIdent . ')', vtString, '~HTMLBox', 31, $isoTmpActiv);
         if ($isoTmpActiv) {
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['TEMP']);
-            $val = '<img src="' . $src . '" style="' . $isoTmpStyle . '" />';
+            $val = '<div style="' . $isoTmpStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOActTemp', $val);
         }
         $this->MaintainVariable('ISOImgRadar', $this->Translate('Precipitation radar image') . ' (' . $isoImgIdent . ')', vtString, '~HTMLBox', 32, $isoImgActiv);
         if ($isoImgActiv) {
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['RADAR']);
-            $val = '<img src="' . $src . '" style="' . $isoImgStyle . '" />';
+            $val = '<div style="' . $isoImgStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOImgRadar', $val);
         }
         $this->MaintainVariable('ISOMovRadar', $this->Translate('Precipitation radar film') . ' (' . $isoMovIdent . ')', vtString, '~HTMLBox', 33, $isoMovActiv);
         if ($isoMovActiv) {
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['MOVIE']);
-            $val = '<img src="' . $src . '" style="' . $isoMovStyle . '" />';
+            $val = '<div style="' . $isoMovStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOMovRadar', $val);
         }
         // - Indicator
@@ -258,6 +257,9 @@ class WeatherWarningModule extends IPSModule
             case 'OnWarningCounty':
                 $this->OnWarningCounty($value);
             break;
+            case 'OnWarningMap':
+                $this->OnWarningMap($value);
+            break;
         }
         // return true;
     }
@@ -285,6 +287,8 @@ class WeatherWarningModule extends IPSModule
         $this->UpdateTable($geo, $now);
         // Warnmeldung (Text)
         $this->UpdateText($geo, $now);
+        // Warnmeldung (Map)
+        $this->UpdateMap($geo, $now);
     }
 
     /**
@@ -380,6 +384,35 @@ class WeatherWarningModule extends IPSModule
             $this->UpdateFormField('WarningCommunity', 'value', 'null');
             $this->UpdateFormField('WarningCommunity', 'visible', false);
         }
+    }
+
+    /**
+     * Select another map area.
+     *
+     * @param string $value Area.
+     */
+    protected function OnWarningMap($value)
+    {
+        $this->SendDebug(__FUNCTION__, $value);
+        // Enable?
+        $enable = ($value != "00");
+        $this->UpdateFormField('MapArea', 'enabled', $enable);
+        $this->UpdateFormField('MapBackground', 'enabled', $enable);
+        $this->UpdateFormField('MapHeight', 'enabled', $enable);
+        $this->UpdateFormField('MapWidth', 'enabled', $enable);
+        $this->UpdateFormField('MapWest', 'enabled', $enable);
+        $this->UpdateFormField('MapSouth', 'enabled', $enable);
+        $this->UpdateFormField('MapEast', 'enabled', $enable);
+        $this->UpdateFormField('MapNorth', 'enabled', $enable);
+        // value
+        $this->UpdateFormField('MapArea', 'value', 'Warngebiete_Kreise');
+        $this->UpdateFormField('MapBackground', 'value', 'transparent');
+        $this->UpdateFormField('MapWidth', 'value', DWD_GEO_MAPS[$value][0]);
+        $this->UpdateFormField('MapHeight', 'value', DWD_GEO_MAPS[$value][1]);
+        $this->UpdateFormField('MapWest', 'value', DWD_GEO_MAPS[$value][2]);
+        $this->UpdateFormField('MapSouth', 'value', DWD_GEO_MAPS[$value][3]);
+        $this->UpdateFormField('MapEast', 'value', DWD_GEO_MAPS[$value][4]);
+        $this->UpdateFormField('MapNorth', 'value', DWD_GEO_MAPS[$value][5]);
     }
 
     /**
@@ -607,6 +640,153 @@ class WeatherWarningModule extends IPSModule
     }
 
     /**
+     * Updates the storm map
+     *
+     * @param array $warning Array of warning data.
+     * @param int $ts Timestamp
+     */
+    private function UpdateMap(array $warnings, int $ts)
+    {
+        $mapSelected = $this->ReadPropertyString('MapSelected');
+        $this->SendDebug(__FUNCTION__, 'MAP: ' . $mapSelected);
+
+        if($mapSelected == '00') {
+            // Nothing to do
+            return;
+        }
+        // User selected Values
+        $mapArea = $this->ReadPropertyString('MapArea');
+        $mapBkgd = $this->ReadPropertyString('MapBackground');
+        $mapWidth = $this->ReadPropertyInteger('MapWidth');
+        $mapHeight = $this->ReadPropertyInteger('MapHeight');
+        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapWest'));
+        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapSouth'));
+        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapEast'));
+        $mapBox[] = str_replace(',', '.',$this->ReadPropertyFloat('MapNorth'));
+        // Prepear GET parameters
+        $service = '?service=WMS';
+        $version = '&version=1.3';
+        $request = '&request=GetMap';
+        $layers = '&layers=';
+        $transparent = '&transparent=';
+        $style = '&style=';
+        $height = '&height=' . $mapHeight;
+        $width = '&width=' . $mapWidth;
+        $bbox = '&bbox=' . implode(',', $mapBox);
+        $srs = '&srs=EPSG:4326';
+        $format = '&format=image/png';
+        $filter = '&cql_filter=';
+        $test = '&Test=' . $ts;
+        // Prepeare Layer & Filter arreas
+        $la = [];
+        $fa = [];
+        // Background (mismatch layer and parameter)
+        if($mapBkgd == 'bluemarble') {
+            $la[] = 'dwd:bluemarble';
+            $fa[] = 'INCLUDE';
+        }
+        elseif ($mapBkgd == 'transparent') {
+            $transparent .= 'true';
+        }
+        else {
+            $transparent .= 'false';
+        }
+        // Layers & Filter
+        if($mapSelected == '99') {
+            if($mapArea == 'Warngebiete_Gemeinden') {
+                $la[] = 'dwd:Warngebiete_Gemeinden';
+                $fa[] = 'INCLUDE';
+                $la[] = 'dwd:Warnungen_Gemeinden';
+                $fa[] = 'INCLUDE';
+            }
+            else {
+                $la[] = 'dwd:Warngebiete_Kreise';
+                $fa[] = 'INCLUDE';
+                $la[] = 'dwd:Warnungen_Landkreise';
+                $fa[] = 'INCLUDE';
+            }
+        }
+        else if ($mapSelected == '17') {
+            if($mapArea == 'Warngebiete_Gemeinden') {
+                $la[] = 'dwd:Warngebiete_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27810%25%27%20OR%20WARNCELLID%20LIKE%20%27807%25%27';
+                $la[] = 'dwd:Warnungen_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27810%25%27%20OR%20WARNCELLID%20LIKE%20%27807%25%27';
+                }
+            else {
+                $la[] = 'dwd:Warngebiete_Kreise';
+                $fa[] = 'WARNCELLID%20LIKE%20%27910%25%27%20OR%20WARNCELLID%20LIKE%20%27110%25%27%20OR%20WARNCELLID%20LIKE%20%27907%25%27%20OR%20WARNCELLID%20LIKE%20%27107%25%27';
+                $la[] = 'dwd:Warnungen_Landkreise';
+                $fa[] = 'GC_WARNCELLID%20LIKE%20%27910%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27110%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27907%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27107%25%27';
+            }
+        }
+        else if ($mapSelected == '21') {
+            if($mapArea == 'Warngebiete_Gemeinden') {
+                $la[] = 'dwd:Warngebiete_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27801%25%27%20OR%20WARNCELLID%20LIKE%20%27802%25%27';
+                $la[] = 'dwd:Warnungen_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27801%25%27%20OR%20WARNCELLID%20LIKE%20%27802%25%27';
+                }
+            else {
+                $la[] = 'dwd:Warngebiete_Kreise';
+                $fa[] = 'WARNCELLID%20LIKE%20%27901%25%27%20OR%20WARNCELLID%20LIKE%20%27101%25%27%20OR%20WARNCELLID%20LIKE%20%27902%25%27%20OR%20WARNCELLID%20LIKE%20%27102%25%27';
+                $la[] = 'dwd:Warnungen_Landkreise';
+                $fa[] = 'GC_WARNCELLID%20LIKE%20%27901%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27101%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27902%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27102%25%27';
+            }
+        }
+        else if ($mapSelected == '23') {
+            if($mapArea == 'Warngebiete_Gemeinden') {
+                $la[] = 'dwd:Warngebiete_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27811%25%27%20OR%20WARNCELLID%20LIKE%20%27812%25%27';
+                $la[] = 'dwd:Warnungen_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27811%25%27%20OR%20WARNCELLID%20LIKE%20%27812%25%27';
+                }
+            else {
+                $la[] = 'dwd:Warngebiete_Kreise';
+                $fa[] = 'WARNCELLID%20LIKE%20%27911%25%27%20OR%20WARNCELLID%20LIKE%20%27111%25%27%20OR%20WARNCELLID%20LIKE%20%27912%25%27%20OR%20WARNCELLID%20LIKE%20%27112%25%27';
+                $la[] = 'dwd:Warnungen_Landkreise';
+                $fa[] = 'GC_WARNCELLID%20LIKE%20%27911%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27111%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27912%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27112%25%27';
+            }
+        }
+        else if ($mapSelected == '34') {
+            if($mapArea == 'Warngebiete_Gemeinden') {
+                $la[] = 'dwd:Warngebiete_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27803%25%27%20OR%20WARNCELLID%20LIKE%20%27804%25%27';
+                $la[] = 'dwd:Warnungen_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%27803%25%27%20OR%20WARNCELLID%20LIKE%20%27804%25%27';
+                }
+            else {
+                $la[] = 'dwd:Warngebiete_Kreise';
+                $fa[] = 'WARNCELLID%20LIKE%20%27903%25%27%20OR%20WARNCELLID%20LIKE%20%27103%25%27%20OR%20WARNCELLID%20LIKE%20%27904%25%27%20OR%20WARNCELLID%20LIKE%20%27104%25%27';
+                $la[] = 'dwd:Warnungen_Landkreise';
+                $fa[] = 'GC_WARNCELLID%20LIKE%20%27903%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27103%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27904%25%27%20OR%20GC_WARNCELLID%20LIKE%20%27104%25%27';
+            }
+        }
+        else{
+            if($mapArea == 'Warngebiete_Gemeinden') {
+                $la[] = 'dwd:Warngebiete_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%278' . $mapSelected . '%25%27';
+                $la[] = 'dwd:Warnungen_Gemeinden';
+                $fa[] = 'WARNCELLID%20LIKE%20%278' . $mapSelected . '%25%27';
+                }
+            else {
+                $la[] = 'dwd:Warngebiete_Kreise';
+                $fa[] = 'WARNCELLID%20LIKE%20%279' . $mapSelected .'%25%27%20OR%20WARNCELLID%20LIKE%20%271' . $mapSelected . '%25%27';
+                $la[] = 'dwd:Warnungen_Landkreise';
+                $fa[] = 'GC_WARNCELLID%20LIKE%20%279' . $mapSelected .'%25%27%20OR%20GC_WARNCELLID%20LIKE%20%271' . $mapSelected . '%25%27';
+            }
+        }
+        $layers .= implode(',', $la);
+        $filter .= implode(';', $fa);
+        // Build url
+        $url = DWD_GEO_MAPSURL . $service . $version . $request . $layers . $transparent . $height . $width . $style . $bbox . $srs . $format . $filter . $test;
+        $this->SendDebug(__FUNCTION__, $url);
+        // Build html
+        $html = '<img src="' . $url . '" />';
+        $this->SetValueString('Map', $html);
+    }
+
+    /**
      * Format a given array to a string.
      *
      * @param array $value Weather warning data
@@ -615,8 +795,10 @@ class WeatherWarningModule extends IPSModule
     private function FormatWarning(array $value, $format)
     {
         $output = str_replace('%L', $this->Translate(DWD_SEVERITY[$value['LEVEL']][1]), $format);
+        $output = str_replace('%N', $value['LEVEL'], $output);
         $output = str_replace('%T', $value['TYPE'], $output);
         $output = str_replace('%M', $value['HEADLINE'], $output);
+        $output = str_replace('%D', $value['DESCRIPTION'], $output);
         return $output;
     }
 

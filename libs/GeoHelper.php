@@ -20,6 +20,11 @@ declare(strict_types=1);
 const DWD_GEO_BASEURL = 'https://maps.dwd.de/geoserver/dwd/ows?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application/json';
 
 /**
+ * DWD GeoServer MAPS URL base prefix
+ */
+const DWD_GEO_MAPSURL = 'https://maps.dwd.de/geoserver/dwd/wms';
+
+/**
  * DWD GeoServer URL type parameter
  */
 const DWD_GEO_PRAMS = [
@@ -29,6 +34,39 @@ const DWD_GEO_PRAMS = [
     5 => ['&typeName=dwd:Warnungen_Kueste', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
     8 => ['&typeName=dwd:Warnungen_Gemeinden', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
     9 => ['&typeName=dwd:Warnungen_Landkreise', '&CQL_FILTER=GC_WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+];
+
+
+/**
+ * DWD MapServer
+ */
+const DWD_GEO_MAPS = [
+# NO
+    '00' => [500, 500, 0.000000, 0.000000, 0.000000, 0.000000],     // Keine Karte
+# BL    
+    '01' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein
+    '02' => [500, 225, 8.421364, 53.394925, 10.324258, 53.964437],  // Hamburg
+    '03' => [500, 400, 6.654584, 51.295415, 11.597698, 53.894151],  // Niedersachsen
+    '04' => [500, 810, 8.481357, 53.010370, 8.983047, 53.606166],   // Bremen
+    '05' => [500, 470, 5.865998, 50.322698, 9.447658, 52.531035],   // Nordrhein-Westfalen
+    '06' => [500, 690, 7.773170, 49.394822, 10.234015, 51.654049],  // Hessen
+    '07' => [500, 615, 6.117359, 48.966274, 8.508475, 50.940443],   // Rheinland-Pfalz
+    '08' => [500, 570, 7.511393, 47.533800, 10.491823, 49.791374],  // Baden-Württemberg
+    '09' => [500, 510, 8.977158, 47.270362, 13.835042, 50.564452],  // Bayern
+    '10' => [500, 375, 6.358469, 49.113099, 7.403490, 49.639346],   // Saarland
+    '11' => [500, 375, 13.088209, 52.341823, 13.760610, 52.669724], // Berlin
+    '12' => [500, 470, 11.268166, 51.360662, 14.764710, 53.557950], // Brandenburg
+    '13' => [500, 310, 10.593246, 53.115863, 14.412279, 54.684988], // Mecklenburg-Vorpommern
+    '14' => [500, 355, 11.872308, 50.171541, 15.037743, 51.683140], // Sachsen
+    '15' => [500, 625, 10.561475, 50.937997, 13.186560, 53.042131], // Sachsen-Anhalt
+    '16' => [500, 390, 9.877844, 50.204233, 12.653196, 51.649067],  // Thüringen
+# MO
+    '17' => [500, 615, 6.117359, 48.966274, 8.508475, 50.940443],   // Rheinland-Pfalz, Saarland
+    '21' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein, Hamburg
+    '23' => [500, 470, 11.268166, 51.360662, 14.764710, 53.557950], // Berlin, Brandenburg
+    '34' => [500, 400, 6.654584, 51.295415, 11.597698, 53.894151],  // Niedersachsen, Bremen
+# DE    
+    '99' => [500, 640, 5.876914, 47.270362, 15.037507, 55.044381],  // Deutschland
 ];
 
 /**

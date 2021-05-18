@@ -32,7 +32,7 @@
                                 {"caption": "Landkreise (Zfg.)", "value": "9"}
                             ]
                         },
-                        {"type": "Select", "name": "WarningState", "caption": "State:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningState',serialize(['type'=>$WarningType,'state'=>$WarningState]));", 
+                        {"type": "Select", "name": "WarningState", "caption": "State:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningState',serialize(['type'=>$WarningType,'state'=>$WarningState]));",
                             "options": [
                                 {"caption": "Please select ...", "value": "null"}
                             ]
@@ -58,35 +58,65 @@
         },
         {
             "type": "ExpansionPanel",
-            "caption": "Storm maps ...",
+            "caption": "Storm map ...",
             "items": [
                 {"type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "MapCountryActivated", "caption": "Germany",  "width": "200px"},
-                        {"type": "Label", "name": "MapCountryLabel", "caption": "     ",  "width": "250px"},
-                        {"type": "ValidationTextBox", "name": "MapCountryStyle", "caption": "Stylesheet [img]:", "width": "425px"}
+                        {"type": "Select", "name": "MapSelected", "caption": "Selection:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningMap',$MapSelected);",
+                            "options": [
+                                {"caption": "No map", "value": "00"},
+                                {"caption": "Deutschland", "value": "99"},
+                                {"caption": "Baden-Württemberg", "value": "08"},
+                                {"caption": "Bayern", "value": "09"},
+                                {"caption": "Berlin", "value": "11"},
+                                {"caption": "Berlin, Brandenburg", "value": "23"},
+                                {"caption": "Brandenburg", "value": "12"},
+                                {"caption": "Bremen", "value": "04"},
+                                {"caption": "Hamburg", "value": "02"},
+                                {"caption": "Hessen", "value": "06"},
+                                {"caption": "Mecklenburg-Vorpommern", "value": "13"},
+                                {"caption": "Niedersachsen", "value": "03"},
+                                {"caption": "Niedersachsen, Bremen", "value": "34"},
+                                {"caption": "Nordrhein-Westfalen", "value": "05"},
+                                {"caption": "Rheinland-Pfalz", "value": "07"},
+                                {"caption": "Rheinland-Pfalz, Saarland", "value": "17"},
+                                {"caption": "Saarland", "value": "10"},
+                                {"caption": "Sachsen", "value": "14"},
+                                {"caption": "Sachsen-Anhalt", "value": "15"},
+                                {"caption": "Schleswig-Holstein", "value": "01"},
+                                {"caption": "Schleswig-Holstein, Hamburg", "value": "21"},
+                                {"caption": "Thüringen", "value": "16"}
+                            ]
+                        },
+                        {"type": "Label", "caption": "NOTE: Each new selection resets the following variables to default values!" }
                     ]
                 },
                 {"type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "MapStateActivated", "caption": "State",  "width": "200px"},
-                        {"type": "Select", "name": "MapStateIdent", "caption": "Selection:", "width": "250px",
+                        {"type": "Select", "name": "MapArea", "caption": "Level of detail:", "width": "221px",
                             "options": [
-                                {"caption": "Baden-Württemberg", "value": "baw"},
-                                {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin,Brandenburg", "value": "bbb"},
-                                {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommer", "value": "mvp"},
-                                {"caption": "Niedersachsen,Bremen", "value": "nib"},
-                                {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz,Saarland", "value": "rps"},
-                                {"caption": "Sachsen", "value": "sac"},
-                                {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein,Hamburg", "value": "shh"},
-                                {"caption": "Thüringen", "value": "thu"}
+                                {"caption": "Gemeinden", "value": "Warngebiete_Gemeinden"},
+                                {"caption": "Kreise", "value": "Warngebiete_Kreise"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "MapStateStyle", "caption": "Stylesheet [img]:", "width": "425px"}
+                        {"type": "Select", "name": "MapBackground", "caption": "Background:", "width": "221px",
+                            "options": [
+                                {"caption": "White", "value": "white"},
+                                {"caption": "Transparent", "value": "transparent"},
+                                {"caption": "Earth (bluemarble)", "value": "bluemarble"}
+                            ]
+                        },
+                        {"type": "NumberSpinner", "name": "MapWidth", "caption": "Image width:", "suffix": "px", "width": "221px"},
+                        {"type": "NumberSpinner", "name": "MapHeight", "caption": "Image height:", "suffix": "px", "width": "221px"}
+                    ]
+                },
+                {"type": "Label", "caption": "Bounding box:"},
+                {"type": "RowLayout",
+                    "items": [
+                        {"type": "NumberSpinner", "name": "MapWest", "caption": "West:", "digits": 6, "suffix": "°", "width": "221px"},
+                        {"type": "NumberSpinner", "name": "MapSouth", "caption": "South:", "digits": 6, "suffix": "°", "width": "221px"},
+                        {"type": "NumberSpinner", "name": "MapEast", "caption": "East:", "digits": 6, "suffix": "°", "width": "221px"},
+                        {"type": "NumberSpinner", "name": "MapNorth", "caption": "Nord:", "digits": 6, "suffix": "°", "width": "221px"}
                     ]
                 }
             ]
@@ -103,7 +133,7 @@
                                 {"caption": "Deutschland", "value": "de"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ISOActTempStyle", "caption": "Inline Style [style]:", "width": "425px"}
+                        {"type": "ValidationTextBox", "name": "ISOActTempStyle", "caption": "Inline Style [div]:", "width": "425px"}
                     ]
                 },
                 {"type": "RowLayout",
@@ -114,7 +144,7 @@
                                 {"caption": "Deutschland", "value": "de"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ISOImgRadarStyle", "caption": "Inline style [style]:", "width": "425px"}
+                        {"type": "ValidationTextBox", "name": "ISOImgRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
                     ]
                 },
                 {"type": "RowLayout",
@@ -125,7 +155,7 @@
                                 {"caption": "Deutschland", "value": "de"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ISOMovRadarStyle", "caption": "Inline style [style]:", "width": "425px"}
+                        {"type": "ValidationTextBox", "name": "ISOMovRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
                     ]
                 },
                 {"type": "RowLayout",
@@ -135,19 +165,19 @@
                             "options": [
                                 {"caption": "Baden-Württemberg", "value": "baw"},
                                 {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin,Brandenburg", "value": "bbb"},
+                                {"caption": "Berlin, Brandenburg", "value": "bbb"},
                                 {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommer", "value": "mvp"},
-                                {"caption": "Niedersachsen,Bremen", "value": "nib"},
+                                {"caption": "Mecklenburg-Vorpommern", "value": "mvp"},
+                                {"caption": "Niedersachsen, Bremen", "value": "nib"},
                                 {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz,Saarland", "value": "rps"},
+                                {"caption": "Rheinland-Pfalz, Saarland", "value": "rps"},
                                 {"caption": "Sachsen", "value": "sac"},
                                 {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein,Hamburg", "value": "shh"},
+                                {"caption": "Schleswig-Holstein, Hamburg", "value": "shh"},
                                 {"caption": "Thüringen", "value": "thu"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ActTempStyle", "caption": "Inline Style [style]:", "width": "425px"}
+                        {"type": "ValidationTextBox", "name": "ActTempStyle", "caption": "Inline Style [div]:", "width": "425px"}
                     ]
                 },
                 {"type": "RowLayout",
@@ -157,19 +187,19 @@
                             "options": [
                                 {"caption": "Baden-Württemberg", "value": "baw"},
                                 {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin,Brandenburg", "value": "bbb"},
+                                {"caption": "Berlin, Brandenburg", "value": "bbb"},
                                 {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommer", "value": "mvp"},
-                                {"caption": "Niedersachsen,Bremen", "value": "nib"},
+                                {"caption": "Mecklenburg-Vorpommern", "value": "mvp"},
+                                {"caption": "Niedersachsen, Bremen", "value": "nib"},
                                 {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz,Saarland", "value": "rps"},
+                                {"caption": "Rheinland-Pfalz, Saarland", "value": "rps"},
                                 {"caption": "Sachsen", "value": "sac"},
                                 {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein,Hamburg", "value": "shh"},
+                                {"caption": "Schleswig-Holstein, Hamburg", "value": "shh"},
                                 {"caption": "Thüringen", "value": "thu"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ImgRadarStyle", "caption": "Inline style [style]:", "width": "425px"}
+                        {"type": "ValidationTextBox", "name": "ImgRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
                     ]
                 },
                 {"type": "RowLayout",
@@ -179,19 +209,19 @@
                             "options": [
                                 {"caption": "Baden-Württemberg", "value": "baw"},
                                 {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin,Brandenburg", "value": "bbb"},
+                                {"caption": "Berlin, Brandenburg", "value": "bbb"},
                                 {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommer", "value": "mvp"},
-                                {"caption": "Niedersachsen,Bremen", "value": "nib"},
+                                {"caption": "Mecklenburg-Vorpommern", "value": "mvp"},
+                                {"caption": "Niedersachsen, Bremen", "value": "nib"},
                                 {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz,Saarland", "value": "rps"},
+                                {"caption": "Rheinland-Pfalz, Saarland", "value": "rps"},
                                 {"caption": "Sachsen", "value": "sac"},
                                 {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein,Hamburg", "value": "shh"},
+                                {"caption": "Schleswig-Holstein, Hamburg", "value": "shh"},
                                 {"caption": "Thüringen", "value": "thu"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "MovRadarStyle", "caption": "Inline style [style]:", "width": "425px"}
+                        {"type": "ValidationTextBox", "name": "MovRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
                     ]
                 }
             ]
@@ -280,7 +310,7 @@
                     "type": "RowLayout",
                     "items": [
                         {"type": "ValidationTextBox", "name": "TextFormat", "caption": "Text message format:", "width": "450px"},
-                        {"type": "Label", "caption": "(Specifier: %L = Warning level, %T = Warning Type, %M = Message)"}
+                        {"type": "Label", "caption": "Specifier: %L = Warning level (text), %L = Warning level (number),\n%T = Warning Type, %M = Message, %D = Description"}
                     ]
                 },
                 {"type": "Label", "caption": "... to send notification messages to a web front:" },
