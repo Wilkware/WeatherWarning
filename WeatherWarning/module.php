@@ -772,7 +772,7 @@ class WeatherWarningModule extends IPSModule
         $url = DWD_GEO_MAPSURL . $service . $version . $request . $layers . $transparent . $height . $width . $style . $bbox . $srs . $format . $filter . $test;
         $this->SendDebug(__FUNCTION__, $url);
         // Build html
-        $html = '<img src="' . $url . '" style="'. $mapStyle . '" />';
+        $html = '<img src="' . $url . '" style="' . $mapStyle . '" />';
         $this->SetValueString('Map', $html);
     }
 
