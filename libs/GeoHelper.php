@@ -212,9 +212,12 @@ const DWD_LINKS = [
  */
 const DWD_ICONS = [
     # Check Icon
-    'CHECK' => 'https://api.asmium.de/images/warning_check.png',
+    '0' => 'https://api.asmium.de/images/warning_check.png',
     # Level Icons
-    'LEVEL' => 'https://www.wettergefahren.de/stat/warnungen/wetterwarnkriterien/<EVENT>_<LEVEL>.png',
+    '1' => 'https://www.wettergefahren.de/stat/warnungen/wetterwarnkriterien/<EVENT>_<LEVEL>.png',
+    '2' => 'https://www.wettergefahren.de/stat/warnungen/wetterwarnkriterien/<EVENT>_<LEVEL>.png',
+    '3' => 'https://www.wettergefahren.de/stat/warnungen/unwetterkriterien/<EVENT>_<LEVEL>.png',
+    '4' => 'https://www.wettergefahren.de/stat/warnungen/unwetterkriterien/<EVENT>_<LEVEL>.png',
 ];
 
 /**
@@ -443,6 +446,7 @@ trait GeoHelper
         $str = str_replace('VORABINFORMATION UNWETTER vor ORKANBÖEN', 'Vorabinformation Unwetter vor Orkanböen', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
         $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit heftigem Starkregen und Hagel', $str);
+        $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit EXTREM HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit extrem heftigem Starkregen und Hagel', $str);
         $str = str_replace('Amtliche UNWETTERWARNUNG vor ORKANBÖEN', 'Unwetterwarnung vor Orkanböen', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
         $str = str_replace('Amtliche WARNUNG vor GEWITTER', 'Warnung vor Gewitter', $str);

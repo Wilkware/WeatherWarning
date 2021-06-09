@@ -60,6 +60,7 @@
             "type": "ExpansionPanel",
             "caption": "Storm map ...",
             "items": [
+                {"type": "Label", "caption": "NOTE: Each new selection resets the following variables to default values!" },
                 {"type": "RowLayout",
                     "items": [
                         {"type": "Select", "name": "MapSelected", "caption": "Selection:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningMap',$MapSelected);",
@@ -88,7 +89,7 @@
                                 {"caption": "Thüringen", "value": "16"}
                             ]
                         },
-                        {"type": "Label", "caption": "NOTE: Each new selection resets the following variables to default values!" }
+                        {"type": "ValidationTextBox", "name": "MapStyle", "caption": "Inline Style [img]:", "width": "450px"}
                     ]
                 },
                 {"type": "RowLayout",

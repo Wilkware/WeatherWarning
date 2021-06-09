@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.2.20210518-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.3.20210609-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -202,13 +202,22 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > "TIMESTAMP":"2021-05-10 12:51:00",  
 > "START":"2021-05-10 12:51:00",  
 > "END":"",  
-> "HEADLINE":  
-> "Warnung vor Starkwind",  
+> "HEADLINE": "Warnung vor Starkwind",  
 > "DESCRIPTION":"Es treten Windb\u00f6en mit Geschwindigkeiten bis 60 km\/h (17m\/s, 33kn, Bft 7) auf.",  
 > "INSTRUCTION":""  
 > }\]  
 
 ### 8. Versionshistorie
+
+v1.3.20210609
+
+* _NEU_: Text-Formatierung erweitert
+* _NEU_: Inline-Style Angaben für Unwetterkarte
+* _FIX_: Warnstufen-Icon für Stufe 3 und 4
+* _FIX_: Lebensdauer einer Meldung von Sekunden auf Minuten korrigiert
+* _FIX_: URL-Parameter für Umweltkarte vereinheitlicht
+* _FIX_: Zuweisung der Formatvorlagen für Meldungstabelle korrigiert
+* _FIX_: Dokumentation korrigiert
 
 v1.2.20210518
 

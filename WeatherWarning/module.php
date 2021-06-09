@@ -27,6 +27,7 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyString('WarningCommunity', 'null');
         // Map properties
         $this->RegisterPropertyString('MapSelected', '00');
+        $this->RegisterPropertyString('MapStyle', 'border:none; width:100%; height: 100%;');
         $this->RegisterPropertyString('MapArea', 'Warngebiete_Kreise');
         $this->RegisterPropertyString('MapBackground', 'transparent');
         $this->RegisterPropertyInteger('MapWidth', 500);
@@ -122,14 +123,14 @@ class WeatherWarningModule extends IPSModule
         $form['elements'][2]['items'][2]['items'][0]['visible'] = ($state != 'null');
         $form['elements'][2]['items'][2]['items'][1]['visible'] = ($type == 8 && $county != 'null');
         // Enable
-        $form['elements'][3]['items'][1]['items'][0]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][1]['items'][1]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][1]['items'][2]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][1]['items'][3]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][3]['items'][0]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][3]['items'][1]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][3]['items'][2]['enabled'] = ($map != '00');
-        $form['elements'][3]['items'][3]['items'][3]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][2]['items'][0]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][2]['items'][1]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][2]['items'][2]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][2]['items'][3]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][4]['items'][0]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][4]['items'][1]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][4]['items'][2]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][4]['items'][3]['enabled'] = ($map != '00');
         // Debug output
         //$this->SendDebug('GetConfigurationForm', $form);
         return json_encode($form);
@@ -397,6 +398,7 @@ class WeatherWarningModule extends IPSModule
         // Enable?
         $enable = ($value != '00');
         $this->UpdateFormField('MapArea', 'enabled', $enable);
+        $this->UpdateFormField('MapStyle', 'enabled', $enable);
         $this->UpdateFormField('MapBackground', 'enabled', $enable);
         $this->UpdateFormField('MapHeight', 'enabled', $enable);
         $this->UpdateFormField('MapWidth', 'enabled', $enable);
@@ -541,7 +543,7 @@ class WeatherWarningModule extends IPSModule
             if ($isDashboard && $script != 0) {
                 if ($value['LEVEL'] >= $levelDashboard) {
                     if ($time > 0) {
-                        $msg = IPS_RunScriptWaitEx($script, ['action' => 'add', 'text' => $output, 'expires' => time() + $time, 'removable' => true, 'type' => 2, 'image' => 'WindSpeed']);
+                        $msg = IPS_RunScriptWaitEx($script, ['action' => 'add', 'text' => $output, 'expires' => time() + ($time * 60), 'removable' => true, 'type' => 2, 'image' => 'WindSpeed']);
                     } else {
                         $msg = IPS_RunScriptWaitEx($script, ['action' => 'add', 'text' => $output, 'removable' => true, 'type' => 2, 'image' => 'WindSpeed']);
                     }
@@ -609,7 +611,7 @@ class WeatherWarningModule extends IPSModule
             $url = '';
             foreach (DWD_EVENT_MAP as $event => $map) {
                 if (in_array($value['CODE'], $map)) {
-                    $url = str_replace('<EVENT>', $event, DWD_ICONS['LEVEL']);
+                    $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
                     $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
                 }
             }
@@ -618,7 +620,7 @@ class WeatherWarningModule extends IPSModule
                 $time = $time . strftime('%a, %d.%b, %H:%M Uhr', strtotime($value['END']));
             }
             $html .= '<tr>';
-            $html .= '<td class=\'img\'><img src=\'' . $url . '\' /></td>';
+            $html .= '<td class=\'img\'><img class=\'warn\' src=\'' . $url . '\' /></td>';
             $html .= '<td class=\'txt\'><div class=\'hl\'>' . $value['HEADLINE'] . '</div><div class=\'ts\'>' . $time . '</div><div class=\'desc\'>' . $value['DESCRIPTION'] . '</div></td>';
             $html .= '</tr>';
             $count++;
@@ -656,6 +658,7 @@ class WeatherWarningModule extends IPSModule
         }
         // User selected Values
         $mapArea = $this->ReadPropertyString('MapArea');
+        $mapStyle = $this->ReadPropertyString('MapStyle');
         $mapBkgd = $this->ReadPropertyString('MapBackground');
         $mapWidth = $this->ReadPropertyInteger('MapWidth');
         $mapHeight = $this->ReadPropertyInteger('MapHeight');
@@ -676,7 +679,7 @@ class WeatherWarningModule extends IPSModule
         $srs = '&srs=EPSG:4326';
         $format = '&format=image/png';
         $filter = '&cql_filter=';
-        $test = '&Test=' . $ts;
+        $test = '&test=' . $ts;
         // Prepeare Layer & Filter arreas
         $la = [];
         $fa = [];
@@ -769,7 +772,7 @@ class WeatherWarningModule extends IPSModule
         $url = DWD_GEO_MAPSURL . $service . $version . $request . $layers . $transparent . $height . $width . $style . $bbox . $srs . $format . $filter . $test;
         $this->SendDebug(__FUNCTION__, $url);
         // Build html
-        $html = '<img src="' . $url . '" />';
+        $html = '<img src="' . $url . '" style="'. $mapStyle . '" />';
         $this->SetValueString('Map', $html);
     }
 
