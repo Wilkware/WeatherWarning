@@ -27,7 +27,7 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyString('WarningCommunity', 'null');
         // Map properties
         $this->RegisterPropertyString('MapSelected', '00');
-        $this->RegisterPropertyString('MapStyle', 'border:none; width:100%; height: 100%;');
+        $this->RegisterPropertyString('MapStyle', '{border:none; width:100%; height: 100%;}');
         $this->RegisterPropertyString('MapArea', 'Warngebiete_Kreise');
         $this->RegisterPropertyString('MapBackground', 'transparent');
         $this->RegisterPropertyInteger('MapWidth', 500);
@@ -36,6 +36,8 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyFloat('MapSouth', 0.000000);
         $this->RegisterPropertyFloat('MapEast', 0.000000);
         $this->RegisterPropertyFloat('MapNorth', 0.000000);
+        $this->RegisterPropertyBoolean('MapPinActivated', false);
+        $this->RegisterPropertyInteger('MapPinColor', 16777215); // Weiß
         // Image & films
         $this->RegisterPropertyBoolean('ISOActTempActivated', false);
         $this->RegisterPropertyString('ISOActTempIdent', 'de');
@@ -131,6 +133,8 @@ class WeatherWarningModule extends IPSModule
         $form['elements'][3]['items'][4]['items'][1]['enabled'] = ($map != '00');
         $form['elements'][3]['items'][4]['items'][2]['enabled'] = ($map != '00');
         $form['elements'][3]['items'][4]['items'][3]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][5]['items'][0]['enabled'] = ($map != '00');
+        $form['elements'][3]['items'][5]['items'][1]['enabled'] = ($map != '00');
         // Debug output
         //$this->SendDebug('GetConfigurationForm', $form);
         return json_encode($form);
@@ -406,6 +410,8 @@ class WeatherWarningModule extends IPSModule
         $this->UpdateFormField('MapSouth', 'enabled', $enable);
         $this->UpdateFormField('MapEast', 'enabled', $enable);
         $this->UpdateFormField('MapNorth', 'enabled', $enable);
+        $this->UpdateFormField('MapPinActivated', 'enabled', $enable);
+        $this->UpdateFormField('MapPinColor', 'enabled', $enable);
         // value
         $this->UpdateFormField('MapArea', 'value', 'Warngebiete_Kreise');
         $this->UpdateFormField('MapBackground', 'value', 'transparent');
@@ -772,7 +778,43 @@ class WeatherWarningModule extends IPSModule
         $url = DWD_GEO_MAPSURL . $service . $version . $request . $layers . $transparent . $height . $width . $style . $bbox . $srs . $format . $filter . $test;
         $this->SendDebug(__FUNCTION__, $url);
         // Build html
-        $html = '<img src="' . $url . '" style="' . $mapStyle . '" />';
+        $pin = $this->ReadPropertyBoolean('MapPinActivated');
+        $col = $this->ReadPropertyInteger('MapPinColor');
+        $html = '';
+        $html .= '<style type="text/css">';
+        $html .= '#uwwImg ' . $mapStyle;
+        $html .= '#uwwPin {position: absolute; top: -20px; left: -20px; margin: -30px 0 0 -10px;border-radius: 50% 50% 50% 0; border: 4px solid #' . dechex($col) . '; width: 20px; height: 20px; transform: rotate(-45deg);}';
+        $html .= '#uwwPin::after {position: absolute; content: \'\'; width: 10px; height: 10px; border-radius: 50%; top: 50%; left: 50%; margin: -5px -5px; background-color: #' . dechex($col) . ';}';
+        $html .= '</style>';
+        $html .= '<div id="uwwMap">';
+        $html .= '<img id="uwwImg" src="' . $url . '" />';
+        if ($pin) {
+            $html .= '<div id="uwwPin"></div>';
+        }
+        $html .= '</div>';
+        if ($pin) {
+            $lc = IPS_GetInstanceListByModuleID('{45E97A63-F870-408A-B259-2933F7EABF74}');
+            if(!empty($lc)) {
+                $id = $lc[0];
+                $location = IPS_GetProperty($id, 'Location');
+                $pos = json_decode($location, true);
+                $x = ceil(($pos['longitude'] - $mapBox[0]) * $mapWidth / ($mapBox[2] - $mapBox[0]));
+                $y = ceil(($mapBox[3] - $pos['latitude']) * $mapHeight / ($mapBox[3] - $mapBox[1]));
+                $html .= '<script>';
+                $html .= 'var ow = document.getElementById("uwwImg").offsetWidth;';
+                $html .= 'var oh = document.getElementById("uwwImg").offsetHeight;';
+                $html .= 'var width = ' . $mapWidth . ';';
+                $html .= 'var height = ' . $mapHeight . ';';
+                $html .= 'var x = ' . $x . ';';
+                $html .= 'var y = ' . $y . ';';
+                $html .= 'var ox = Math.ceil(ow/width*x);';
+                $html .= 'var oy = Math.ceil(oh/height*y);';
+                $html .= 'var pin =  document.getElementById("uwwPin");';
+                $html .= 'pin.style.left= ox+\'px\';';
+                $html .= 'pin.style.top= oy+\'px\';';
+                $html .= '</script>';
+            }
+        }
         $this->SetValueString('Map', $html);
     }
 

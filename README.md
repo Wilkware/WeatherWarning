@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.3.20210609-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.4.20210611-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -68,6 +68,7 @@ detailiertere Variant auf Basis des Bundeslandes gewählt werden. Das Erscheinun
 Name                    | Beschreibung
 ----------------------- | ---------------------------------
 Auswahl                 | Aktiviert Statusvariable für Unwetterkarte bei Auswahl eines konkreten Gebietes
+Formatvorlage \[img\]   | Sytle für Bild der Unwetterkarte
 Detailgrad              | Kreis- oder Gemeindeebene (Gemeinde dauert sehr lange zum Generieren)
 Hintergrund             | Auswahl des Hintergrundlayers oder transparent
 Bildbreite              | Breite in Pixel des zu generierenden Bildes (vordefiniert 500px und die Ration entsprechend in Richtung Höhe)
@@ -76,6 +77,8 @@ West                    | Westlicher Breitengrad
 Süd                     | Südlicher Längengrad
 Ost                     | Östlicher Breitengrad
 Süd                     | Nördlicher Längengrad
+Markierung anzeigern?   | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
+Farbe der Markierung    | Farbauswahl für Marker Pin
 
 > Bilder und Radarfilm ...
 
@@ -208,6 +211,11 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v1.4.20210611
+
+* _NEU_: Positions Marker auf Unwetterkarte hinzugefügt
+* _FIX_: Inline Style für Unwetterkarte vereinheitlicht/umgestellt
 
 v1.3.20210609
 

@@ -89,7 +89,7 @@
                                 {"caption": "Thüringen", "value": "16"}
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "MapStyle", "caption": "Inline Style [img]:", "width": "450px"}
+                        {"type": "ValidationTextBox", "name": "MapStyle", "caption": "Style [img]:", "width": "450px"}
                     ]
                 },
                 {"type": "RowLayout",
@@ -118,6 +118,12 @@
                         {"type": "NumberSpinner", "name": "MapSouth", "caption": "South:", "digits": 6, "suffix": "°", "width": "221px"},
                         {"type": "NumberSpinner", "name": "MapEast", "caption": "East:", "digits": 6, "suffix": "°", "width": "221px"},
                         {"type": "NumberSpinner", "name": "MapNorth", "caption": "Nord:", "digits": 6, "suffix": "°", "width": "221px"}
+                    ]
+                },
+                {"type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "MapPinActivated", "caption": "Marking for own location displays?", "width": "450px"},
+                        {"type": "SelectColor", "name": "MapPinColor", "caption": "Marker color:", "allowTransparent": false, "width": "221px" }
                     ]
                 }
             ]
