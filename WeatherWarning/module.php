@@ -794,7 +794,7 @@ class WeatherWarningModule extends IPSModule
         $html .= '</div>';
         if ($pin) {
             $lc = IPS_GetInstanceListByModuleID('{45E97A63-F870-408A-B259-2933F7EABF74}');
-            if(!empty($lc)) {
+            if (!empty($lc)) {
                 $id = $lc[0];
                 $location = IPS_GetProperty($id, 'Location');
                 $pos = json_decode($location, true);
