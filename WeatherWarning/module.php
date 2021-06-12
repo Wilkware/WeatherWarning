@@ -787,7 +787,7 @@ class WeatherWarningModule extends IPSModule
         $html .= '#uwwPin::after {position: absolute; content: \'\'; width: 10px; height: 10px; border-radius: 50%; top: 50%; left: 50%; margin: -5px -5px; background-color: #' . dechex($col) . ';}';
         $html .= '</style>';
         $html .= '<div id="uwwMap">';
-        $html .= '<img id="uwwImg" src="' . $url . '" />';
+        $html .= '<img id="uwwImg" src="' . $url . '" alt="Karte" title="Karte" />';
         if ($pin) {
             $html .= '<div id="uwwPin"></div>';
         }
@@ -801,6 +801,7 @@ class WeatherWarningModule extends IPSModule
                 $x = ceil(($pos['longitude'] - $mapBox[0]) * $mapWidth / ($mapBox[2] - $mapBox[0]));
                 $y = ceil(($mapBox[3] - $pos['latitude']) * $mapHeight / ($mapBox[3] - $mapBox[1]));
                 $html .= '<script>';
+                $html .= 'function handler() {';
                 $html .= 'var ow = document.getElementById("uwwImg").offsetWidth;';
                 $html .= 'var oh = document.getElementById("uwwImg").offsetHeight;';
                 $html .= 'var width = ' . $mapWidth . ';';
@@ -812,6 +813,8 @@ class WeatherWarningModule extends IPSModule
                 $html .= 'var pin =  document.getElementById("uwwPin");';
                 $html .= 'pin.style.left= ox+\'px\';';
                 $html .= 'pin.style.top= oy+\'px\';';
+                $html .= '}';
+                $html .= 'document.getElementById("uwwImg").addEventListener(\'load\', handler, false);';
                 $html .= '</script>';
             }
         }
