@@ -283,7 +283,7 @@ trait GeoHelper
      * @param string $type area type
      * @param string $state State identifier
      * @param string $county County identifier
-     * @return array  Options array with caption and value.
+     * @return array Options array with caption and value.
      */
     private function ExtractData(string $type, string $state = null, string $county = null): array
     {
@@ -331,6 +331,28 @@ trait GeoHelper
         }
         // return the options
         return $options;
+    }
+
+    /**
+     * Extract icon url from data.
+     *
+     * @param array $value warning data
+     * @return string Url for warning icon.
+     */
+    private function ExtractIcon(array $value): string
+    {
+        $url = '';
+        foreach (DWD_EVENT_MAP as $event => $map) {
+            if (in_array($value['CODE'], $map)) {
+                $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
+                if ($event == 'hitze' || $event == 'uv') {
+                    $url = str_replace('<LEVEL>', 'lila', $url);
+                } else {
+                    $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
+                }
+            }
+        }
+        return $url;
     }
 
     /**
@@ -447,6 +469,7 @@ trait GeoHelper
         /* --------------------------------------------------------------------------------------------------------------- */
         $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit heftigem Starkregen und Hagel', $str);
         $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit EXTREM HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit extrem heftigem Starkregen und Hagel', $str);
+        $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit ORKANBÖEN, HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit Orkanböen, heftigem Starkregen und Hagel', $str);
         $str = str_replace('Amtliche UNWETTERWARNUNG vor ORKANBÖEN', 'Unwetterwarnung vor Orkanböen', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
         $str = str_replace('Amtliche WARNUNG vor GEWITTER', 'Warnung vor Gewitter', $str);

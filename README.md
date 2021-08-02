@@ -1,8 +1,8 @@
 # Unwetterwarnung (Weather Warning)
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.4.20210611-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Product](https://img.shields.io/badge/Symcon%20Version-5.3-blue.svg)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.5.20210801-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -63,7 +63,8 @@ Gemeinde                   | Auswahl einer Gemeinde, wenn der Typ diese Auflösu
 > Unwetterkarten ...
 
 Hier kann eine Unwetterübersichtskarte aktiviert und konfiguriert werden. Neben der großen Deutschlandkarte kann auch eine
-detailiertere Variant auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild verschiedene Parameter angepasst werden.
+detailiertere Variant auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild kann durch verschiedene Parameter angepasst werden.  
+Der darzustellende Bereich (so g. Bounding Box) wird dabei durch die Längen- und Breitengrade der 4 Himmelsrichtungen begrenzt!
 
 Name                    | Beschreibung
 ----------------------- | ---------------------------------
@@ -73,10 +74,10 @@ Detailgrad              | Kreis- oder Gemeindeebene (Gemeinde dauert sehr lange 
 Hintergrund             | Auswahl des Hintergrundlayers oder transparent
 Bildbreite              | Breite in Pixel des zu generierenden Bildes (vordefiniert 500px und die Ration entsprechend in Richtung Höhe)
 Bildhöhe                | Höhe in Pixel des zu generierenden Bildes
-West                    | Westlicher Breitengrad
-Süd                     | Südlicher Längengrad
-Ost                     | Östlicher Breitengrad
-Süd                     | Nördlicher Längengrad
+West                    | Westlicher Breitengrad (Begrenzung der Bildbox im Westen)
+Süd                     | Südlicher Längengrad (Begrenzung der Bildbox im Süden)
+Ost                     | Östlicher Breitengrad (Begrenzung der Bildbox im Osten)
+Süd                     | Nördlicher Längengrad (Begrenzung der Bildbox im Norden)
 Markierung anzeigern?   | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
 Farbe der Markierung    | Farbauswahl für Marker Pin
 
@@ -212,9 +213,16 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 
 ### 8. Versionshistorie
 
+v1.5.20210801
+
+* _FIX_: Fehlende Text-Formatierung für Warnungen hinzugefügt
+* _FIX_: Icon wird jetzt bei allen Warnungen korrekt angezeigt
+* _FIX_: Weitere Modulvereinheitlichungen vorgenommen
+* _FIX_: Dokumentation überarbeitet
+
 v1.4.20210611
 
-* _NEU_: Positions Marker auf Unwetterkarte hinzugefügt
+* _NEU_: Positions-Marker auf Unwetterkarte hinzugefügt
 * _FIX_: Inline Style für Unwetterkarte vereinheitlicht/umgestellt
 
 v1.3.20210609
@@ -250,19 +258,22 @@ Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedan
 
 * _Fonzo_ : für das beharrliche Nachfragen nach dem Modul ;-)
 * _Nall-chan_ : für die Hilfe im Channel und seine tollen Lösungen ;-)
+* _yansoph_: für den regen Austausch und das Testen :-)
 
 Vielen Dank an Euch!
 
 ## Entwickler
 
-* Heiko Wilknitz ([@wilkware](https://github.com/wilkware))
+Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der IP-Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
+
+[![GitHub](https://img.shields.io/badge/GitHub-@wilkware-blueviolet.svg?logo=github)](https://wilkware.github.io/)
 
 ## Spenden
 
-Die Software ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:
+Die Software ist für die nicht kommzerielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
 
-[![License](https://img.shields.io/badge/Einfach%20spenden%20mit-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
+[![PayPal](https://img.shields.io/badge/PayPal-spenden-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 
-### Lizenz
+## Lizenz
 
 [![Licence](https://licensebuttons.net/i/l/by-nc-sa/transparent/00/00/00/88x31-e.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)

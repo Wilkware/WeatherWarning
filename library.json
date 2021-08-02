@@ -3,7 +3,10 @@
     "author": "Wilkware (@Pitti)",
     "name": "Weather Warning",
     "url": "https://wilkware.de",
-    "version": "1.4",
-    "build": 2021061,
-    "date": 1623405600
+    "compatibility": {
+        "version": "5.3"
+      },
+    "version": "1.5",
+    "build": 20210801,
+    "date": 1627812000
 }

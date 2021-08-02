@@ -614,13 +614,7 @@ class WeatherWarningModule extends IPSModule
         // Exist Warnings
         $count = 0;
         foreach ($warnings as $value) {
-            $url = '';
-            foreach (DWD_EVENT_MAP as $event => $map) {
-                if (in_array($value['CODE'], $map)) {
-                    $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
-                    $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
-                }
-            }
+            $url = $this->ExtractIcon($value);
             $time = strftime('%a, %d.%b, %H:%M - ', strtotime($value['START']));
             if ($value['END'] != '') {
                 $time = $time . strftime('%a, %d.%b, %H:%M Uhr', strtotime($value['END']));

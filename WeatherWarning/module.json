@@ -1,14 +1,14 @@
 {
-  "id": "{DCDBF64A-F2DC-B23B-2483-69BCAFFE091A}",
-  "name": "Weather Warning Module",
-  "type": 3,
-  "vendor": "",
-  "aliases":
-  [
-    "Unwetterwarnung"
-  ],
-  "parentRequirements": [],
-  "childRequirements": [],
-  "implemented": [],
-  "prefix": "UWW"
+    "id": "{DCDBF64A-F2DC-B23B-2483-69BCAFFE091A}",
+    "name": "Weather Warning Module",
+    "type": 3,
+    "vendor": "",
+    "aliases": [
+        "Unwetterwarnung"
+    ],
+    "url": "https://wilkware.de/ip-symcon-module/unwetterwarnung/",
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "UWW"
 }
