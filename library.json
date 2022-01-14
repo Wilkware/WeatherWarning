@@ -4,9 +4,9 @@
     "name": "Weather Warning",
     "url": "https://wilkware.de",
     "compatibility": {
-        "version": "5.3"
+        "version": "6.0"
       },
-    "version": "1.5",
-    "build": 20210801,
-    "date": 1627812000
+    "version": "1.6",
+    "build": 20220114,
+    "date": 1642158000
 }

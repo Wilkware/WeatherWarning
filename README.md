@@ -1,8 +1,8 @@
 # Unwetterwarnung (Weather Warning)
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-5.3-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.5.20210801-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.6.20220114-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -30,7 +30,7 @@ Darüber hinaus können noch Variablen zur Darstellung verschiedener Wetterbilde
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 5.3
+* IP-Symcon ab Version 6.0
 
 ### 3. Installation
 
@@ -212,6 +212,15 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v1.6.20220114
+
+* _NEU_: Kompatibilität auf IPS 6.0 hoch gesetzt
+* _NEU_: Bibliotheks- bzw. Modulinfos vereinheitlicht
+* _NEU_: Konfigurationsdialog überarbeitet (v6 Möglichkeiten genutzt)
+* _NEU_: Doppelte Warnungen bei Meldungsverwaltung entfernt
+* _FIX_: Fehlende Text-Formatierung für Warnungen hinzugefügt
+* _FIX_: Fehler in Modulbibliotheken korrigiert
 
 v1.5.20210801
 

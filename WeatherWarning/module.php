@@ -541,10 +541,17 @@ class WeatherWarningModule extends IPSModule
         $length = count($warnings);
         $lines = '';
         $index = 1;
+        $unique = [];
         // iterate
         foreach ($warnings as $value) {
             // format date item
             $output = $this->FormatWarning($value, $format);
+            // filter duplicates
+            if (!in_array($output, $unique)) {
+                $unique[] = $output;
+            } else {
+                continue;
+            }
             // send to dashboard
             if ($isDashboard && $script != 0) {
                 if ($value['LEVEL'] >= $levelDashboard) {

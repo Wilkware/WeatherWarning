@@ -149,7 +149,7 @@ const DWD_EVENT_CODE = [
  */
 const DWD_EVENT_MAP = [
     'gewitter'    => [31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49, 90, 91, 92, 93, 95, 96],
-    'wind'        => [11, 12, 13, 14, 15, 16, (31), 33, (34), 36, 38, 40, 41, 44, 45, (46), 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 74, 75, 76, 96],
+    'wind'        => [11, 12, 13, 14, 15, 16, (31), 33, (34), 36, 38, 40, 41, 44, 45, (46), 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 74, 75, 76, 79, 96],
     'regen'       => [34, 36, 38, (40), (41), 42, 44, 45, 46, 48, 49, 61, 62, 63, 64, 65, 66, 88, 89, 95, 96],
     'schnee'      => [70, 71, 72, 73,  74, 75, 76],
     'nebel'       => [59],
@@ -190,7 +190,7 @@ const DWD_CATEGORY = [
  */
 const DWD_URGENCY = [
     'Immediate' => 'Warnung',
-    'Future'    => 'Vorabinformation'
+    'Future'    => 'Vorabinformation',
 ];
 
 /**
@@ -204,7 +204,7 @@ const DWD_LINKS = [
     # Niederschlag Radarfilm
     'MOVIE'     => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
     # Karte mit allen Warnungen
-    'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png'
+    'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png',
 ];
 
 /**
@@ -466,6 +466,7 @@ trait GeoHelper
         $str = str_replace('VORABINFORMATION SCHWERES GEWITTER', 'Vorabinformation schweres Gewitter', $str);
         $str = str_replace('VORABINFORMATION UNWETTER vor SCHWEREM GEWITTER', 'Vorabinformation Unwetter vor schwerem Gewitter', $str);
         $str = str_replace('VORABINFORMATION UNWETTER vor ORKANBÖEN', 'Vorabinformation Unwetter vor Orkanböen', $str);
+        $str = str_replace('VORABINFORMATION UNWETTER vor GLATTEIS', 'Vorabinformation Unwetter vor Glatteis', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
         $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit heftigem Starkregen und Hagel', $str);
         $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit EXTREM HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit extrem heftigem Starkregen und Hagel', $str);
@@ -484,6 +485,7 @@ trait GeoHelper
         $str = str_replace('Amtliche WARNUNG vor STARKEN STURMBÖEN', 'Warnung vor starken Sturmböen', $str);
         $str = str_replace('Amtliche WARNUNG vor SCHWEREN STURMBÖEN', 'Warnung vor schweren Sturmböen', $str);
         $str = str_replace('Amtliche WARNUNG vor DAUERREGEN', 'Warnung vor Dauerregen', $str);
+        $str = str_replace('Amtliche WARNUNG vor STARKREGEN', 'Warnung vor Starkregen', $str);
         $str = str_replace('Amtliche WARNUNG vor NEBEL', 'Warnung vor Nebel', $str);
         $str = str_replace('Amtliche WARNUNG vor GLÄTTE', 'Warnung vor Glätte', $str);
         $str = str_replace('Amtliche WARNUNG vor GLATTEIS', 'Warnung vor Glatteis', $str);
@@ -491,7 +493,9 @@ trait GeoHelper
         $str = str_replace('Amtliche WARNUNG vor LEICHTEM SCHNEEFALL', 'Warnung vor leichtem Schneefall', $str);
         $str = str_replace('Amtliche WARNUNG vor SCHNEEFALL', 'Warnung vor Schneefall', $str);
         $str = str_replace('Amtliche WARNUNG vor STARKEM SCHNEEFALL', 'Warnung vor starkem Schneefall', $str);
-        $str = str_replace('Amtliche WARNUNG vor HITZE', 'Warnung vor extremer Hitze', $str);
+        $str = str_replace('Amtliche WARNUNG vor HITZE', 'Warnung vor Hitze', $str);
+        $str = str_replace('Amtliche WARNUNG vor LEITERSEILSCHWINGUNGEN', 'Warnung vor Leiterseilschwingungen', $str);
+        $str = str_replace('Amtliche WARNUNG vor VERBREITETER GLÄTTE', 'Warnung vor verbreiteter Glätte', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
         $str = str_replace('Warnhinweis vor STARKWIND ', 'Warnhinweis vor Starkwind', $str);
         /* --------------------------------------------------------------------------------------------------------------- */
