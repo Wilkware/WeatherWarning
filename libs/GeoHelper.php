@@ -485,7 +485,7 @@ trait GeoHelper
         // Replace case sensitive words
         $out = '';
         foreach (explode(' ', $str) as $key => $word) {
-            $out .= (!in_array($word, $exc) || $key == 0) ? mb_convert_case($word, MB_CASE_TITLE, "UTF-8") . ' ' : $word . ' ';
+            $out .= (!in_array($word, $exc) || $key == 0) ? mb_convert_case($word, MB_CASE_TITLE, 'UTF-8') . ' ' : $word . ' ';
         }
         return rtrim($out);
     }
