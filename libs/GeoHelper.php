@@ -419,6 +419,7 @@ trait GeoHelper
                     case 'EFFECTIVE':
                         $ts = new DateTime($value);
                         $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
+                        // no break
                         // FIXME: No break. Please add proper comment if intentional
                     case 'SENT':
                         if (!isset($prop['TIMESTAMP'])) {
@@ -463,48 +464,34 @@ trait GeoHelper
      */
     private function ReplaceCaseSensitiveWords(string $str): string
     {
-        $str = str_replace('VORABINFORMATION SCHWERES GEWITTER', 'Vorabinformation schweres Gewitter', $str);
-        $str = str_replace('VORABINFORMATION UNWETTER vor SCHWEREM GEWITTER', 'Vorabinformation Unwetter vor schwerem Gewitter', $str);
-        $str = str_replace('VORABINFORMATION UNWETTER vor ORKANBÖEN', 'Vorabinformation Unwetter vor Orkanböen', $str);
-        $str = str_replace('VORABINFORMATION UNWETTER vor GLATTEIS', 'Vorabinformation Unwetter vor Glatteis', $str);
-        /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit heftigem Starkregen und Hagel', $str);
-        $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit EXTREM HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit extrem heftigem Starkregen und Hagel', $str);
-        $str = str_replace('Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit ORKANBÖEN, HEFTIGEM STARKREGEN und HAGEL', 'Unwetterwarnung vor schwerem Gewitter mit Orkanböen, heftigem Starkregen und Hagel', $str);
-        $str = str_replace('Amtliche UNWETTERWARNUNG vor ORKANBÖEN', 'Unwetterwarnung vor Orkanböen', $str);
-        /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace('Amtliche WARNUNG vor GEWITTER', 'Warnung vor Gewitter', $str);
-        $str = str_replace('Amtliche WARNUNG vor STARKWIND', 'Warnung vor Starkwind', $str);
-        $str = str_replace('Amtliche WARNUNG vor STARKEM GEWITTER', 'Warnung vor starkem Gewitter', $str);
-        $str = str_replace('Amtliche WARNUNG vor SCHWEREM GEWITTER', 'Warnung vor schwerem Gewitter', $str);
-        $str = str_replace('Amtliche WARNUNG vor WINDBÖEN', 'Warnung vor Windböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor STARKEN WINDBÖEN', 'Warnung vor starken Windböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor SCHWEREN WINDBÖEN', 'Warnung vor schweren Windböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor STURMBÖEN', 'Warnung vor Sturmböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor ORKANBÖEN', 'Warnung vor Orkanböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor STARKEN STURMBÖEN', 'Warnung vor starken Sturmböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor SCHWEREN STURMBÖEN', 'Warnung vor schweren Sturmböen', $str);
-        $str = str_replace('Amtliche WARNUNG vor DAUERREGEN', 'Warnung vor Dauerregen', $str);
-        $str = str_replace('Amtliche WARNUNG vor STARKREGEN', 'Warnung vor Starkregen', $str);
-        $str = str_replace('Amtliche WARNUNG vor NEBEL', 'Warnung vor Nebel', $str);
-        $str = str_replace('Amtliche WARNUNG vor GLÄTTE', 'Warnung vor Glätte', $str);
-        $str = str_replace('Amtliche WARNUNG vor GLATTEIS', 'Warnung vor Glatteis', $str);
-        $str = str_replace('Amtliche WARNUNG vor FROST', 'Warnung vor Frost', $str);
-        $str = str_replace('Amtliche WARNUNG vor LEICHTEM SCHNEEFALL', 'Warnung vor leichtem Schneefall', $str);
-        $str = str_replace('Amtliche WARNUNG vor SCHNEEFALL', 'Warnung vor Schneefall', $str);
-        $str = str_replace('Amtliche WARNUNG vor STARKEM SCHNEEFALL', 'Warnung vor starkem Schneefall', $str);
-        $str = str_replace('Amtliche WARNUNG vor HITZE', 'Warnung vor Hitze', $str);
-        $str = str_replace('Amtliche WARNUNG vor LEITERSEILSCHWINGUNGEN', 'Warnung vor Leiterseilschwingungen', $str);
-        $str = str_replace('Amtliche WARNUNG vor VERBREITETER GLÄTTE', 'Warnung vor verbreiteter Glätte', $str);
-        /* --------------------------------------------------------------------------------------------------------------- */
-        $str = str_replace('Warnhinweis vor STARKWIND ', 'Warnhinweis vor Starkwind', $str);
-        /* --------------------------------------------------------------------------------------------------------------- */
+        // Exceptions
+        $exc = [
+            'ergiebigem', 'extrem',
+            'heftigem', 'heftigen', 'heftiges',
+            'leichtem', 'leichten', 'leichtes',
+            'orkanartigen', 'örtlichem',
+            'schwerem', 'schweren', 'schweres',
+            'starkem', 'starken', 'starkes',
+            'strengem', 'strengen', 'strenges',
+            'verbreiteter',
+            'mit', 'und', 'vor',
+        ];
+        // Remove linebreaks (Safety check)
         $str = str_replace("\n", '', $str);
-        return $str;
+        // Remove 'Amtliche '
+        $str = str_replace('Amtliche ', '', $str);
+        // All to lower case
+        $str = strtolower($str);
+        // Replace case sensitive words
+        $out = '';
+        foreach (explode(' ', $str) as $key => $word) {
+            $out .= (!in_array($word, $exc) || $key == 0) ? mb_convert_case($word, MB_CASE_TITLE, "UTF-8") . ' ' : $word . ' ';
+        }
+        return rtrim($out);
     }
 
     /**
-     * Replace capitalization with normal spelling
+     * Extract assoziated key for textual value
      *
      * @param string $value Textual expression of the value
      * @param array $profile Profile assoziation array
