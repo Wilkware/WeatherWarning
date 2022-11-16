@@ -10,14 +10,14 @@ Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (G
 
 ## Inhaltverzeichnis
 
-1. [Funktionsumfang](#1-funktionsumfang)
-2. [Voraussetzungen](#2-voraussetzungen)
-3. [Installation](#3-installation)
-4. [Einrichten der Instanzen in IP-Symcon](#4-einrichten-der-instanzen-in-ip-symcon)
-5. [Statusvariablen und Profile](#5-statusvariablen-und-profile)
-6. [WebFront](#6-webfront)
-7. [PHP-Befehlsreferenz](#7-php-befehlsreferenz)
-8. [Versionshistorie](#8-versionshistorie)
+1. [Funktionsumfang](#user-content-1-funktionsumfang)
+2. [Voraussetzungen](#user-content-2-voraussetzungen)
+3. [Installation](#user-content-3-installation)
+4. [Einrichten der Instanzen in IP-Symcon](#user-content-4-einrichten-der-instanzen-in-ip-symcon)
+5. [Statusvariablen und Profile](#user-content-5-statusvariablen-und-profile)
+6. [WebFront](#user-content-6-webfront)
+7. [PHP-Befehlsreferenz](#user-content-7-php-befehlsreferenz)
+8. [Versionshistorie](#user-content-8-versionshistorie)
 
 ### 1. Funktionsumfang
 
@@ -40,7 +40,7 @@ Darüber hinaus können noch Variablen zur Darstellung verschiedener Wetterbilde
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
-* Unter "Instanz hinzufügen" ist das *'Weather Warning'*-Modul (Alias: *'Unwetterwarnung'*) unter dem Hersteller _'(Geräte)'_ aufgeführt.
+* Unter "Instanz hinzufügen" ist das _'Weather Warning'_-Modul (Alias: _'Unwetterwarnung'_) unter dem Hersteller _'(Geräte)'_ aufgeführt.
 
 __Konfigurationsseite__:
 
