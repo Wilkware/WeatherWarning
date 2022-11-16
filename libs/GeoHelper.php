@@ -419,8 +419,8 @@ trait GeoHelper
                     case 'EFFECTIVE':
                         $ts = new DateTime($value);
                         $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
-                        // no break
-                        // FIXME: No break. Please add proper comment if intentional
+                        // no break is correct
+                        // FIXME: No break. Add additional comment above this line if intentional!
                     case 'SENT':
                         if (!isset($prop['TIMESTAMP'])) {
                             $ts = new DateTime($value);
