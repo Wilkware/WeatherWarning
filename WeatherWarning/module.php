@@ -255,16 +255,16 @@ class WeatherWarningModule extends IPSModule
         switch ($ident) {
             case 'OnWarningType':
                 $this->OnWarningType($value);
-            break;
+                break;
             case 'OnWarningState':
                 $this->OnWarningState($value);
-            break;
+                break;
             case 'OnWarningCounty':
                 $this->OnWarningCounty($value);
-            break;
+                break;
             case 'OnWarningMap':
                 $this->OnWarningMap($value);
-            break;
+                break;
         }
         // return true;
     }
