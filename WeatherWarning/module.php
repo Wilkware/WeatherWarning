@@ -8,10 +8,11 @@ require_once __DIR__ . '/../libs/_traits.php';
 // CLASS WeatherWarningModule
 class WeatherWarningModule extends IPSModule
 {
-    use ProfileHelper;
+    use DebugHelper;
     use EventHelper;
     use GeoHelper;
-    use DebugHelper;
+    use ProfileHelper;
+    use VariableHelper;
 
     /**
      * Create.
@@ -147,6 +148,22 @@ class WeatherWarningModule extends IPSModule
     {
         // Never delete this line!
         parent::ApplyChanges();
+
+        //Delete all references in order to readd them
+        foreach ($this->GetReferenceList() as $referenceID) {
+            $this->UnregisterReference($referenceID);
+        }
+
+        //Register references
+        $script = $this->ReadPropertyInteger('ScriptMessage');
+        if (IPS_ScriptExists($script)) {
+            $this->RegisterReference($script);
+        }
+        $instance = $this->ReadPropertyInteger('InstanceWebfront');
+        if (IPS_InstanceExists($instance)) {
+            $this->RegisterReference($instance);
+        }
+
         // Properties
         $warnType = $this->ReadPropertyString('WarningType');
         $warnState = $this->ReadPropertyString('WarningState');
@@ -669,10 +686,10 @@ class WeatherWarningModule extends IPSModule
         $mapBkgd = $this->ReadPropertyString('MapBackground');
         $mapWidth = $this->ReadPropertyInteger('MapWidth');
         $mapHeight = $this->ReadPropertyInteger('MapHeight');
-        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapWest'));
-        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapSouth'));
-        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapEast'));
-        $mapBox[] = str_replace(',', '.', $this->ReadPropertyFloat('MapNorth'));
+        $mapBox[] = str_replace(',', '.', (string) $this->ReadPropertyFloat('MapWest'));
+        $mapBox[] = str_replace(',', '.', (string) $this->ReadPropertyFloat('MapSouth'));
+        $mapBox[] = str_replace(',', '.', (string) $this->ReadPropertyFloat('MapEast'));
+        $mapBox[] = str_replace(',', '.', (string) $this->ReadPropertyFloat('MapNorth'));
         // Prepear GET parameters
         $service = '?service=WMS';
         $version = '&version=1.3';
@@ -831,46 +848,10 @@ class WeatherWarningModule extends IPSModule
     private function FormatWarning(array $value, $format)
     {
         $output = str_replace('%L', $this->Translate(DWD_SEVERITY[$value['LEVEL']][1]), $format);
-        $output = str_replace('%N', $value['LEVEL'], $output);
-        $output = str_replace('%T', $value['TYPE'], $output);
+        $output = str_replace('%N', (string) $value['LEVEL'], $output);
+        $output = str_replace('%T', (string) $value['TYPE'], $output);
         $output = str_replace('%M', $value['HEADLINE'], $output);
         $output = str_replace('%D', $value['DESCRIPTION'], $output);
         return $output;
-    }
-
-    /**
-     * Update a boolean value.
-     *
-     * @param string $ident Ident of the boolean variable
-     * @param bool   $value Value of the boolean variable
-     */
-    private function SetValueBoolean(string $ident, bool $value)
-    {
-        $id = $this->GetIDForIdent($ident);
-        SetValueBoolean($id, $value);
-    }
-
-    /**
-     * Update a string value.
-     *
-     * @param string $ident Ident of the string variable
-     * @param string $value Value of the string variable
-     */
-    private function SetValueString(string $ident, string $value)
-    {
-        $id = $this->GetIDForIdent($ident);
-        SetValueString($id, $value);
-    }
-
-    /**
-     * Update a integer value.
-     *
-     * @param string $ident Ident of the integer variable
-     * @param int    $value Value of the integer variable
-     */
-    private function SetValueInteger(string $ident, int $value)
-    {
-        $id = $this->GetIDForIdent($ident);
-        SetValueInteger($id, $value);
     }
 }

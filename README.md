@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.6.20220114-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.7.20230626-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
 
@@ -212,6 +212,14 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v1.7.20230626
+
+* _NEU_: Unterstützung von IPS 7.0
+* _NEU_: Umstellung auf PHP 8.2
+* _FIX_: Veraltetet Style-Checks ausgebaut
+* _FIX_: Weitere Modulvereinheitlichungen vorgenommen
+* _FIX_: Fehler in Auswertung von Warnungen korrigiert
 
 v1.6.20220114
 

@@ -341,6 +341,7 @@ trait GeoHelper
      */
     private function ExtractIcon(array $value): string
     {
+        $this->SendDebug(__FUNCTION__, $value);
         $url = '';
         foreach (DWD_EVENT_MAP as $event => $map) {
             if (in_array($value['CODE'], $map)) {
@@ -370,7 +371,7 @@ trait GeoHelper
         foreach ($geo['features'] as $idx => $feature) {
             $prop = [];
             foreach ($feature['properties'] as $key => $value) {
-                // $this->SendDebug(__FUNCTION__, $key . ': ' . $value);
+                $this->SendDebug(__FUNCTION__, $key . ': ' . $value);
                 switch ($key) {
                     case 'NAME':
                         $prop['AREA'] = $value;
@@ -411,7 +412,7 @@ trait GeoHelper
                         $prop['CERTAINTY'] = DWD_CERTAINTY[$value];
                         break;
                     case 'EC_II':
-                        $prop['CODE'] = $value . ':' . DWD_EVENT_CODE[$value];
+                        $prop['CODE'] = $value; // . ':' . DWD_EVENT_CODE[$value];
                         break;
                     case 'EC_GROUP':
                         $prop['GROUP'] = $value;
@@ -420,7 +421,7 @@ trait GeoHelper
                         $ts = new DateTime($value);
                         $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
                         // no break is correct
-                        // FIXME: No break. Add additional comment above this line if intentional!
+                        // No break. Add additional comment above this line if intentional!
                     case 'SENT':
                         if (!isset($prop['TIMESTAMP'])) {
                             $ts = new DateTime($value);

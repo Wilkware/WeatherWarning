@@ -1,6 +1,6 @@
 {
     "elements": [
-        { 
+        {
             "type": "RowLayout",
             "items": [
                 {
@@ -9,50 +9,113 @@
                     "link": true,
                     "onClick": "echo 'https://wilkware.de';"
                 },
-                {"type": "Label", "label": "\nWeather Warning\n ", "bold": true} 
+                {
+                    "type": "Label",
+                    "label": "\nWeather Warning\n ",
+                    "bold": true
+                }
             ]
         },
-        {"type": "Label", "label": "This module integrates the weather warnings and radar images provided by the German Weather Service (DWD) into IPS."},
+        {
+            "type": "Label",
+            "label": "This module integrates the weather warnings and radar images provided by the German Weather Service (DWD) into IPS."
+        },
         {
             "type": "ExpansionPanel",
             "caption": "Warning area ...",
             "items": [
-                {"type": "Select", "name": "WarningCountry", "caption": "Country:",  "width": "450px",
+                {
+                    "type": "Select",
+                    "name": "WarningCountry",
+                    "caption": "Country:",
+                    "width": "450px",
                     "options": [
-                        {"caption": "Deutschland", "value": "de"}
+                        {
+                            "caption": "Deutschland",
+                            "value": "de"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "WarningType", "caption": "Area type:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningType',$WarningType);", 
+                        {
+                            "type": "Select",
+                            "name": "WarningType",
+                            "caption": "Area type:",
+                            "width": "450px",
+                            "onChange": "IPS_RequestAction($id,'OnWarningType',$WarningType);",
                             "options": [
-                                {"caption": "Landkreise", "value": "1"},
-                                {"caption": "Binnenseen", "value": "2"},
-                                {"caption": "Seegebiete", "value": "4"},
-                                {"caption": "Küstengebiete", "value": "5"},
-                                {"caption": "Gemeinden", "value": "8"},
-                                {"caption": "Landkreise (Zfg.)", "value": "9"}
+                                {
+                                    "caption": "Landkreise",
+                                    "value": "1"
+                                },
+                                {
+                                    "caption": "Binnenseen",
+                                    "value": "2"
+                                },
+                                {
+                                    "caption": "Seegebiete",
+                                    "value": "4"
+                                },
+                                {
+                                    "caption": "Küstengebiete",
+                                    "value": "5"
+                                },
+                                {
+                                    "caption": "Gemeinden",
+                                    "value": "8"
+                                },
+                                {
+                                    "caption": "Landkreise (Zfg.)",
+                                    "value": "9"
+                                }
                             ]
                         },
-                        {"type": "Select", "name": "WarningState", "caption": "State:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningState',serialize(['type'=>$WarningType,'state'=>$WarningState]));",
+                        {
+                            "type": "Select",
+                            "name": "WarningState",
+                            "caption": "State:",
+                            "width": "450px",
+                            "onChange": "IPS_RequestAction($id,'OnWarningState',serialize(['type'=>$WarningType,'state'=>$WarningState]));",
                             "options": [
-                                {"caption": "Please select ...", "value": "null"}
+                                {
+                                    "caption": "Please select ...",
+                                    "value": "null"
+                                }
                             ]
                         }
                     ]
                 },
                 {
-                "type": "RowLayout",
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "WarningCounty", "caption": "County:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningCounty',serialize(['type'=>$WarningType,'state'=>$WarningState,'county'=>$WarningCounty]));", "visible": false, 
+                        {
+                            "type": "Select",
+                            "name": "WarningCounty",
+                            "caption": "County:",
+                            "width": "450px",
+                            "onChange": "IPS_RequestAction($id,'OnWarningCounty',serialize(['type'=>$WarningType,'state'=>$WarningState,'county'=>$WarningCounty]));",
+                            "visible": false,
                             "options": [
-                                {"caption": "Please select ...", "value": "null"}
-                            ] 
+                                {
+                                    "caption": "Please select ...",
+                                    "value": "null"
+                                }
+                            ]
                         },
-                        {"type": "Select", "name": "WarningCommunity", "caption": "Community:", "width": "450px", "visible": false, 
+                        {
+                            "type": "Select",
+                            "name": "WarningCommunity",
+                            "caption": "Community:",
+                            "width": "450px",
+                            "visible": false,
                             "options": [
-                                {"caption": "Please select ...", "value": "null"}
-                            ] 
+                                {
+                                    "caption": "Please select ...",
+                                    "value": "null"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -62,70 +125,231 @@
             "type": "ExpansionPanel",
             "caption": "Storm map ...",
             "items": [
-                {"type": "Label", "caption": "NOTE: Each new selection resets the following variables to default values!", "bold": true},
-                {"type": "RowLayout",
+                {
+                    "type": "Label",
+                    "caption": "NOTE: Each new selection resets the following variables to default values!",
+                    "bold": true
+                },
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "MapSelected", "caption": "Selection:", "width": "450px", "onChange": "IPS_RequestAction($id,'OnWarningMap',$MapSelected);",
+                        {
+                            "type": "Select",
+                            "name": "MapSelected",
+                            "caption": "Selection:",
+                            "width": "450px",
+                            "onChange": "IPS_RequestAction($id,'OnWarningMap',$MapSelected);",
                             "options": [
-                                {"caption": "No map", "value": "00"},
-                                {"caption": "Deutschland", "value": "99"},
-                                {"caption": "Baden-Württemberg", "value": "08"},
-                                {"caption": "Bayern", "value": "09"},
-                                {"caption": "Berlin", "value": "11"},
-                                {"caption": "Berlin, Brandenburg", "value": "23"},
-                                {"caption": "Brandenburg", "value": "12"},
-                                {"caption": "Bremen", "value": "04"},
-                                {"caption": "Hamburg", "value": "02"},
-                                {"caption": "Hessen", "value": "06"},
-                                {"caption": "Mecklenburg-Vorpommern", "value": "13"},
-                                {"caption": "Niedersachsen", "value": "03"},
-                                {"caption": "Niedersachsen, Bremen", "value": "34"},
-                                {"caption": "Nordrhein-Westfalen", "value": "05"},
-                                {"caption": "Rheinland-Pfalz", "value": "07"},
-                                {"caption": "Rheinland-Pfalz, Saarland", "value": "17"},
-                                {"caption": "Saarland", "value": "10"},
-                                {"caption": "Sachsen", "value": "14"},
-                                {"caption": "Sachsen-Anhalt", "value": "15"},
-                                {"caption": "Schleswig-Holstein", "value": "01"},
-                                {"caption": "Schleswig-Holstein, Hamburg", "value": "21"},
-                                {"caption": "Thüringen", "value": "16"}
+                                {
+                                    "caption": "No map",
+                                    "value": "00"
+                                },
+                                {
+                                    "caption": "Deutschland",
+                                    "value": "99"
+                                },
+                                {
+                                    "caption": "Baden-Württemberg",
+                                    "value": "08"
+                                },
+                                {
+                                    "caption": "Bayern",
+                                    "value": "09"
+                                },
+                                {
+                                    "caption": "Berlin",
+                                    "value": "11"
+                                },
+                                {
+                                    "caption": "Berlin, Brandenburg",
+                                    "value": "23"
+                                },
+                                {
+                                    "caption": "Brandenburg",
+                                    "value": "12"
+                                },
+                                {
+                                    "caption": "Bremen",
+                                    "value": "04"
+                                },
+                                {
+                                    "caption": "Hamburg",
+                                    "value": "02"
+                                },
+                                {
+                                    "caption": "Hessen",
+                                    "value": "06"
+                                },
+                                {
+                                    "caption": "Mecklenburg-Vorpommern",
+                                    "value": "13"
+                                },
+                                {
+                                    "caption": "Niedersachsen",
+                                    "value": "03"
+                                },
+                                {
+                                    "caption": "Niedersachsen, Bremen",
+                                    "value": "34"
+                                },
+                                {
+                                    "caption": "Nordrhein-Westfalen",
+                                    "value": "05"
+                                },
+                                {
+                                    "caption": "Rheinland-Pfalz",
+                                    "value": "07"
+                                },
+                                {
+                                    "caption": "Rheinland-Pfalz, Saarland",
+                                    "value": "17"
+                                },
+                                {
+                                    "caption": "Saarland",
+                                    "value": "10"
+                                },
+                                {
+                                    "caption": "Sachsen",
+                                    "value": "14"
+                                },
+                                {
+                                    "caption": "Sachsen-Anhalt",
+                                    "value": "15"
+                                },
+                                {
+                                    "caption": "Schleswig-Holstein",
+                                    "value": "01"
+                                },
+                                {
+                                    "caption": "Schleswig-Holstein, Hamburg",
+                                    "value": "21"
+                                },
+                                {
+                                    "caption": "Thüringen",
+                                    "value": "16"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "MapStyle", "caption": "Style [img]:", "width": "450px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "MapStyle",
+                            "caption": "Style [img]:",
+                            "width": "450px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "MapArea", "caption": "Level of detail:", "width": "221px",
+                        {
+                            "type": "Select",
+                            "name": "MapArea",
+                            "caption": "Level of detail:",
+                            "width": "221px",
                             "options": [
-                                {"caption": "Gemeinden", "value": "Warngebiete_Gemeinden"},
-                                {"caption": "Kreise", "value": "Warngebiete_Kreise"}
+                                {
+                                    "caption": "Gemeinden",
+                                    "value": "Warngebiete_Gemeinden"
+                                },
+                                {
+                                    "caption": "Kreise",
+                                    "value": "Warngebiete_Kreise"
+                                }
                             ]
                         },
-                        {"type": "Select", "name": "MapBackground", "caption": "Background:", "width": "221px",
+                        {
+                            "type": "Select",
+                            "name": "MapBackground",
+                            "caption": "Background:",
+                            "width": "221px",
                             "options": [
-                                {"caption": "White", "value": "white"},
-                                {"caption": "Transparent", "value": "transparent"},
-                                {"caption": "Earth (bluemarble)", "value": "bluemarble"}
+                                {
+                                    "caption": "White",
+                                    "value": "white"
+                                },
+                                {
+                                    "caption": "Transparent",
+                                    "value": "transparent"
+                                },
+                                {
+                                    "caption": "Earth (bluemarble)",
+                                    "value": "bluemarble"
+                                }
                             ]
                         },
-                        {"type": "NumberSpinner", "name": "MapWidth", "caption": "Image width:", "suffix": "px", "width": "221px"},
-                        {"type": "NumberSpinner", "name": "MapHeight", "caption": "Image height:", "suffix": "px", "width": "221px"}
+                        {
+                            "type": "NumberSpinner",
+                            "name": "MapWidth",
+                            "caption": "Image width:",
+                            "suffix": "px",
+                            "width": "221px"
+                        },
+                        {
+                            "type": "NumberSpinner",
+                            "name": "MapHeight",
+                            "caption": "Image height:",
+                            "suffix": "px",
+                            "width": "221px"
+                        }
                     ]
                 },
-                {"type": "Label", "caption": "Bounding box:"},
-                {"type": "RowLayout",
+                {
+                    "type": "Label",
+                    "caption": "Bounding box:"
+                },
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "NumberSpinner", "name": "MapWest", "caption": "West:", "digits": 6, "suffix": "°", "width": "221px"},
-                        {"type": "NumberSpinner", "name": "MapSouth", "caption": "South:", "digits": 6, "suffix": "°", "width": "221px"},
-                        {"type": "NumberSpinner", "name": "MapEast", "caption": "East:", "digits": 6, "suffix": "°", "width": "221px"},
-                        {"type": "NumberSpinner", "name": "MapNorth", "caption": "Nord:", "digits": 6, "suffix": "°", "width": "221px"}
+                        {
+                            "type": "NumberSpinner",
+                            "name": "MapWest",
+                            "caption": "West:",
+                            "digits": 6,
+                            "suffix": "°",
+                            "width": "221px"
+                        },
+                        {
+                            "type": "NumberSpinner",
+                            "name": "MapSouth",
+                            "caption": "South:",
+                            "digits": 6,
+                            "suffix": "°",
+                            "width": "221px"
+                        },
+                        {
+                            "type": "NumberSpinner",
+                            "name": "MapEast",
+                            "caption": "East:",
+                            "digits": 6,
+                            "suffix": "°",
+                            "width": "221px"
+                        },
+                        {
+                            "type": "NumberSpinner",
+                            "name": "MapNorth",
+                            "caption": "Nord:",
+                            "digits": 6,
+                            "suffix": "°",
+                            "width": "221px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "MapPinActivated", "caption": "Marking for own location displays?", "width": "450px"},
-                        {"type": "SelectColor", "name": "MapPinColor", "caption": "Marker color:", "allowTransparent": false, "width": "221px" }
+                        {
+                            "type": "CheckBox",
+                            "name": "MapPinActivated",
+                            "caption": "Marking for own location displays?",
+                            "width": "450px"
+                        },
+                        {
+                            "type": "SelectColor",
+                            "name": "MapPinColor",
+                            "caption": "Marker color:",
+                            "allowTransparent": false,
+                            "width": "221px"
+                        }
                     ]
                 }
             ]
@@ -134,103 +358,310 @@
             "type": "ExpansionPanel",
             "caption": "Pictures and radar film ...",
             "items": [
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "ISOActTempActivated", "caption": "Current temperature",  "width": "200px"},
-                        {"type": "Select", "name": "ISOActTempIdent", "caption": "Country:", "width": "250px",
+                        {
+                            "type": "CheckBox",
+                            "name": "ISOActTempActivated",
+                            "caption": "Current temperature",
+                            "width": "200px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "ISOActTempIdent",
+                            "caption": "Country:",
+                            "width": "250px",
                             "options": [
-                                {"caption": "Deutschland", "value": "de"}
+                                {
+                                    "caption": "Deutschland",
+                                    "value": "de"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ISOActTempStyle", "caption": "Inline Style [div]:", "width": "425px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "ISOActTempStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "ISOImgRadarActivated", "caption": "Rainfall radar image",  "width": "200px"},
-                        {"type": "Select", "name": "ISOImgRadarIdent", "caption": "Country:", "width": "250px",
+                        {
+                            "type": "CheckBox",
+                            "name": "ISOImgRadarActivated",
+                            "caption": "Rainfall radar image",
+                            "width": "200px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "ISOImgRadarIdent",
+                            "caption": "Country:",
+                            "width": "250px",
                             "options": [
-                                {"caption": "Deutschland", "value": "de"}
+                                {
+                                    "caption": "Deutschland",
+                                    "value": "de"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ISOImgRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "ISOImgRadarStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "ISOMovRadarActivated", "caption": "Rainfall radar film",  "width": "200px"},
-                        {"type": "Select", "name": "ISOMovRadarIdent", "caption": "Country:", "width": "250px",
+                        {
+                            "type": "CheckBox",
+                            "name": "ISOMovRadarActivated",
+                            "caption": "Rainfall radar film",
+                            "width": "200px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "ISOMovRadarIdent",
+                            "caption": "Country:",
+                            "width": "250px",
                             "options": [
-                                {"caption": "Deutschland", "value": "de"}
+                                {
+                                    "caption": "Deutschland",
+                                    "value": "de"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ISOMovRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "ISOMovRadarStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "ActTempActivated", "caption": "Current temperature",  "width": "200px"},
-                        {"type": "Select", "name": "ActTempIdent", "caption": "State:", "width": "250px",
+                        {
+                            "type": "CheckBox",
+                            "name": "ActTempActivated",
+                            "caption": "Current temperature",
+                            "width": "200px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "ActTempIdent",
+                            "caption": "State:",
+                            "width": "250px",
                             "options": [
-                                {"caption": "Baden-Württemberg", "value": "baw"},
-                                {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin, Brandenburg", "value": "bbb"},
-                                {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommern", "value": "mvp"},
-                                {"caption": "Niedersachsen, Bremen", "value": "nib"},
-                                {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz, Saarland", "value": "rps"},
-                                {"caption": "Sachsen", "value": "sac"},
-                                {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein, Hamburg", "value": "shh"},
-                                {"caption": "Thüringen", "value": "thu"}
+                                {
+                                    "caption": "Baden-Württemberg",
+                                    "value": "baw"
+                                },
+                                {
+                                    "caption": "Bayern",
+                                    "value": "bay"
+                                },
+                                {
+                                    "caption": "Berlin, Brandenburg",
+                                    "value": "bbb"
+                                },
+                                {
+                                    "caption": "Hessen",
+                                    "value": "hes"
+                                },
+                                {
+                                    "caption": "Mecklenburg-Vorpommern",
+                                    "value": "mvp"
+                                },
+                                {
+                                    "caption": "Niedersachsen, Bremen",
+                                    "value": "nib"
+                                },
+                                {
+                                    "caption": "Nordrhein-Westfalen",
+                                    "value": "nrw"
+                                },
+                                {
+                                    "caption": "Rheinland-Pfalz, Saarland",
+                                    "value": "rps"
+                                },
+                                {
+                                    "caption": "Sachsen",
+                                    "value": "sac"
+                                },
+                                {
+                                    "caption": "Sachsen-Anhalt",
+                                    "value": "saa"
+                                },
+                                {
+                                    "caption": "Schleswig-Holstein, Hamburg",
+                                    "value": "shh"
+                                },
+                                {
+                                    "caption": "Thüringen",
+                                    "value": "thu"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ActTempStyle", "caption": "Inline Style [div]:", "width": "425px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "ActTempStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "ImgRadarActivated", "caption": "Rainfall radar image",  "width": "200px"},
-                        {"type": "Select", "name": "ImgRadarIdent", "caption": "State:", "width": "250px",
+                        {
+                            "type": "CheckBox",
+                            "name": "ImgRadarActivated",
+                            "caption": "Rainfall radar image",
+                            "width": "200px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "ImgRadarIdent",
+                            "caption": "State:",
+                            "width": "250px",
                             "options": [
-                                {"caption": "Baden-Württemberg", "value": "baw"},
-                                {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin, Brandenburg", "value": "bbb"},
-                                {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommern", "value": "mvp"},
-                                {"caption": "Niedersachsen, Bremen", "value": "nib"},
-                                {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz, Saarland", "value": "rps"},
-                                {"caption": "Sachsen", "value": "sac"},
-                                {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein, Hamburg", "value": "shh"},
-                                {"caption": "Thüringen", "value": "thu"}
+                                {
+                                    "caption": "Baden-Württemberg",
+                                    "value": "baw"
+                                },
+                                {
+                                    "caption": "Bayern",
+                                    "value": "bay"
+                                },
+                                {
+                                    "caption": "Berlin, Brandenburg",
+                                    "value": "bbb"
+                                },
+                                {
+                                    "caption": "Hessen",
+                                    "value": "hes"
+                                },
+                                {
+                                    "caption": "Mecklenburg-Vorpommern",
+                                    "value": "mvp"
+                                },
+                                {
+                                    "caption": "Niedersachsen, Bremen",
+                                    "value": "nib"
+                                },
+                                {
+                                    "caption": "Nordrhein-Westfalen",
+                                    "value": "nrw"
+                                },
+                                {
+                                    "caption": "Rheinland-Pfalz, Saarland",
+                                    "value": "rps"
+                                },
+                                {
+                                    "caption": "Sachsen",
+                                    "value": "sac"
+                                },
+                                {
+                                    "caption": "Sachsen-Anhalt",
+                                    "value": "saa"
+                                },
+                                {
+                                    "caption": "Schleswig-Holstein, Hamburg",
+                                    "value": "shh"
+                                },
+                                {
+                                    "caption": "Thüringen",
+                                    "value": "thu"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "ImgRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "ImgRadarStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
                     ]
                 },
-                {"type": "RowLayout",
+                {
+                    "type": "RowLayout",
                     "items": [
-                        {"type": "CheckBox", "name": "MovRadarActivated", "caption": "Rainfall radar film",  "width": "200px"},
-                        {"type": "Select", "name": "MovRadarIdent", "caption": "State:", "width": "250px",
+                        {
+                            "type": "CheckBox",
+                            "name": "MovRadarActivated",
+                            "caption": "Rainfall radar film",
+                            "width": "200px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "MovRadarIdent",
+                            "caption": "State:",
+                            "width": "250px",
                             "options": [
-                                {"caption": "Baden-Württemberg", "value": "baw"},
-                                {"caption": "Bayern", "value": "bay"},
-                                {"caption": "Berlin, Brandenburg", "value": "bbb"},
-                                {"caption": "Hessen", "value": "hes"},
-                                {"caption": "Mecklenburg-Vorpommern", "value": "mvp"},
-                                {"caption": "Niedersachsen, Bremen", "value": "nib"},
-                                {"caption": "Nordrhein-Westfalen", "value": "nrw"},
-                                {"caption": "Rheinland-Pfalz, Saarland", "value": "rps"},
-                                {"caption": "Sachsen", "value": "sac"},
-                                {"caption": "Sachsen-Anhalt", "value": "saa"},
-                                {"caption": "Schleswig-Holstein, Hamburg", "value": "shh"},
-                                {"caption": "Thüringen", "value": "thu"}
+                                {
+                                    "caption": "Baden-Württemberg",
+                                    "value": "baw"
+                                },
+                                {
+                                    "caption": "Bayern",
+                                    "value": "bay"
+                                },
+                                {
+                                    "caption": "Berlin, Brandenburg",
+                                    "value": "bbb"
+                                },
+                                {
+                                    "caption": "Hessen",
+                                    "value": "hes"
+                                },
+                                {
+                                    "caption": "Mecklenburg-Vorpommern",
+                                    "value": "mvp"
+                                },
+                                {
+                                    "caption": "Niedersachsen, Bremen",
+                                    "value": "nib"
+                                },
+                                {
+                                    "caption": "Nordrhein-Westfalen",
+                                    "value": "nrw"
+                                },
+                                {
+                                    "caption": "Rheinland-Pfalz, Saarland",
+                                    "value": "rps"
+                                },
+                                {
+                                    "caption": "Sachsen",
+                                    "value": "sac"
+                                },
+                                {
+                                    "caption": "Sachsen-Anhalt",
+                                    "value": "saa"
+                                },
+                                {
+                                    "caption": "Schleswig-Holstein, Hamburg",
+                                    "value": "shh"
+                                },
+                                {
+                                    "caption": "Thüringen",
+                                    "value": "thu"
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "MovRadarStyle", "caption": "Inline Style [div]:", "width": "425px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "MovRadarStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
                     ]
                 }
             ]
@@ -239,15 +670,66 @@
             "type": "ExpansionPanel",
             "caption": "Style sheets ...",
             "items": [
-                {"type": "Label", "caption": "... for the representation of the warnings as HTML table the following styles can be set:" },
-                {"type": "ValidationTextBox", "name": "table", "caption": "Table [table]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "tralt", "caption": "Alternate row [tr:nth-child(even)]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "tdimg", "caption": "Image cell [td.img]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "tdtxt", "caption": "Text cell [td.txt]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "title", "caption": "Message Title [div.hl]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "times", "caption": "Meaasge Timespan [div.ts]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "descr", "caption": "Meaasge Descrption [div.desc]:", "width": "100%", "multiline": true},
-                {"type": "ValidationTextBox", "name": "lwarn", "caption": "Image Level [img.warn]:", "width": "100%", "multiline": true}
+                {
+                    "type": "Label",
+                    "caption": "... for the representation of the warnings as HTML table the following styles can be set:"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "table",
+                    "caption": "Table [table]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "tralt",
+                    "caption": "Alternate row [tr:nth-child(even)]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "tdimg",
+                    "caption": "Image cell [td.img]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "tdtxt",
+                    "caption": "Text cell [td.txt]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "title",
+                    "caption": "Message Title [div.hl]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "times",
+                    "caption": "Meaasge Timespan [div.ts]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "descr",
+                    "caption": "Meaasge Descrption [div.desc]:",
+                    "width": "100%",
+                    "multiline": true
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "lwarn",
+                    "caption": "Image Level [img.warn]:",
+                    "width": "100%",
+                    "multiline": true
+                }
             ]
         },
         {
@@ -257,29 +739,80 @@
                 {
                     "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "DashboardMessage", "caption": "Send message to dashboard:", "width": "200px", 
+                        {
+                            "type": "Select",
+                            "name": "DashboardMessage",
+                            "caption": "Send message to dashboard:",
+                            "width": "200px",
                             "options": [
-                                {"label": "No", "value": 0 },
-                                {"label": "Yes", "value": 1 }
+                                {
+                                    "label": "No",
+                                    "value": 0
+                                },
+                                {
+                                    "label": "Yes",
+                                    "value": 1
+                                }
                             ]
                         },
-                        {"type": "Select", "name": "DashboardLevel", "caption": "From warning message level:", "width": "250px", 
+                        {
+                            "type": "Select",
+                            "name": "DashboardLevel",
+                            "caption": "From warning message level:",
+                            "width": "250px",
                             "options": [
-                                {"label": "(1) Minor", "value": 1 },
-                                {"label": "(2) Moderate", "value": 2 },
-                                {"label": "(3) Severe", "value": 3 },
-                                {"label": "(4) Extreme", "value": 4 }
+                                {
+                                    "label": "(1) Minor",
+                                    "value": 1
+                                },
+                                {
+                                    "label": "(2) Moderate",
+                                    "value": 2
+                                },
+                                {
+                                    "label": "(3) Severe",
+                                    "value": 3
+                                },
+                                {
+                                    "label": "(4) Extreme",
+                                    "value": 4
+                                }
                             ]
                         },
-                        {"type": "Select", "name": "DashboardDuration", "caption": "Message life time:", "width": "425px", 
+                        {
+                            "type": "Select",
+                            "name": "DashboardDuration",
+                            "caption": "Message life time:",
+                            "width": "425px",
                             "options": [
-                                {"label": "Always", "value": 0 },
-                                {"label": "5 min", "value": 5 },
-                                {"label": "15 min", "value": 15 },
-                                {"label": "30 min", "value": 30 },
-                                {"label": "45 min", "value": 45 },
-                                {"label": "60 min", "value": 60 },
-                                {"label": "2 h", "value": 120 }
+                                {
+                                    "label": "Always",
+                                    "value": 0
+                                },
+                                {
+                                    "label": "5 min",
+                                    "value": 5
+                                },
+                                {
+                                    "label": "15 min",
+                                    "value": 15
+                                },
+                                {
+                                    "label": "30 min",
+                                    "value": 30
+                                },
+                                {
+                                    "label": "45 min",
+                                    "value": 45
+                                },
+                                {
+                                    "label": "60 min",
+                                    "value": 60
+                                },
+                                {
+                                    "label": "2 h",
+                                    "value": 120
+                                }
                             ]
                         }
                     ]
@@ -287,18 +820,44 @@
                 {
                     "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "NotificationMessage", "caption": "Send notification message:", "width": "200px", 
+                        {
+                            "type": "Select",
+                            "name": "NotificationMessage",
+                            "caption": "Send notification message:",
+                            "width": "200px",
                             "options": [
-                                {"label": "No", "value": 0 },
-                                {"label": "Yes", "value": 1 }
+                                {
+                                    "label": "No",
+                                    "value": 0
+                                },
+                                {
+                                    "label": "Yes",
+                                    "value": 1
+                                }
                             ]
                         },
-                        {"type": "Select", "name": "NotificationLevel", "caption": "From warning message level:", "width": "250px", 
+                        {
+                            "type": "Select",
+                            "name": "NotificationLevel",
+                            "caption": "From warning message level:",
+                            "width": "250px",
                             "options": [
-                                {"label": "(1) Minor", "value": 1 },
-                                {"label": "(2) Moderate", "value": 2 },
-                                {"label": "(3) Severe", "value": 3 },
-                                {"label": "(4) Extreme", "value": 4 }
+                                {
+                                    "label": "(1) Minor",
+                                    "value": 1
+                                },
+                                {
+                                    "label": "(2) Moderate",
+                                    "value": 2
+                                },
+                                {
+                                    "label": "(3) Severe",
+                                    "value": 3
+                                },
+                                {
+                                    "label": "(4) Extreme",
+                                    "value": 4
+                                }
                             ]
                         }
                     ]
@@ -306,59 +865,149 @@
                 {
                     "type": "RowLayout",
                     "items": [
-                        {"type": "Select", "name": "TextVariable", "caption": "Write text to variable:", "width": "200px",
+                        {
+                            "type": "Select",
+                            "name": "TextVariable",
+                            "caption": "Write text to variable:",
+                            "width": "200px",
                             "options": [
-                                {"label": "No", "value": 0 },
-                                {"label": "Yes", "value": 1 }
+                                {
+                                    "label": "No",
+                                    "value": 0
+                                },
+                                {
+                                    "label": "Yes",
+                                    "value": 1
+                                }
                             ]
                         },
-                        {"type": "ValidationTextBox", "name": "TextSeparator", "caption": "Text separator / line break:", "width": "250px"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "TextSeparator",
+                            "caption": "Text separator / line break:",
+                            "width": "250px"
+                        }
                     ]
                 },
                 {
                     "type": "RowLayout",
                     "items": [
-                        {"type": "ValidationTextBox", "name": "TextFormat", "caption": "Text message format:", "width": "450px"},
-                        {"type": "Label", "caption": "Specifier: %L = Warning level (text), %L = Warning level (number),\n%T = Warning Type, %M = Message, %D = Description"}
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "TextFormat",
+                            "caption": "Text message format:",
+                            "width": "450px"
+                        },
+                        {
+                            "type": "Label",
+                            "caption": "Specifier: %L = Warning level (text), %L = Warning level (number),\n%T = Warning Type, %M = Message, %D = Description"
+                        }
                     ]
                 },
-                {"type": "Label", "caption": "... to send notification messages to a web front:" },
-                {"type": "SelectInstance", "name": "InstanceWebfront", "caption": "WebFront Instance:", "width": "450px" },
-                {"type": "Label", "caption": "... to use the dashboard message script. More information you get in the forum to thema: Meldungsanzeige im WebFront:" },
-                {"type": "SelectScript", "name": "ScriptMessage", "caption": "Message script:", "width": "450px" }
-             ]
+                {
+                    "type": "Label",
+                    "caption": "... to send notification messages to a web front:"
+                },
+                {
+                    "type": "SelectInstance",
+                    "name": "InstanceWebfront",
+                    "caption": "WebFront Instance:",
+                    "width": "450px"
+                },
+                {
+                    "type": "Label",
+                    "caption": "... to use the dashboard message script. More information you get in the forum to thema: Meldungsanzeige im WebFront:"
+                },
+                {
+                    "type": "SelectScript",
+                    "name": "ScriptMessage",
+                    "caption": "Message script:",
+                    "width": "450px"
+                }
+            ]
         },
         {
             "type": "ExpansionPanel",
             "caption": "Advanced settings ...",
             "items": [
-                {"type": "CheckBox", "name": "IndicatorVariable", "caption": "Create indicator variable for active warnings (highest level)!" },
-                {"type": "NumberSpinner", "name": "UpdateInterval", "caption": "Update interval:", "suffix": "minutes", "minimum": 0, "maximum": 1440, "width": "200px"}
+                {
+                    "type": "CheckBox",
+                    "name": "IndicatorVariable",
+                    "caption": "Create indicator variable for active warnings (highest level)!"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "UpdateInterval",
+                    "caption": "Update interval:",
+                    "suffix": "minutes",
+                    "minimum": 0,
+                    "maximum": 1440,
+                    "width": "200px"
+                }
             ]
         }
     ],
     "actions": [
-        {"type": "Label", "caption": "Weather warnings ..." },
-        {"type": "Button","caption": "Update","onClick": "UWW_Update($id);"},
-        {"type": "Label",  "caption": "\n" },
+        {
+            "type": "Label",
+            "caption": "Weather warnings ..."
+        },
+        {
+            "type": "Button",
+            "caption": "Update",
+            "onClick": "UWW_Update($id);"
+        },
+        {
+            "type": "Label",
+            "caption": "\n"
+        },
         {
             "type": "ExpansionPanel",
             "caption": "Source code, donation and licence ...",
             "items": [
-                {"type": "Label", "caption": "The software is free of charge for non-commercial use, I would appreciate a donation if you like the module.", "bold": true},
+                {
+                    "type": "Label",
+                    "caption": "The software is free of charge for non-commercial use, I would appreciate a donation if you like the module.",
+                    "bold": true
+                },
                 {
                     "type": "RowLayout",
                     "items": [
-                        {"type": "Image", "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTk2Ljc1IiBoZWlnaHQ9IjI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkdJVEhVQjogQFdJTEtXQVJFIj48dGl0bGU+R0lUSFVCOiBAV0lMS1dBUkU8L3RpdGxlPjxnIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+PHJlY3Qgd2lkdGg9Ijg3LjUiIGhlaWdodD0iMjgiIGZpbGw9IiM1NTUiLz48cmVjdCB4PSI4Ny41IiB3aWR0aD0iMTA5LjI1IiBoZWlnaHQ9IjI4IiBmaWxsPSIjMTgxNzE3Ii8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjEwMCI+PGltYWdlIHg9IjkiIHk9IjciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgeGxpbms6aHJlZj0iZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCbWFXeHNQU0ozYUdsMFpYTnRiMnRsSWlCeWIyeGxQU0pwYldjaUlIWnBaWGRDYjNnOUlqQWdNQ0F5TkNBeU5DSWdlRzFzYm5NOUltaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6SXdNREF2YzNabklqNDhkR2wwYkdVK1IybDBTSFZpUEM5MGFYUnNaVDQ4Y0dGMGFDQmtQU0pOTVRJZ0xqSTVOMk10Tmk0Mk15QXdMVEV5SURVdU16Y3pMVEV5SURFeUlEQWdOUzR6TURNZ015NDBNemdnT1M0NElEZ3VNakExSURFeExqTTROUzQyTGpFeE15NDRNaTB1TWpVNExqZ3lMUzQxTnpjZ01DMHVNamcxTFM0d01TMHhMakEwTFM0d01UVXRNaTR3TkMwekxqTXpPQzQzTWpRdE5DNHdOREl0TVM0Mk1TMDBMakEwTWkweExqWXhRelF1TkRJeUlERTRMakEzSURNdU5qTXpJREUzTGpjZ015NDJNek1nTVRjdU4yTXRNUzR3T0RjdExqYzBOQzR3T0RRdExqY3lPUzR3T0RRdExqY3lPU0F4TGpJd05TNHdPRFFnTVM0NE16Z2dNUzR5TXpZZ01TNDRNemdnTVM0eU16WWdNUzR3TnlBeExqZ3pOU0F5TGpnd09TQXhMak13TlNBekxqUTVOUzQ1T1RndU1UQTRMUzQzTnpZdU5ERTNMVEV1TXpBMUxqYzJMVEV1TmpBMUxUSXVOalkxTFM0ekxUVXVORFkyTFRFdU16TXlMVFV1TkRZMkxUVXVPVE1nTUMweExqTXhMalEyTlMweUxqTTRJREV1TWpNMUxUTXVNakl0TGpFek5TMHVNekF6TFM0MU5DMHhMalV5TXk0eE1EVXRNeTR4TnpZZ01DQXdJREV1TURBMUxTNHpNaklnTXk0eklERXVNak11T1RZdExqSTJOeUF4TGprNExTNHpPVGtnTXkwdU5EQTFJREV1TURJdU1EQTJJREl1TURRdU1UTTRJRE1nTGpRd05TQXlMakk0TFRFdU5UVXlJRE11TWpnMUxURXVNak1nTXk0eU9EVXRNUzR5TXk0Mk5EVWdNUzQyTlRNdU1qUWdNaTQ0TnpNdU1USWdNeTR4TnpZdU56WTFMamcwSURFdU1qTWdNUzQ1TVNBeExqSXpJRE11TWpJZ01DQTBMall4TFRJdU9EQTFJRFV1TmpJMUxUVXVORGMxSURVdU9USXVOREl1TXpZdU9ERWdNUzR3T1RZdU9ERWdNaTR5TWlBd0lERXVOakEyTFM0d01UVWdNaTQ0T1RZdExqQXhOU0F6TGpJNE5pQXdJQzR6TVRVdU1qRXVOamt1T0RJMUxqVTNRekl3TGpVMk5TQXlNaTR3T1RJZ01qUWdNVGN1TlRreUlESTBJREV5TGpJNU4yTXdMVFl1TmpJM0xUVXVNemN6TFRFeUxURXlMVEV5SWk4K1BDOXpkbWMrIi8+PHRleHQgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHg9IjUyMi41IiB5PSIxNzUiIHRleHRMZW5ndGg9IjQ2NSIgZmlsbD0iI2ZmZiI+R0lUSFVCPC90ZXh0Pjx0ZXh0IHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB4PSIxNDIxLjI1IiB5PSIxNzUiIHRleHRMZW5ndGg9Ijg1Mi41IiBmaWxsPSIjZmZmIiBmb250LXdlaWdodD0iYm9sZCI+QFdJTEtXQVJFPC90ZXh0PjwvZz48L3N2Zz4=", "onClick": "echo 'https://wilkware.github.io/';"},
-                        {"type": "Image", "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTcxLjI1IiBoZWlnaHQ9IjI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlBBWVBBTDogU1BFTkRFTiI+PHRpdGxlPlBBWVBBTDogU1BFTkRFTjwvdGl0bGU+PGcgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj48cmVjdCB3aWR0aD0iODUuNSIgaGVpZ2h0PSIyOCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9Ijg1LjUiIHdpZHRoPSI4NS43NSIgaGVpZ2h0PSIyOCIgZmlsbD0iIzAwNDU3YyIvPjwvZz48ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iVmVyZGFuYSxHZW5ldmEsRGVqYVZ1IFNhbnMsc2Fucy1zZXJpZiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgZm9udC1zaXplPSIxMDAiPjxpbWFnZSB4PSI5IiB5PSI3IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHhsaW5rOmhyZWY9ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjJhV1YzUW05NFBTSXdJREFnTWpRZ01qUWlJSGh0Ykc1elBTSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREF3TDNOMlp5SStQSEJoZEdnZ1pEMGlUVEU1TGpjeE5TQTJMakV6TTJNdU1qUTVMVEV1T0RZMklEQXRNeTR4TVMwdU9UazVMVFF1TWpZMlF6RTNMall6TkM0Mk1qSWdNVFV1TnpJeElEQWdNVE11TXpBM0lEQklOaTR5TXpWakxTNDBNVGdnTUMwdU9URTJMalEwTkMweElDNDRPRGxNTWk0ek1qTWdNakF1TmpJeVl6QWdMak0xTmk0eU5TNDRMalkyTlM0NGFEUXVNekk0YkMwdU1qVWdNUzQ1TlRaakxTNHdPRFF1TXpVMUxqRTJOaTQyTWpJdU5EazRMall5TW1nekxqWTJNMk11TkRFM0lEQWdMamd6TWkwdU1qWTNMamt4TlMwdU56RXhkaTB1TWpZM2JDNDNORGt0TkM0Mk1qSjJMUzR4TnpoakxqQTRNeTB1TkRRMExqVXRMamd1T1RFMUxTNDRhQzQxWXpNdU5UYzRJREFnTmk0ek1qVXRNUzQxTVNBM0xqRTFOaTAxTGprMU5TNDBNVGd0TVM0NE5qY3VNalV5TFRNdU16YzRMUzQzTkRjdE5DNDBORFV0TGpJMUxTNHpOVFV0TGpZMk5pMHVOakl5TFRFdExqZzRPU0lnWm1sc2JEMGlJekF3T1dOa1pTSXZQanh3WVhSb0lHUTlJazB4T1M0M01UVWdOaTR4TXpOakxqSTBPUzB4TGpnMk5pQXdMVE11TVRFdExqazVPUzAwTGpJMk5rTXhOeTQyTXpRdU5qSXlJREUxTGpjeU1TQXdJREV6TGpNd055QXdTRFl1TWpNMVl5MHVOREU0SURBdExqa3hOaTQwTkRRdE1TQXVPRGc1VERJdU16SXpJREl3TGpZeU1tTXdJQzR6TlRZdU1qVXVPQzQyTmpVdU9HZzBMak15T0d3eExqRTJOQzAzTGpNM09DMHVNRGd6TGpJMk4yTXVNRGcwTFM0MU16TXVOUzB1T0RnNUxqazVPQzB1T0RnNWFESXVNRGhqTkM0d056a2dNQ0EzTGpJME1TMHhMamMzT0NBNExqSTBMVFl1TnpVMUxTNHdPRE10TGpJMk55QXdMUzR6TlRZZ01DMHVOVE0wSWlCbWFXeHNQU0lqTURFeU1UWTVJaTgrUEhCaGRHZ2daRDBpVFRrdU5UWXpJRFl1TVRNell5NHdPREl0TGpJMk5pNHlOUzB1TlRNekxqUTVPQzB1TnpFdU1UWTJJREFnTGpJMUxTNHdPUzQwTVRZdExqQTVhRFV1TkRrMFl5NDJOallnTUNBeExqTXpMakE1SURFdU9ETXVNVGM0TGpFMk5pQXdJQzR6TXpNZ01DQXVORGs0TGpBNE9TNHhOamd1TURnNUxqTXpOQzR3T0RrdU5ERTRMakUzT0dndU1qVmpMakkwT0M0d09Ea3VORGszTGpJMk5pNDNORGd1TXpVMUxqSTBPQzB4TGpnMk5pQXdMVE11TVRFdExqazVPUzAwTGpNMU5VTXhOeTQzTVRjdU5UTXpJREUxTGpnd05DQXdJREV6TGpNNUlEQklOaTR5TXpWakxTNDBNVGdnTUMwdU9URTJMak0xTmkweElDNDRPRGxNTWk0ek1qTWdNakF1TmpJeVl6QWdMak0xTmk0eU5TNDRMalkyTlM0NGFEUXVNekk0YkRFdU1UWTBMVGN1TXpjNElERXVNRGcwTFRjdU9URjZJaUJtYVd4c1BTSWpNREF6TURnM0lpOCtQQzl6ZG1jKyIvPjx0ZXh0IHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB4PSI1MTIuNSIgeT0iMTc1IiB0ZXh0TGVuZ3RoPSI0NDUiIGZpbGw9IiNmZmYiPlBBWVBBTDwvdGV4dD48dGV4dCB0cmFuc2Zvcm09InNjYWxlKC4xKSIgeD0iMTI4My43NSIgeT0iMTc1IiB0ZXh0TGVuZ3RoPSI2MTcuNSIgZmlsbD0iI2ZmZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNQRU5ERU48L3RleHQ+PC9nPjwvc3ZnPg==", "onClick": "echo 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166';"},
-                        {"type": "Image", "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjI5LjUiIGhlaWdodD0iMjgiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iTElDRU5TRTogQ0MgQlktTkMtU0EgNC4wIj48dGl0bGU+TElDRU5TRTogQ0MgQlktTkMtU0EgNC4wPC90aXRsZT48ZyBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxyZWN0IHdpZHRoPSI5Mi43NSIgaGVpZ2h0PSIyOCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9IjkyLjc1IiB3aWR0aD0iMTM2Ljc1IiBoZWlnaHQ9IjI4IiBmaWxsPSIjZWY5NDIxIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjEwMCI+PGltYWdlIHg9IjkiIHk9IjciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgeGxpbms6aHJlZj0iZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCbWFXeHNQU0lqUlVZNU5ESXhJaUJ5YjJ4bFBTSnBiV2NpSUhacFpYZENiM2c5SWpBZ01DQXlOQ0F5TkNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OGRHbDBiR1UrUTNKbFlYUnBkbVVnUTI5dGJXOXVjend2ZEdsMGJHVStQSEJoZEdnZ1pEMGlUVEV4TGprNE15QXdZeTB6TGpJNU1pQXdMVFl1TVRrZ01TNHlNVGN0T0M0ME1qZ2dNeTQwT0RWRE1TNHlOU0ExTGpneE9TQXdJRGd1T0RRMElEQWdNVEpqTUNBekxqRTRPU0F4TGpJeE55QTJMakUwT0NBekxqVXlNaUE0TGpRMVF6VXVPREkzSURJeUxqYzFJRGd1T0RJeUlESTBJREV4TGprNE15QXlOR016TGpFMklEQWdOaTR5TWpJdE1TNHlOU0E0TGpVNU15MHpMalU0TTBNeU1pNDRNVFVnTVRndU1qRTBJREkwSURFMUxqSTROeUF5TkNBeE1tTXdMVE11TWpVMUxURXVNVGcyTFRZdU1qRTBMVE11TkRVNExUZ3VORGd6UXpFNExqSXpPQ0F4TGpJeE55QXhOUzR5TnpVZ01DQXhNUzQ1T0RNZ01IcHRMakF6TXlBeUxqRTNZekl1TnlBd0lEVXVNVEF6SURFdU1ESWdOaTQ1T0NBeUxqZzVNeUF4TGpnME15QXhMamcwTVNBeUxqZ3pJRFF1TWpjMElESXVPRE1nTmk0NU16Y2dNQ0F5TGpZNU5pMHVPVFUwSURVdU1EWXpMVEl1TnprNElEWXVPRGN5TFRFdU9UUXpJREV1T1RBMkxUUXVORFEwSURJdU9USTJMVGN1TURFeUlESXVPVEkyTFRJdU5qQXhJREF0TlM0d016Z3RNUzR3TVRrdE5pNDVNVFF0TWk0NE9UTXRNUzQ0TnpjdE1TNDROelV0TWk0NU15MDBMak0wTFRJdU9UTXROaTQ1TURVZ01DMHlMalU1TnlBeExqQTFNeTAxTGpBMk15QXlMamt6TFRZdU9UY2dNUzQ0TkRRdE1TNDROelFnTkM0eU1UUXRNaTQ0TmlBMkxqa3hOQzB5TGpnMmVrMDRMalk0SURndU1qYzRRell1TnpJeklEZ3VNamM0SURVdU1UWTFJRGt1TmpZZ05TNHhOalVnTVRKak1DQXlMak00SURFdU5EWTFJRE11TnpJeUlETXVOVGd4SURNdU56SXlJREV1TXpVNElEQWdNaTQxTVRZdExqYzBOQ0F6TGpFMU5TMHhMamczTkd3dE1TNDBPVEV0TGpjMU9HTXRMak16TXk0M09UZ3RMamd6T1NBeExqQXpOeTB4TGpRM09DQXhMakF6TnkweExqRXdOU0F3TFRFdU5qRXRMamt4TnkweExqWXhMVEl1TVRJMklEQXRNUzR5TVM0ME1qWXRNaTR4TWpjZ01TNDJNUzB5TGpFeU55NHpNaUF3SUM0NU5pNHhOek1nTVM0ek16SXVPVGRzTVM0MU9UY3RMamd6T0dNdExqWTRMVEV1TWpNMkxURXVPRE0zTFRFdU56STRMVE11TVRneExURXVOekk0ZW0wMkxqa3pNaUF3WXkweExqazFOeUF3TFRNdU5URTBJREV1TXpneUxUTXVOVEUwSURNdU56SXlJREFnTWk0ek9DQXhMalEyTkNBekxqY3lNaUF6TGpVNElETXVOekl5SURFdU16VTVJREFnTWk0MU1UWXRMamMwTkNBekxqRTFOUzB4TGpnM05Hd3RNUzQwT1MwdU56VTRZeTB1TXpNekxqYzVPQzB1T0RRZ01TNHdNemN0TVM0ME56Z2dNUzR3TXpjdE1TNHhNRFVnTUMweExqWXhNUzB1T1RFM0xURXVOakV4TFRJdU1USTJJREF0TVM0eU1TNDBNall0TWk0eE1qY2dNUzQyTVMweUxqRXlOeTR6TWlBd0lDNDVOaTR4TnpNZ01TNHpNekl1T1Rkc01TNDFPVGN0TGpnek9HTXRMalk0TFRFdU1qTTJMVEV1T0RNM0xURXVOekk0TFRNdU1UZ3hMVEV1TnpJNGVpSXZQand2YzNablBnPT0iLz48dGV4dCB0cmFuc2Zvcm09InNjYWxlKC4xKSIgeD0iNTQ4Ljc1IiB5PSIxNzUiIHRleHRMZW5ndGg9IjUxNy41IiBmaWxsPSIjZmZmIj5MSUNFTlNFPC90ZXh0Pjx0ZXh0IHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB4PSIxNjExLjI1IiB5PSIxNzUiIHRleHRMZW5ndGg9IjExMjcuNSIgZmlsbD0iI2ZmZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkNDIEJZLU5DLVNBIDQuMDwvdGV4dD48L2c+PC9zdmc+", "onClick": "echo 'https://creativecommons.org/licenses/by-nc-sa/4.0/';"}
+                        {
+                            "type": "Image",
+                            "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTk2Ljc1IiBoZWlnaHQ9IjI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkdJVEhVQjogQFdJTEtXQVJFIj48dGl0bGU+R0lUSFVCOiBAV0lMS1dBUkU8L3RpdGxlPjxnIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+PHJlY3Qgd2lkdGg9Ijg3LjUiIGhlaWdodD0iMjgiIGZpbGw9IiM1NTUiLz48cmVjdCB4PSI4Ny41IiB3aWR0aD0iMTA5LjI1IiBoZWlnaHQ9IjI4IiBmaWxsPSIjMTgxNzE3Ii8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjEwMCI+PGltYWdlIHg9IjkiIHk9IjciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgeGxpbms6aHJlZj0iZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCbWFXeHNQU0ozYUdsMFpYTnRiMnRsSWlCeWIyeGxQU0pwYldjaUlIWnBaWGRDYjNnOUlqQWdNQ0F5TkNBeU5DSWdlRzFzYm5NOUltaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6SXdNREF2YzNabklqNDhkR2wwYkdVK1IybDBTSFZpUEM5MGFYUnNaVDQ4Y0dGMGFDQmtQU0pOTVRJZ0xqSTVOMk10Tmk0Mk15QXdMVEV5SURVdU16Y3pMVEV5SURFeUlEQWdOUzR6TURNZ015NDBNemdnT1M0NElEZ3VNakExSURFeExqTTROUzQyTGpFeE15NDRNaTB1TWpVNExqZ3lMUzQxTnpjZ01DMHVNamcxTFM0d01TMHhMakEwTFM0d01UVXRNaTR3TkMwekxqTXpPQzQzTWpRdE5DNHdOREl0TVM0Mk1TMDBMakEwTWkweExqWXhRelF1TkRJeUlERTRMakEzSURNdU5qTXpJREUzTGpjZ015NDJNek1nTVRjdU4yTXRNUzR3T0RjdExqYzBOQzR3T0RRdExqY3lPUzR3T0RRdExqY3lPU0F4TGpJd05TNHdPRFFnTVM0NE16Z2dNUzR5TXpZZ01TNDRNemdnTVM0eU16WWdNUzR3TnlBeExqZ3pOU0F5TGpnd09TQXhMak13TlNBekxqUTVOUzQ1T1RndU1UQTRMUzQzTnpZdU5ERTNMVEV1TXpBMUxqYzJMVEV1TmpBMUxUSXVOalkxTFM0ekxUVXVORFkyTFRFdU16TXlMVFV1TkRZMkxUVXVPVE1nTUMweExqTXhMalEyTlMweUxqTTRJREV1TWpNMUxUTXVNakl0TGpFek5TMHVNekF6TFM0MU5DMHhMalV5TXk0eE1EVXRNeTR4TnpZZ01DQXdJREV1TURBMUxTNHpNaklnTXk0eklERXVNak11T1RZdExqSTJOeUF4TGprNExTNHpPVGtnTXkwdU5EQTFJREV1TURJdU1EQTJJREl1TURRdU1UTTRJRE1nTGpRd05TQXlMakk0TFRFdU5UVXlJRE11TWpnMUxURXVNak1nTXk0eU9EVXRNUzR5TXk0Mk5EVWdNUzQyTlRNdU1qUWdNaTQ0TnpNdU1USWdNeTR4TnpZdU56WTFMamcwSURFdU1qTWdNUzQ1TVNBeExqSXpJRE11TWpJZ01DQTBMall4TFRJdU9EQTFJRFV1TmpJMUxUVXVORGMxSURVdU9USXVOREl1TXpZdU9ERWdNUzR3T1RZdU9ERWdNaTR5TWlBd0lERXVOakEyTFM0d01UVWdNaTQ0T1RZdExqQXhOU0F6TGpJNE5pQXdJQzR6TVRVdU1qRXVOamt1T0RJMUxqVTNRekl3TGpVMk5TQXlNaTR3T1RJZ01qUWdNVGN1TlRreUlESTBJREV5TGpJNU4yTXdMVFl1TmpJM0xUVXVNemN6TFRFeUxURXlMVEV5SWk4K1BDOXpkbWMrIi8+PHRleHQgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHg9IjUyMi41IiB5PSIxNzUiIHRleHRMZW5ndGg9IjQ2NSIgZmlsbD0iI2ZmZiI+R0lUSFVCPC90ZXh0Pjx0ZXh0IHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB4PSIxNDIxLjI1IiB5PSIxNzUiIHRleHRMZW5ndGg9Ijg1Mi41IiBmaWxsPSIjZmZmIiBmb250LXdlaWdodD0iYm9sZCI+QFdJTEtXQVJFPC90ZXh0PjwvZz48L3N2Zz4=",
+                            "onClick": "echo 'https://wilkware.github.io/';"
+                        },
+                        {
+                            "type": "Image",
+                            "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTcxLjI1IiBoZWlnaHQ9IjI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlBBWVBBTDogU1BFTkRFTiI+PHRpdGxlPlBBWVBBTDogU1BFTkRFTjwvdGl0bGU+PGcgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj48cmVjdCB3aWR0aD0iODUuNSIgaGVpZ2h0PSIyOCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9Ijg1LjUiIHdpZHRoPSI4NS43NSIgaGVpZ2h0PSIyOCIgZmlsbD0iIzAwNDU3YyIvPjwvZz48ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iVmVyZGFuYSxHZW5ldmEsRGVqYVZ1IFNhbnMsc2Fucy1zZXJpZiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgZm9udC1zaXplPSIxMDAiPjxpbWFnZSB4PSI5IiB5PSI3IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHhsaW5rOmhyZWY9ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjJhV1YzUW05NFBTSXdJREFnTWpRZ01qUWlJSGh0Ykc1elBTSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREF3TDNOMlp5SStQSEJoZEdnZ1pEMGlUVEU1TGpjeE5TQTJMakV6TTJNdU1qUTVMVEV1T0RZMklEQXRNeTR4TVMwdU9UazVMVFF1TWpZMlF6RTNMall6TkM0Mk1qSWdNVFV1TnpJeElEQWdNVE11TXpBM0lEQklOaTR5TXpWakxTNDBNVGdnTUMwdU9URTJMalEwTkMweElDNDRPRGxNTWk0ek1qTWdNakF1TmpJeVl6QWdMak0xTmk0eU5TNDRMalkyTlM0NGFEUXVNekk0YkMwdU1qVWdNUzQ1TlRaakxTNHdPRFF1TXpVMUxqRTJOaTQyTWpJdU5EazRMall5TW1nekxqWTJNMk11TkRFM0lEQWdMamd6TWkwdU1qWTNMamt4TlMwdU56RXhkaTB1TWpZM2JDNDNORGt0TkM0Mk1qSjJMUzR4TnpoakxqQTRNeTB1TkRRMExqVXRMamd1T1RFMUxTNDRhQzQxWXpNdU5UYzRJREFnTmk0ek1qVXRNUzQxTVNBM0xqRTFOaTAxTGprMU5TNDBNVGd0TVM0NE5qY3VNalV5TFRNdU16YzRMUzQzTkRjdE5DNDBORFV0TGpJMUxTNHpOVFV0TGpZMk5pMHVOakl5TFRFdExqZzRPU0lnWm1sc2JEMGlJekF3T1dOa1pTSXZQanh3WVhSb0lHUTlJazB4T1M0M01UVWdOaTR4TXpOakxqSTBPUzB4TGpnMk5pQXdMVE11TVRFdExqazVPUzAwTGpJMk5rTXhOeTQyTXpRdU5qSXlJREUxTGpjeU1TQXdJREV6TGpNd055QXdTRFl1TWpNMVl5MHVOREU0SURBdExqa3hOaTQwTkRRdE1TQXVPRGc1VERJdU16SXpJREl3TGpZeU1tTXdJQzR6TlRZdU1qVXVPQzQyTmpVdU9HZzBMak15T0d3eExqRTJOQzAzTGpNM09DMHVNRGd6TGpJMk4yTXVNRGcwTFM0MU16TXVOUzB1T0RnNUxqazVPQzB1T0RnNWFESXVNRGhqTkM0d056a2dNQ0EzTGpJME1TMHhMamMzT0NBNExqSTBMVFl1TnpVMUxTNHdPRE10TGpJMk55QXdMUzR6TlRZZ01DMHVOVE0wSWlCbWFXeHNQU0lqTURFeU1UWTVJaTgrUEhCaGRHZ2daRDBpVFRrdU5UWXpJRFl1TVRNell5NHdPREl0TGpJMk5pNHlOUzB1TlRNekxqUTVPQzB1TnpFdU1UWTJJREFnTGpJMUxTNHdPUzQwTVRZdExqQTVhRFV1TkRrMFl5NDJOallnTUNBeExqTXpMakE1SURFdU9ETXVNVGM0TGpFMk5pQXdJQzR6TXpNZ01DQXVORGs0TGpBNE9TNHhOamd1TURnNUxqTXpOQzR3T0RrdU5ERTRMakUzT0dndU1qVmpMakkwT0M0d09Ea3VORGszTGpJMk5pNDNORGd1TXpVMUxqSTBPQzB4TGpnMk5pQXdMVE11TVRFdExqazVPUzAwTGpNMU5VTXhOeTQzTVRjdU5UTXpJREUxTGpnd05DQXdJREV6TGpNNUlEQklOaTR5TXpWakxTNDBNVGdnTUMwdU9URTJMak0xTmkweElDNDRPRGxNTWk0ek1qTWdNakF1TmpJeVl6QWdMak0xTmk0eU5TNDRMalkyTlM0NGFEUXVNekk0YkRFdU1UWTBMVGN1TXpjNElERXVNRGcwTFRjdU9URjZJaUJtYVd4c1BTSWpNREF6TURnM0lpOCtQQzl6ZG1jKyIvPjx0ZXh0IHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB4PSI1MTIuNSIgeT0iMTc1IiB0ZXh0TGVuZ3RoPSI0NDUiIGZpbGw9IiNmZmYiPlBBWVBBTDwvdGV4dD48dGV4dCB0cmFuc2Zvcm09InNjYWxlKC4xKSIgeD0iMTI4My43NSIgeT0iMTc1IiB0ZXh0TGVuZ3RoPSI2MTcuNSIgZmlsbD0iI2ZmZiIgZm9udC13ZWlnaHQ9ImJvbGQiPlNQRU5ERU48L3RleHQ+PC9nPjwvc3ZnPg==",
+                            "onClick": "echo 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166';"
+                        },
+                        {
+                            "type": "Image",
+                            "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjI5LjUiIGhlaWdodD0iMjgiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iTElDRU5TRTogQ0MgQlktTkMtU0EgNC4wIj48dGl0bGU+TElDRU5TRTogQ0MgQlktTkMtU0EgNC4wPC90aXRsZT48ZyBzaGFwZS1yZW5kZXJpbmc9ImNyaXNwRWRnZXMiPjxyZWN0IHdpZHRoPSI5Mi43NSIgaGVpZ2h0PSIyOCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9IjkyLjc1IiB3aWR0aD0iMTM2Ljc1IiBoZWlnaHQ9IjI4IiBmaWxsPSIjZWY5NDIxIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjEwMCI+PGltYWdlIHg9IjkiIHk9IjciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgeGxpbms6aHJlZj0iZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCbWFXeHNQU0lqUlVZNU5ESXhJaUJ5YjJ4bFBTSnBiV2NpSUhacFpYZENiM2c5SWpBZ01DQXlOQ0F5TkNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OGRHbDBiR1UrUTNKbFlYUnBkbVVnUTI5dGJXOXVjend2ZEdsMGJHVStQSEJoZEdnZ1pEMGlUVEV4TGprNE15QXdZeTB6TGpJNU1pQXdMVFl1TVRrZ01TNHlNVGN0T0M0ME1qZ2dNeTQwT0RWRE1TNHlOU0ExTGpneE9TQXdJRGd1T0RRMElEQWdNVEpqTUNBekxqRTRPU0F4TGpJeE55QTJMakUwT0NBekxqVXlNaUE0TGpRMVF6VXVPREkzSURJeUxqYzFJRGd1T0RJeUlESTBJREV4TGprNE15QXlOR016TGpFMklEQWdOaTR5TWpJdE1TNHlOU0E0TGpVNU15MHpMalU0TTBNeU1pNDRNVFVnTVRndU1qRTBJREkwSURFMUxqSTROeUF5TkNBeE1tTXdMVE11TWpVMUxURXVNVGcyTFRZdU1qRTBMVE11TkRVNExUZ3VORGd6UXpFNExqSXpPQ0F4TGpJeE55QXhOUzR5TnpVZ01DQXhNUzQ1T0RNZ01IcHRMakF6TXlBeUxqRTNZekl1TnlBd0lEVXVNVEF6SURFdU1ESWdOaTQ1T0NBeUxqZzVNeUF4TGpnME15QXhMamcwTVNBeUxqZ3pJRFF1TWpjMElESXVPRE1nTmk0NU16Y2dNQ0F5TGpZNU5pMHVPVFUwSURVdU1EWXpMVEl1TnprNElEWXVPRGN5TFRFdU9UUXpJREV1T1RBMkxUUXVORFEwSURJdU9USTJMVGN1TURFeUlESXVPVEkyTFRJdU5qQXhJREF0TlM0d016Z3RNUzR3TVRrdE5pNDVNVFF0TWk0NE9UTXRNUzQ0TnpjdE1TNDROelV0TWk0NU15MDBMak0wTFRJdU9UTXROaTQ1TURVZ01DMHlMalU1TnlBeExqQTFNeTAxTGpBMk15QXlMamt6TFRZdU9UY2dNUzQ0TkRRdE1TNDROelFnTkM0eU1UUXRNaTQ0TmlBMkxqa3hOQzB5TGpnMmVrMDRMalk0SURndU1qYzRRell1TnpJeklEZ3VNamM0SURVdU1UWTFJRGt1TmpZZ05TNHhOalVnTVRKak1DQXlMak00SURFdU5EWTFJRE11TnpJeUlETXVOVGd4SURNdU56SXlJREV1TXpVNElEQWdNaTQxTVRZdExqYzBOQ0F6TGpFMU5TMHhMamczTkd3dE1TNDBPVEV0TGpjMU9HTXRMak16TXk0M09UZ3RMamd6T1NBeExqQXpOeTB4TGpRM09DQXhMakF6TnkweExqRXdOU0F3TFRFdU5qRXRMamt4TnkweExqWXhMVEl1TVRJMklEQXRNUzR5TVM0ME1qWXRNaTR4TWpjZ01TNDJNUzB5TGpFeU55NHpNaUF3SUM0NU5pNHhOek1nTVM0ek16SXVPVGRzTVM0MU9UY3RMamd6T0dNdExqWTRMVEV1TWpNMkxURXVPRE0zTFRFdU56STRMVE11TVRneExURXVOekk0ZW0wMkxqa3pNaUF3WXkweExqazFOeUF3TFRNdU5URTBJREV1TXpneUxUTXVOVEUwSURNdU56SXlJREFnTWk0ek9DQXhMalEyTkNBekxqY3lNaUF6TGpVNElETXVOekl5SURFdU16VTVJREFnTWk0MU1UWXRMamMwTkNBekxqRTFOUzB4TGpnM05Hd3RNUzQwT1MwdU56VTRZeTB1TXpNekxqYzVPQzB1T0RRZ01TNHdNemN0TVM0ME56Z2dNUzR3TXpjdE1TNHhNRFVnTUMweExqWXhNUzB1T1RFM0xURXVOakV4TFRJdU1USTJJREF0TVM0eU1TNDBNall0TWk0eE1qY2dNUzQyTVMweUxqRXlOeTR6TWlBd0lDNDVOaTR4TnpNZ01TNHpNekl1T1Rkc01TNDFPVGN0TGpnek9HTXRMalk0TFRFdU1qTTJMVEV1T0RNM0xURXVOekk0TFRNdU1UZ3hMVEV1TnpJNGVpSXZQand2YzNablBnPT0iLz48dGV4dCB0cmFuc2Zvcm09InNjYWxlKC4xKSIgeD0iNTQ4Ljc1IiB5PSIxNzUiIHRleHRMZW5ndGg9IjUxNy41IiBmaWxsPSIjZmZmIj5MSUNFTlNFPC90ZXh0Pjx0ZXh0IHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB4PSIxNjExLjI1IiB5PSIxNzUiIHRleHRMZW5ndGg9IjExMjcuNSIgZmlsbD0iI2ZmZiIgZm9udC13ZWlnaHQ9ImJvbGQiPkNDIEJZLU5DLVNBIDQuMDwvdGV4dD48L2c+PC9zdmc+",
+                            "onClick": "echo 'https://creativecommons.org/licenses/by-nc-sa/4.0/';"
+                        }
                     ]
                 }
             ]
         }
     ],
-   "status": [
-       {"code": 101, "icon": "inactive", "caption": "Creating instance."},
-       {"code": 102, "icon": "active", "caption": "Instance active."},
-       {"code": 104, "icon": "inactive", "caption": "Instance inactive."}
-   ]}
+    "status": [
+        {
+            "code": 101,
+            "icon": "inactive",
+            "caption": "Creating instance."
+        },
+        {
+            "code": 102,
+            "icon": "active",
+            "caption": "Instance active."
+        },
+        {
+            "code": 104,
+            "icon": "inactive",
+            "caption": "Instance inactive."
+        }
+    ]
+}
