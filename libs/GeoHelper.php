@@ -467,7 +467,7 @@ trait GeoHelper
     {
         // Exceptions
         $exc = [
-            'ergiebigem', 'extrem',
+            'ergiebigem', 'extrem', 'erhöhter',
             'heftigem', 'heftigen', 'heftiges',
             'leichtem', 'leichten', 'leichtes',
             'orkanartigen', 'örtlichem',
@@ -482,12 +482,17 @@ trait GeoHelper
         // Remove 'Amtliche '
         $str = str_replace('Amtliche ', '', $str);
         // All to lower case
-        $str = strtolower($str);
+        $str = mb_strtolower($str);
+        $this->SendDebug(__FUNCTION__, $str);
         // Replace case sensitive words
         $out = '';
         foreach (explode(' ', $str) as $key => $word) {
-            $out .= (!in_array($word, $exc) || $key == 0) ? mb_convert_case($word, MB_CASE_TITLE, 'UTF-8') . ' ' : $word . ' ';
+            $out .= (!in_array($word, $exc) || $key == 0) ? mb_convert_case($word, MB_CASE_TITLE) . ' ' : $word . ' ';
         }
+        // Fix small spellchecking for UV
+        $out = str_replace('Uv', 'UV', $out);
+        $this->SendDebug(__FUNCTION__, $out);
+        // return trimmed 
         return rtrim($out);
     }
 
