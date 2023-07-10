@@ -492,7 +492,7 @@ trait GeoHelper
         // Fix small spellchecking for UV
         $out = str_replace('Uv', 'UV', $out);
         $this->SendDebug(__FUNCTION__, $out);
-        // return trimmed 
+        // return trimmed
         return rtrim($out);
     }
 
