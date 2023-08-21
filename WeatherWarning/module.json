@@ -4,7 +4,8 @@
     "type": 3,
     "vendor": "",
     "aliases": [
-        "Unwetterwarnung"
+        "Unwetterwarnung",
+        "Weather Warning"
     ],
     "url": "https://wilkware.de/ip-symcon-module/unwetterwarnung/",
     "parentRequirements": [],
