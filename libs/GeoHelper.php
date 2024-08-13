@@ -220,6 +220,7 @@ const DWD_ICONS = [
     '4' => 'https://www.wettergefahren.de/stat/warnungen/unwetterkriterien/<EVENT>_<LEVEL>.png',
 ];
 
+
 const CSS_STYLES = [
     'MapStyle'      => "body { margin:0px; overflow: hidden; }\n#uwwImg {width:100%; height:auto;}\n#uwwPin {position:absolute; top:-20px; left:-20px; margin:-30px 0 0 -10px; border-radius:50% 50% 50% 0; border:4px solid #ffffff; width:20px; height:20px; transform:rotate(-45deg); }\n#uwwPin::after {position:absolute; content:''; width:10px; height:10px; border-radius:50%; top:50%; left:50%; margin:-5px -5px; background-color:#ffffff; }",
     'WarningStyle'  => "body { margin:0px; }\n::-webkit-scrollbar { height:4px; width:4px; }\n::-webkit-scrollbar-track { border-radius:5px; background:transparent; border:solid 3px transparent; }\n::-webkit-scrollbar-thumb { border-radius:5px; color:gray; background: gray; }\n::-webkit-scrollbar-thumb:hover { background: #555; }\n::-webkit-scrollbar-corner { background: transparent; }\ntable.uww { width:100%; border-collapse:collapse; font-size:14px; }\ntr:nth-child(even) { background-color:rgba(0, 0, 0, 0.3); }\n.uww td.img { width:50px; border:0px; vertical-align:top; text-align:left; }\n.uww td.txt { vertical-align:top; text-align:left; padding:0px 10px 10px 10px; }\n.uww .hl { font-weight:bold; }\n.uww .ts { font-style:italic; font-size:smaller; }\n.uww .desc {}\n.uww .warn {}",
@@ -383,10 +384,12 @@ trait GeoHelper
         $url = '';
         foreach (DWD_EVENT_MAP as $event => $map) {
             if (in_array($value['CODE'], $map)) {
-                $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
                 if ($event == 'hitze' || $event == 'uv') {
+                    // not beautiful, but rare
+                    $url = str_replace('<EVENT>', $event, DWD_ICONS[1]);
                     $url = str_replace('<LEVEL>', 'lila', $url);
                 } else {
+                    $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
                     $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
                 }
             }
