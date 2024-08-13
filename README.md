@@ -216,7 +216,7 @@ v2.0.20240811
 
 * _NEU_: Darstellung der Farbskala der Warnstufen (Legende)
 * _NEU_: Medizin-Meteorologische Meldung (Hitzewarnungen) werden speziell behandelt (Level)
-* _NEU_: Stylsheets können für alle HTML-Elemente individuell definiert werden
+* _NEU_: Stylesheets können für alle HTML-Elemente individuell definiert werden
 * _NEU_: Kompatibilität auf IPS 6.4 hoch gesetzt
 * _FIX_: HTML-Struktur vereinheitlicht und verbessert
 * _FIX_: Unterscheidung der verschiedenen Visualisierungsinstanzen (PushNotification)
