@@ -78,7 +78,7 @@ Süd                     | Südlicher Längengrad (Begrenzung der Bildbox im Sü
 Ost                     | Östlicher Breitengrad (Begrenzung der Bildbox im Osten)
 Süd                     | Nördlicher Längengrad (Begrenzung der Bildbox im Norden)
 Markierung anzeigern?   | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
-Farbe der Markierung    | Farbauswahl für Marker Pin
+Farbe der Markierung    | Farbauswahl für Marker Pin, welcher als Platzhalter {{color}} in der CSS-Definition verwendet werden kann!
 
 > Bilder und Radarfilm ...
 
@@ -217,7 +217,9 @@ v2.0.20240811
 * _NEU_: Darstellung der Farbskala der Warnstufen (Legende)
 * _NEU_: Medizin-Meteorologische Meldung (Hitzewarnungen) werden speziell behandelt (Level)
 * _NEU_: Stylesheets können für alle HTML-Elemente individuell definiert werden
+* _NEU_: Farauswahl für Karten-Pin kann durch Platzhalter {{color}} im Stylesheet verwendet werden
 * _NEU_: Kompatibilität auf IPS 6.4 hoch gesetzt
+* _FIX_: Icon für extreme Hitze wird jetzt korrekt angezeigt
 * _FIX_: HTML-Struktur vereinheitlicht und verbessert
 * _FIX_: Unterscheidung der verschiedenen Visualisierungsinstanzen (PushNotification)
 * _FIX_: Bibliotheks- bzw. Modulinfos vereinheitlicht

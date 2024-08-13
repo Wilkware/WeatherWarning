@@ -804,11 +804,14 @@ class WeatherWarning extends IPSModule
         // Build url
         $url = DWD_GEO_MAPSURL . $service . $version . $request . $layers . $transparent . $height . $width . $style . $bbox . $srs . $format . $filter . $test;
         $this->SendDebug(__FUNCTION__, $url);
-        // Build html
+        // Build css
         $pin = $this->ReadPropertyBoolean('MapPinActivated');
         $col = $this->ReadPropertyInteger('MapPinColor');
+        $css = $this->ReadPropertyString('MapStyle');
+        $css = str_replace('{{color}}', '#' . dechex($col), $css);
+        // Build html
         $html = HTML_META;
-        $html .= "\n<style type=\"text/css\">" . $this->ReadPropertyString('MapStyle') . "\n</style>";
+        $html .= "\n<style type=\"text/css\">" . $css . "\n</style>";
         $html .= "\n<body>";
         $html .= '<div id="uwwMap">';
         $html .= '<img id="uwwImg" src="' . $url . '" alt="Karte" title="Karte" />';
