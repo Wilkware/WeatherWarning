@@ -1,12 +1,12 @@
 {
     "id": "{8C9D5B9B-D314-9E84-5514-ACD1EACE83BD}",
-    "author": "Wilkware (@Pitti)",
     "name": "Weather Warning",
+    "author": "Wilkware (@Pitti)",
     "url": "https://wilkware.de",
     "compatibility": {
-        "version": "6.0"
+        "version": "6.4"
     },
-    "version": "1.7",
-    "build": 20230709,
-    "date": 1688983200
+    "version": "2.0",
+    "build": 20240813,
+    "date": 1723550400
 }

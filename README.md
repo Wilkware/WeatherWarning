@@ -1,10 +1,10 @@
 # Unwetterwarnung (Weather Warning)
 
-[![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.7.20230710-orange.svg)](https://github.com/Wilkware/IPSymconWeatherWarning)
-[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![Actions](https://github.com/Wilkware/IPSymconWeatherWarning/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconWeatherWarning/actions)
+[![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-2.0.20240813-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/WeatherWarning/style.yml?branch=main&label=CheckStyle&style=flat-square)](https://github.com/Wilkware/WeatherWarning/actions)
 
 Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (Gewitter, Stark- und Dauerregen, Schneefall, Wind, Nebel, Frost, Glatteis, Tauwetter, UV-Strahlung, Hitze).
 
@@ -15,7 +15,7 @@ Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (G
 3. [Installation](#user-content-3-installation)
 4. [Einrichten der Instanzen in IP-Symcon](#user-content-4-einrichten-der-instanzen-in-ip-symcon)
 5. [Statusvariablen und Profile](#user-content-5-statusvariablen-und-profile)
-6. [WebFront](#user-content-6-webfront)
+6. [Visualisierung](#user-content-6-visualisierung)
 7. [PHP-Befehlsreferenz](#user-content-7-php-befehlsreferenz)
 8. [Versionshistorie](#user-content-8-versionshistorie)
 
@@ -30,13 +30,13 @@ Darüber hinaus können noch Variablen zur Darstellung verschiedener Wetterbilde
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 6.0
+* IP-Symcon ab Version 6.4
 
 ### 3. Installation
 
 * Über den Modul Store das Modul Weather Warning installieren.
 * Alternativ Über das Modul-Control folgende URL hinzufügen.  
-`https://github.com/Wilkware/IPSymconWeatherWarning` oder `git://github.com/Wilkware/IPSymconWeatherWarning.git`
+`https://github.com/Wilkware/WeatherWarning` oder `git://github.com/Wilkware/WeatherWarning.git`
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
@@ -69,7 +69,6 @@ Der darzustellende Bereich (so g. Bounding Box) wird dabei durch die Längen- un
 Name                    | Beschreibung
 ----------------------- | ---------------------------------
 Auswahl                 | Aktiviert Statusvariable für Unwetterkarte bei Auswahl eines konkreten Gebietes
-Formatvorlage \[img\]   | Sytle für Bild der Unwetterkarte
 Detailgrad              | Kreis- oder Gemeindeebene (Gemeinde dauert sehr lange zum Generieren)
 Hintergrund             | Auswahl des Hintergrundlayers oder transparent
 Bildbreite              | Breite in Pixel des zu generierenden Bildes (vordefiniert 500px und die Ration entsprechend in Richtung Höhe)
@@ -94,16 +93,12 @@ Niederschlag Radarfim   | Animation des aktuellen Niederschlages zum mitlaufende
 
 > Formatvorlagen ...
 
-Name                                                      | Beschreibung
---------------------------------------------------------- | ---------------------------------
-Tabelle \[table\]                                         | Allgemeine Tabellenstyle (Schrift, Farbe, Hintergrund)
-Alternierende Zeile \[tr:nth-child(even)\]                | Style für gerade Zeile (z.b: Hintergrundfarbe)
-Bild-Zelle \[td.img\]                                     | Style für Zellen (1.Spalte) mit Warnbild
-Text-Zelle \[td.txt\]                                     | Style für Zellen (2.Spalte) mit Warnmeldungen (Text)
-Meldungstitel \[div.hl\]                                  | Style für die Überschrift der Warnmeldung (1. Zeile Text-Zelle)
-Meldungszeitspanne \[div.ts\]                             | Style für die Zeitspanne der Warnmeldung (2. Zeile Text-Zelle)
-Meldungsbeschreibung \[div.desc\]                         | Style für die Beschreibung der Warnmeldung (3. Zeile Text-Zelle)
-Bild Warnstufe \[div.lwarn\]                              | Style für die Warnstufe - dreieckiger farbiger Rahmen (Bild-Zelle)
+Name                    | Beschreibung
+------------------------| ---------------------------------
+Unwetterkarte           | Sytle für die Unwetterkarte (Deutschlandkarte mit Pin)
+Warnmeldung             | Style für die Warnmeldungen (Tabelle, Icon, Überschrift, Beschreibung und Zeitspanne)
+Legende                 | Style für die Legende (Farbskala und deren Zuordnung zu Gefahrenstufen)
+ZURÜCKSETZEN            | Schalter, um wieder die jeweilig vordefinierten Stylesheet-Angaben einzusetzen
 
 > Meldungsverwaltung ...
 
@@ -117,7 +112,7 @@ Ab Stufe der Warnmeldung       | Auswahl ab welcher Stufe (1-4) die Meldung erfo
 Text in Variable schreiben     | Auswahl ob Nachricht in Statusvariable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch | Trennzeichen bei mehreren Ereignissen
 Format der Textmitteilung      | Frei wählbares Format der zu sendenden Nachricht/Meldung
-WebFront Instanz               | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
+WebFront Instanz               | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll (WebFront oder TileVisu Instanz)
 Meldsungsskript                | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
 > Erweiterte Einstellungen ...
@@ -125,6 +120,7 @@ Meldsungsskript                | Skript ID des Meldungsverwaltungsskripts, weite
 Name                                                            | Beschreibung
 --------------------------------------------------------------- | ---------------------------------
 Indikatorvariable für aktive Warnungen anlegen (höchste Stufe)! | Schalter, ob eine Statusvariable als Indikator für Warnungen (höste Stufe) angelegt und aktualisiert werden soll.
+Variable für Bilderklärung (Legende) anlegen!                   | Schalter, ob eine Statusvariable für die Erklärung der Zuordnung Farbe zu Warnstufe angelegt werden soll.
 Aktualisierungsinterval                                         | Auswahl aller wieviel Minuten Informationen abgerufen werden sollen (Standard: 15 min)
 
 Aktionsbereich:
@@ -164,10 +160,13 @@ UWW.Level            | Integer   | Warnstufen (0 - 4)
 > 2: Markante Wetterwarnung  
 > 3: Unwetterwarnung  
 > 4: Extreme Unwetterwarnung  
+> 10: UV-Warnung  
+> 11: Hitzewarnung  
+> 13: Extreme Hitzwarnung  
 
-### 6. WebFront
+### 6. Visualisierung
 
-Man kann die Statusvariablen direkt im WF verlinken.
+Man kann die Statusvariablen direkt in die Visualisierung verlinken.
 
 ### 7. PHP-Befehlsreferenz
 
@@ -212,6 +211,20 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v2.0.20240811
+
+* _NEU_: Darstellung der Farbskala der Warnstufen (Legende)
+* _NEU_: Medizin-Meteorologische Meldung (Hitzewarnungen) werden speziell behandelt (Level)
+* _NEU_: Stylsheets können für alle HTML-Elemente individuell definiert werden
+* _NEU_: Kompatibilität auf IPS 6.4 hoch gesetzt
+* _FIX_: HTML-Struktur vereinheitlicht und verbessert
+* _FIX_: Unterscheidung der verschiedenen Visualisierungsinstanzen (PushNotification)
+* _FIX_: Bibliotheks- bzw. Modulinfos vereinheitlicht
+* _FIX_: Namensnennung und Repo vereinheitlicht
+* _FIX_: Update Style-Checks
+* _FIX_: Übersetzungen überarbeitet und verbessert
+* _FIX_: Dokumentation vereinheitlicht 
 
 v1.7.20230709
 
@@ -288,7 +301,7 @@ Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den let
 
 ## Spenden
 
-Die Software ist für die nicht kommzerielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
+Die Software ist für die nicht kommerzielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
 
 [![PayPal](https://img.shields.io/badge/PayPal-spenden-00457C.svg?style=for-the-badge&logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 

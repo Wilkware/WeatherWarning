@@ -5,14 +5,15 @@ declare(strict_types=1);
 // Generell funktions
 require_once __DIR__ . '/../libs/_traits.php';
 
-// CLASS WeatherWarningModule
-class WeatherWarningModule extends IPSModule
+// CLASS WeatherWarning
+class WeatherWarning extends IPSModule
 {
     use DebugHelper;
     use EventHelper;
     use GeoHelper;
     use ProfileHelper;
     use VariableHelper;
+    use VersionHelper;
 
     /**
      * Create.
@@ -28,7 +29,6 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyString('WarningCommunity', 'null');
         // Map properties
         $this->RegisterPropertyString('MapSelected', '00');
-        $this->RegisterPropertyString('MapStyle', '{border:none; width:100%; height: 100%;}');
         $this->RegisterPropertyString('MapArea', 'Warngebiete_Kreise');
         $this->RegisterPropertyString('MapBackground', 'transparent');
         $this->RegisterPropertyInteger('MapWidth', 500);
@@ -59,15 +59,9 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyString('MovRadarIdent', 'baw');
         $this->RegisterPropertyString('MovRadarStyle', 'height: 225px;');
         // Stylesheet
-        $this->RegisterPropertyString('table', '{width:100%;border-collapse: collapse;}');
-        $this->RegisterPropertyString('tralt', '{background-color: rgba(0, 0, 0, 0.3);}');
-        $this->RegisterPropertyString('tdimg', '{width:50px;border:0px;vertical-align: top;text-align:left;padding:10px;border-left: 1px solid rgba(255, 255, 255, 0.2);border-top: 1px solid rgba(255, 255, 255, 0.2);border-bottom: 1px solid rgba(255, 255, 255, 0.2);}');
-        $this->RegisterPropertyString('tdtxt', '{vertical-align: top;text-align:left;padding:5px 10px 5px 10px;border-right: 1px solid rgba(255, 255, 255, 0.2);border-top: 1px solid rgba(255, 255, 255, 0.2);border-bottom: 1px solid rgba(255, 255, 255, 0.2);}');
-        $this->RegisterPropertyString('title', '{font-weight: bold;}');
-        $this->RegisterPropertyString('times', '{font-style: italic; font-size: smaller;}');
-        $this->RegisterPropertyString('descr', '{}');
-        $this->RegisterPropertyString('lwarn', '{}');
-        //$this->RegisterPropertyString('twarn', '{margin-left: -50px; height: 50px; width: 50px;}');
+        $this->RegisterPropertyString('MapStyle', CSS_STYLES['MapStyle']);
+        $this->RegisterPropertyString('WarningStyle', CSS_STYLES['WarningStyle']);
+        $this->RegisterPropertyString('LegendStyle', CSS_STYLES['LegendStyle']);
         // Message management
         $this->RegisterPropertyInteger('DashboardMessage', 0);
         $this->RegisterPropertyInteger('DashboardLevel', 1);
@@ -81,6 +75,7 @@ class WeatherWarningModule extends IPSModule
         $this->RegisterPropertyInteger('ScriptMessage', 0);
         // Settings
         $this->RegisterPropertyBoolean('IndicatorVariable', false);
+        $this->RegisterPropertyBoolean('LegendVariable', false);
         $this->RegisterPropertyInteger('UpdateInterval', 15);
         // Register daily update timer
         $this->RegisterTimer('UpdateWeatherWarning', 0, 'UWW_Update(' . $this->InstanceID . ');');
@@ -194,60 +189,66 @@ class WeatherWarningModule extends IPSModule
         $varText = $this->ReadPropertyInteger('TextVariable');
         // Settings
         $varWarning = $this->ReadPropertyBoolean('IndicatorVariable');
+        $varLegend = $this->ReadPropertyBoolean('LegendVariable');
         $timeUpdate = $this->ReadPropertyInteger('UpdateInterval');
         // Debug
         $this->SendDebug(__FUNCTION__, 'Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity .
-                        //', MAP=' . $deActiv . ', BL-MAP=' . $blActiv . ', BL-STATE=' . $blIdent .
                         ', Tmp=' . $tmpActiv . ', Img=' . $imgActiv . ', Mov=' . $movActiv);
         // Profile
-        $this->RegisterProfile(vtInteger, 'UWW.Level', 'Warning', '', '', 1, 4, 1, 0, DWD_SEVERITY);
+        $this->RegisterProfileInteger('UWW.Level', 'Warning', '', '', 0, 0, 0, DWD_SEVERITY);
         // Maintain variables
-        $this->MaintainVariable('Table', $this->Translate('Warning messages'), vtString, '~HTMLBox', 1, true);
-        $this->MaintainVariable('Text', $this->Translate('Warning text'), vtString, '', 2, $varText == 1);
+        $this->MaintainVariable('Table', $this->Translate('Warning messages'), VARIABLETYPE_STRING, '~HTMLBox', 1, true);
+        $this->MaintainVariable('Text', $this->Translate('Warning text'), VARIABLETYPE_STRING, '', 2, $varText == 1);
         // - Map
-        $this->MaintainVariable('Map', $this->Translate('Storm map'), vtString, '~HTMLBox', 3, $mapSelected != '00');
+        $this->MaintainVariable('Map', $this->Translate('Storm map'), VARIABLETYPE_STRING, '~HTMLBox', 3, $mapSelected != '00');
         // - Images & Movie
-        $this->MaintainVariable('ActTemp', $this->Translate('Current temperatures'), vtString, '~HTMLBox', 21, $tmpActiv);
+        $this->MaintainVariable('ActTemp', $this->Translate('Current temperatures'), VARIABLETYPE_STRING, '~HTMLBox', 21, $tmpActiv);
         if ($tmpActiv) {
             $src = str_replace('<STATE>', $tmpIdent, DWD_LINKS['TEMP']);
             $val = '<div style="' . $tmpStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ActTemp', $val);
         }
-        $this->MaintainVariable('ImgRadar', $this->Translate('Precipitation radar image'), vtString, '~HTMLBox', 22, $imgActiv);
+        $this->MaintainVariable('ImgRadar', $this->Translate('Precipitation radar image'), VARIABLETYPE_STRING, '~HTMLBox', 22, $imgActiv);
         if ($imgActiv) {
             $src = str_replace('<STATE>', $imgIdent, DWD_LINKS['RADAR']);
             $val = '<div style="' . $imgStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ImgRadar', $val);
         }
-        $this->MaintainVariable('MovRadar', $this->Translate('Precipitation radar film'), vtString, '~HTMLBox', 23, $movActiv);
+        $this->MaintainVariable('MovRadar', $this->Translate('Precipitation radar film'), VARIABLETYPE_STRING, '~HTMLBox', 23, $movActiv);
         if ($movActiv) {
             $src = str_replace('<STATE>', $movIdent, DWD_LINKS['MOVIE']);
             $val = '<div style="' . $movStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('MovRadar', $val);
         }
-        $this->MaintainVariable('ISOActTemp', $this->Translate('Current temperatures') . ' (' . $isoTmpIdent . ')', vtString, '~HTMLBox', 31, $isoTmpActiv);
+        $this->MaintainVariable('ISOActTemp', $this->Translate('Current temperatures') . ' (' . $isoTmpIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 31, $isoTmpActiv);
         if ($isoTmpActiv) {
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['TEMP']);
             $val = '<div style="' . $isoTmpStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOActTemp', $val);
         }
-        $this->MaintainVariable('ISOImgRadar', $this->Translate('Precipitation radar image') . ' (' . $isoImgIdent . ')', vtString, '~HTMLBox', 32, $isoImgActiv);
+        $this->MaintainVariable('ISOImgRadar', $this->Translate('Precipitation radar image') . ' (' . $isoImgIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 32, $isoImgActiv);
         if ($isoImgActiv) {
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['RADAR']);
             $val = '<div style="' . $isoImgStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOImgRadar', $val);
         }
-        $this->MaintainVariable('ISOMovRadar', $this->Translate('Precipitation radar film') . ' (' . $isoMovIdent . ')', vtString, '~HTMLBox', 33, $isoMovActiv);
+        $this->MaintainVariable('ISOMovRadar', $this->Translate('Precipitation radar film') . ' (' . $isoMovIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 33, $isoMovActiv);
         if ($isoMovActiv) {
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['MOVIE']);
             $val = '<div style="' . $isoMovStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOMovRadar', $val);
         }
         // - Indicator
-        $this->MaintainVariable('Level', $this->Translate('Warning level'), vtInteger, 'UWW.Level', 0, $varWarning);
+        $this->MaintainVariable('Level', $this->Translate('Warning level'), VARIABLETYPE_INTEGER, 'UWW.Level', 0, $varWarning);
+        // - Legend
+        $this->MaintainVariable('Legend', $this->Translate('Legend'), VARIABLETYPE_STRING, 'HTMLBox', 4, $varLegend);
+        if ($varLegend) {
+            $val = HTML_META . "\n<style type=\"text/css\">" . $this->ReadPropertyString('LegendStyle') . "</style>\n<bod>" . HTML_LEGEND . '</body>';
+            $this->SetValueString('Legend', $val);
+        }
         // Status
         if (($warnState == 'null') || ($warnCounty == 'null') || (($warnType == 8) && ($warnCommunity == 'null'))) {
-            $this->SendDebug(__FUNCTION__, '104: Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity);
+            $this->SendDebug(__FUNCTION__, 'Status 104: Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity);
             $this->SetStatus(104);
             $this->SetTimerInterval('UpdateWeatherWarning', 0);
             return;
@@ -281,6 +282,9 @@ class WeatherWarningModule extends IPSModule
                 break;
             case 'OnWarningMap':
                 $this->OnWarningMap($value);
+                break;
+            case 'ResetStyle':
+                $this->ResetStyle($value);
                 break;
         }
         // return true;
@@ -441,6 +445,18 @@ class WeatherWarningModule extends IPSModule
     }
 
     /**
+     * Reset to the default css definition.
+     *
+     * @param string $value Syle name.
+     */
+    protected function ResetStyle($value)
+    {
+        $this->SendDebug(__FUNCTION__, $value);
+        // value
+        $this->UpdateFormField($value, 'value', CSS_STYLES[$value]);
+    }
+
+    /**
      * Returns for the dropdown menu the selectable states for the warning type.
      *
      * @param string $type Warning type Identifier
@@ -515,8 +531,13 @@ class WeatherWarningModule extends IPSModule
         if ($varWarning) {
             $level = 0;
             foreach ($warnings as $value) {
+                $this->SendDebug(__FUNCTION__, $value);
                 if ($value['LEVEL'] > $level) {
                     $level = $value['LEVEL'];
+                    if ($level > 0 && $value['CATEGORY'] == DWD_CATEGORY['Health']) {
+                        // Offset for medizinische Warnungen
+                        $level += 10;
+                    }
                 }
             }
             $this->SetValueInteger('Level', $level);
@@ -556,8 +577,7 @@ class WeatherWarningModule extends IPSModule
         $script = $this->ReadPropertyInteger('ScriptMessage');
 
         $length = count($warnings);
-        $lines = '';
-        $index = 1;
+        $lines = [];
         $unique = [];
         // iterate
         foreach ($warnings as $value) {
@@ -582,23 +602,26 @@ class WeatherWarningModule extends IPSModule
             // send to webfront
             if ($isNotify && $webfront != 0) {
                 if ($value['LEVEL'] >= $levelNotify) {
-                    WFC_PushNotification($webfront, $this->Translate('"Weather Warning"'), $output, 'WindSpeed', 0);
+                    if ($this->IsWebFrontVisuInstance($webfrontId)) {
+                        WFC_PushNotification($webfront, $this->Translate('Weather Warning'), $output, 'WindSpeed', 0);
+                    }
+                    if ($this->IsTileVisuInstance($webfrontId)) {
+                        VISU_PostNotificationEx($webfrontId, $this->Translate('Weather Warning'), $output, 'WindSpeed', 'siren', 0);
+                    }
                 }
             }
             // collect for variable
-            if ($index < $length) {
-                $lines .= $output . $separator;
-            } else {
-                $lines .= $output;
-            }
-            $index++;
+            $lines[] = $output;
         }
         // write to variable
         if ($isVariable) {
-            if ($lines == '') {
-                $lines = $this->Translate('None');
+            $line = '';
+            if (empty($lines)) {
+                $line = $this->Translate('None');
+            } else {
+                $line = implode($separator, $lines);
             }
-            $this->SetValueString('Text', $lines);
+            $this->SetValueString('Text', $line);
         }
     }
 
@@ -610,31 +633,13 @@ class WeatherWarningModule extends IPSModule
      */
     private function UpdateTable(array $warnings, int $ts)
     {
-        // Styles
-        $style = '';
-        $style = $style . '<style type="text/css">';
-        $css = $this->ReadPropertyString('table');
-        $style = $style . 'table.uww ' . $css;
-        $css = $this->ReadPropertyString('tralt');
-        $style = $style . 'tr:nth-child(even) ' . $css;
-        $css = $this->ReadPropertyString('tdimg');
-        $style = $style . '.uww td.img' . $css;
-        $css = $this->ReadPropertyString('tdtxt');
-        $style = $style . '.uww td.txt ' . $css;
-        $css = $this->ReadPropertyString('title');
-        $style = $style . '.uww .hl ' . $css;
-        $css = $this->ReadPropertyString('times');
-        $style = $style . '.uww .ts ' . $css;
-        $css = $this->ReadPropertyString('descr');
-        $style = $style . '.uww .desc ' . $css;
-        $css = $this->ReadPropertyString('lwarn');
-        $style = $style . '.uww .warn ' . $css;
-        //$css = $this->ReadPropertyString('twarn');
-        //$style = $style . '.uww .twarn ' . $css;
-        $style = $style . '</style>';
-        // Table
-        $html = $style;
-        $html = $html . '<table class=\'uww\'>';
+        // Meta
+        $html = HTML_META;
+        // Style
+        $html .= "\n<style type=\"text/css\">" . $this->ReadPropertyString('WarningStyle') . "\n</style>";
+        // Body
+        $html .= "\n<body>";
+        $html .= "\n<table class='uww'>";
         // Exist Warnings
         $count = 0;
         foreach ($warnings as $value) {
@@ -659,9 +664,8 @@ class WeatherWarningModule extends IPSModule
             $html .= '<td class=\'txt\'><div class=\'hl\'>' . $head . '</div><div class=\'ts\'>' . $time . '</div><div class=\'desc\'>' . $desc . '</div></td>';
             $html .= '</tr>';
         }
-
-        $html = $html . '</table>';
-        // HTML ausgeben
+        $html .= "\n</table>\n</body>";
+        // Write HTML
         $this->SetValueString('Table', $html);
     }
 
@@ -682,7 +686,6 @@ class WeatherWarningModule extends IPSModule
         }
         // User selected Values
         $mapArea = $this->ReadPropertyString('MapArea');
-        $mapStyle = $this->ReadPropertyString('MapStyle');
         $mapBkgd = $this->ReadPropertyString('MapBackground');
         $mapWidth = $this->ReadPropertyInteger('MapWidth');
         $mapHeight = $this->ReadPropertyInteger('MapHeight');
@@ -798,12 +801,9 @@ class WeatherWarningModule extends IPSModule
         // Build html
         $pin = $this->ReadPropertyBoolean('MapPinActivated');
         $col = $this->ReadPropertyInteger('MapPinColor');
-        $html = '';
-        $html .= '<style type="text/css">';
-        $html .= '#uwwImg ' . $mapStyle;
-        $html .= '#uwwPin {position: absolute; top: -20px; left: -20px; margin: -30px 0 0 -10px;border-radius: 50% 50% 50% 0; border: 4px solid #' . dechex($col) . '; width: 20px; height: 20px; transform: rotate(-45deg);}';
-        $html .= '#uwwPin::after {position: absolute; content: \'\'; width: 10px; height: 10px; border-radius: 50%; top: 50%; left: 50%; margin: -5px -5px; background-color: #' . dechex($col) . ';}';
-        $html .= '</style>';
+        $html = HTML_META;
+        $html .= "\n<style type=\"text/css\">" . $this->ReadPropertyString('MapStyle') . "\n</style>";
+        $html .= "\n<body>";
         $html .= '<div id="uwwMap">';
         $html .= '<img id="uwwImg" src="' . $url . '" alt="Karte" title="Karte" />';
         if ($pin) {
@@ -836,6 +836,7 @@ class WeatherWarningModule extends IPSModule
                 $html .= '</script>';
             }
         }
+        $html .= "\n</body>";
         $this->SetValueString('Map', $html);
     }
 

@@ -220,6 +220,41 @@ const DWD_ICONS = [
     '4' => 'https://www.wettergefahren.de/stat/warnungen/unwetterkriterien/<EVENT>_<LEVEL>.png',
 ];
 
+const CSS_STYLES = [
+    'MapStyle'      => "body { margin:0px; overflow: hidden; }\n#uwwImg {width:100%; height:auto;}\n#uwwPin {position:absolute; top:-20px; left:-20px; margin:-30px 0 0 -10px; border-radius:50% 50% 50% 0; border:4px solid #ffffff; width:20px; height:20px; transform:rotate(-45deg); }\n#uwwPin::after {position:absolute; content:''; width:10px; height:10px; border-radius:50%; top:50%; left:50%; margin:-5px -5px; background-color:#ffffff; }",
+    'WarningStyle'  => "body { margin:0px; }\n::-webkit-scrollbar { height:4px; width:4px; }\n::-webkit-scrollbar-track { border-radius:5px; background:transparent; border:solid 3px transparent; }\n::-webkit-scrollbar-thumb { border-radius:5px; color:gray; background: gray; }\n::-webkit-scrollbar-thumb:hover { background: #555; }\n::-webkit-scrollbar-corner { background: transparent; }\ntable.uww { width:100%; border-collapse:collapse; font-size:14px; }\ntr:nth-child(even) { background-color:rgba(0, 0, 0, 0.3); }\n.uww td.img { width:50px; border:0px; vertical-align:top; text-align:left; }\n.uww td.txt { vertical-align:top; text-align:left; padding:0px 10px 10px 10px; }\n.uww .hl { font-weight:bold; }\n.uww .ts { font-style:italic; font-size:smaller; }\n.uww .desc {}\n.uww .warn {}",
+    'LegendStyle'   => "body { margin:0px; overflow: hidden; }\n#legend { display:table; width:100%; font-size:11px; }\n#legend .row { display:table-row; }\n#legend .cell1 { display:table-cell; width:60%; }\n#legend .cell2 { display:table-cell; width:40%; }\n#legend .box { width:15px; height:15px; border:#000 solid 1px; vertical-align:middle; margin-right:10px; float:left; }\n#legend .text { height:16px; padding:2px; vertical-align:middle; }\n.yellow { background-color:#ffeb3b!important; }\n.orange { background-color:#fb8c00!important; }\n.red { background-color:#e53935!important; }\n.violet { background-color:#880e4f!important; }\n.green { background-color:#c5e566!important; }\n.pink { background-color:#fe68fe!important; }\n.lightpurple { background-color:#c9f!important; }\n.darkpurple { background-color:#9e46f8!important; }",
+];
+
+const HTML_META = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+const HTML_LEGEND = '
+<body>
+    <div id="legend">
+        <div class="row">
+            <div class="cell1">
+                <div class="box yellow" title="Wetterwarnungen"></div>
+                <div class="text">Wetterwarnungen (Stufe 1)</div>
+                <div class="box orange" title="Warnungen vor markantem Wetter"></div>
+                <div class="text">Markante Wetterwarnung (Stufe 2)</div>
+                <div class="box red" title="Unwetterwarnungen"></div>
+                <div class="text">Unwetterwarnungen (Stufe 3)</div>
+                <div class="box violet" title="Warnungen vor extremem Unwetter"></div>
+                <div class="text">Extreme Unwetterwarnung (Stufe 4)</div>
+            </div>
+            <div class="cell2">
+                <div class="box green" title="Keine Warnungen"></div>
+                <div class="text">Keine Warnungen</div>
+                <div class="box pink" title="UV-Warnungen"></div>
+                <div class="text">UV-Warnung</div>
+                <div class="box lightpurple" title="Hitzewarnungen"></div>
+                <div class="text">Hitzewarnung</div>
+                <div class="box darkpurple" title="Extreme Hitzewarnung"></div>
+                <div class="text">Extreme Hitzewarnung</div>
+            </div>
+        </div>
+    </div>
+</body>';
+
 /**
  * Warning level of the message
  * https://www.wettergefahren.de/warnungen/warnsituation.html
@@ -232,11 +267,14 @@ const DWD_ICONS = [
  * 'Extreme' => 'Extreme Unwetterwarnung'    // Stufe 4 (Violett)
  */
 const DWD_SEVERITY = [
-    [0, 'None', '', 0x00FF00, 'gruen'],     // Stufe 0 (Grün)
-    [1, 'Minor', '', 0xFFFF00, 'gelb'],     // Stufe 1 (Gelb)
-    [2, 'Moderate', '', 0xFF8000, 'ocker'], // Stufe 2 (Orange)
-    [3, 'Severe', '', 0xFF0000, 'rot'],     // Stufe 3 (Rot)
-    [4, 'Extreme', '', 0xFF00FF, 'lila'],   // Stufe 4 (Violett)
+    [0, 'None', '', 0xc5E566, 'gruen'],             // Stufe 0 (Grün)
+    [1, 'Minor', '', 0xFFEB3B, 'gelb'],             // Stufe 1 (Gelb)
+    [2, 'Moderate', '', 0xFB8C00, 'ocker'],         // Stufe 2 (Orange)
+    [3, 'Severe', '', 0xE53935, 'rot'],             // Stufe 3 (Rot)
+    [4, 'Extreme', '', 0x880E4f, 'lila'],           // Stufe 4 (Violett)
+    [10, 'UV', '', 0xFE68FE, 'lila'],               // Stufe 1 (Hellrosa)
+    [11, 'Heat', '', 0xCC99FF, 'lila'],             // Stufe 1 (Malve)
+    [13, 'Heat (extreme)', '', 0x9E46F8, 'lila'],   // Stufe 3 (Blau-Magenta)
 ];
 
 /**

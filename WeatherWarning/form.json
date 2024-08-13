@@ -11,14 +11,14 @@
                 },
                 {
                     "type": "Label",
-                    "label": "\nWeather Warning\n ",
+                    "caption": "\nWeather Warning\n ",
                     "bold": true
                 }
             ]
         },
         {
             "type": "Label",
-            "label": "This module integrates the weather warnings and radar images provided by the German Weather Service (DWD) into IPS."
+            "caption": "This module integrates the weather warnings and radar images provided by the German Weather Service (DWD) into IPS."
         },
         {
             "type": "ExpansionPanel",
@@ -229,12 +229,6 @@
                                     "value": "16"
                                 }
                             ]
-                        },
-                        {
-                            "type": "ValidationTextBox",
-                            "name": "MapStyle",
-                            "caption": "Style [img]:",
-                            "width": "450px"
                         }
                     ]
                 },
@@ -672,63 +666,43 @@
             "items": [
                 {
                     "type": "Label",
-                    "caption": "... for the representation of the warnings as HTML table the following styles can be set:"
+                    "caption": "... the following styles can be set for the display of HTML elements:"
                 },
                 {
                     "type": "ValidationTextBox",
-                    "name": "table",
-                    "caption": "Table [table]:",
+                    "name": "MapStyle",
+                    "caption": "Storm map:",
                     "width": "100%",
                     "multiline": true
                 },
                 {
+                    "type": "Button",
+                    "caption": "Reset",
+                    "onClick": "IPS_RequestAction($id,'ResetStyle', 'MapStyle');"
+                },
+                {
                     "type": "ValidationTextBox",
-                    "name": "tralt",
-                    "caption": "Alternate row [tr:nth-child(even)]:",
+                    "name": "WarningStyle",
+                    "caption": "Warning messages:",
                     "width": "100%",
                     "multiline": true
                 },
                 {
+                    "type": "Button",
+                    "caption": "Reset",
+                    "onClick": "IPS_RequestAction($id,'ResetStyle', 'WarningStyle');"
+                },
+                {
                     "type": "ValidationTextBox",
-                    "name": "tdimg",
-                    "caption": "Image cell [td.img]:",
+                    "name": "LegendStyle",
+                    "caption": "Legend:",
                     "width": "100%",
                     "multiline": true
                 },
                 {
-                    "type": "ValidationTextBox",
-                    "name": "tdtxt",
-                    "caption": "Text cell [td.txt]:",
-                    "width": "100%",
-                    "multiline": true
-                },
-                {
-                    "type": "ValidationTextBox",
-                    "name": "title",
-                    "caption": "Message Title [div.hl]:",
-                    "width": "100%",
-                    "multiline": true
-                },
-                {
-                    "type": "ValidationTextBox",
-                    "name": "times",
-                    "caption": "Meaasge Timespan [div.ts]:",
-                    "width": "100%",
-                    "multiline": true
-                },
-                {
-                    "type": "ValidationTextBox",
-                    "name": "descr",
-                    "caption": "Meaasge Descrption [div.desc]:",
-                    "width": "100%",
-                    "multiline": true
-                },
-                {
-                    "type": "ValidationTextBox",
-                    "name": "lwarn",
-                    "caption": "Image Level [img.warn]:",
-                    "width": "100%",
-                    "multiline": true
+                    "type": "Button",
+                    "caption": "Reset",
+                    "onClick": "IPS_RequestAction($id,'ResetStyle', 'LegendStyle');"
                 }
             ]
         },
@@ -746,11 +720,11 @@
                             "width": "200px",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -759,22 +733,22 @@
                             "type": "Select",
                             "name": "DashboardLevel",
                             "caption": "From warning message level:",
-                            "width": "250px",
+                            "width": "425px",
                             "options": [
                                 {
-                                    "label": "(1) Minor",
+                                    "caption": "(1) Minor",
                                     "value": 1
                                 },
                                 {
-                                    "label": "(2) Moderate",
+                                    "caption": "(2) Moderate",
                                     "value": 2
                                 },
                                 {
-                                    "label": "(3) Severe",
+                                    "caption": "(3) Severe",
                                     "value": 3
                                 },
                                 {
-                                    "label": "(4) Extreme",
+                                    "caption": "(4) Extreme",
                                     "value": 4
                                 }
                             ]
@@ -783,34 +757,34 @@
                             "type": "Select",
                             "name": "DashboardDuration",
                             "caption": "Message life time:",
-                            "width": "425px",
+                            "width": "250px",
                             "options": [
                                 {
-                                    "label": "Always",
+                                    "caption": "Always",
                                     "value": 0
                                 },
                                 {
-                                    "label": "5 min",
+                                    "caption": "5 min",
                                     "value": 5
                                 },
                                 {
-                                    "label": "15 min",
+                                    "caption": "15 min",
                                     "value": 15
                                 },
                                 {
-                                    "label": "30 min",
+                                    "caption": "30 min",
                                     "value": 30
                                 },
                                 {
-                                    "label": "45 min",
+                                    "caption": "45 min",
                                     "value": 45
                                 },
                                 {
-                                    "label": "60 min",
+                                    "caption": "60 min",
                                     "value": 60
                                 },
                                 {
-                                    "label": "2 h",
+                                    "caption": "2 h",
                                     "value": 120
                                 }
                             ]
@@ -827,11 +801,11 @@
                             "width": "200px",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -840,22 +814,22 @@
                             "type": "Select",
                             "name": "NotificationLevel",
                             "caption": "From warning message level:",
-                            "width": "250px",
+                            "width": "425px",
                             "options": [
                                 {
-                                    "label": "(1) Minor",
+                                    "caption": "(1) Minor",
                                     "value": 1
                                 },
                                 {
-                                    "label": "(2) Moderate",
+                                    "caption": "(2) Moderate",
                                     "value": 2
                                 },
                                 {
-                                    "label": "(3) Severe",
+                                    "caption": "(3) Severe",
                                     "value": 3
                                 },
                                 {
-                                    "label": "(4) Extreme",
+                                    "caption": "(4) Extreme",
                                     "value": 4
                                 }
                             ]
@@ -872,11 +846,11 @@
                             "width": "200px",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -906,12 +880,16 @@
                 },
                 {
                     "type": "Label",
-                    "caption": "... to send notification messages to a web front:"
+                    "caption": "... to send notification messages to a visualization:"
                 },
                 {
                     "type": "SelectInstance",
                     "name": "InstanceWebfront",
-                    "caption": "WebFront Instance:",
+                    "caption": "Visualization Instance:",
+                    "validModules": [
+                        "{3565B1F2-8F7B-4311-A4B6-1BF1D868F39E}",
+                        "{B5B875BB-9B76-45FD-4E67-2607E45B3AC4}"
+                    ],
                     "width": "450px"
                 },
                 {
@@ -934,6 +912,11 @@
                     "type": "CheckBox",
                     "name": "IndicatorVariable",
                     "caption": "Create indicator variable for active warnings (highest level)!"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "LegendVariable",
+                    "caption": "Create a variable for image clarification (legend)!"
                 },
                 {
                     "type": "NumberSpinner",
