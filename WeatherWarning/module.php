@@ -530,15 +530,21 @@ class WeatherWarning extends IPSModule
         $this->SendDebug(__FUNCTION__, 'IndicatorVariable: ' . $varWarning);
         if ($varWarning) {
             $level = 0;
+            $offset = false;
             foreach ($warnings as $value) {
                 $this->SendDebug(__FUNCTION__, $value);
                 if ($value['LEVEL'] > $level) {
                     $level = $value['LEVEL'];
+                    // Offset for medizinische Warnungen
                     if ($level > 0 && $value['CATEGORY'] == DWD_CATEGORY['Health']) {
-                        // Offset for medizinische Warnungen
-                        $level += 10;
+                        $offset = true;
+                    } else {
+                        $offset = false;
                     }
                 }
+            }
+            if ($offset) {
+                $level += 10;
             }
             $this->SetValueInteger('Level', $level);
         }
