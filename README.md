@@ -107,12 +107,12 @@ Name                           | Beschreibung
 Meldung an Anzeige senden      | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
 Ab Stufe der Warnmeldung       | Auswahl ab welcher Stufe (1-4) die Nachricht erfolgen soll
 Lebensdauer der Nachricht      | Wie lange so die Meldung angezeigt werden?
-Nachricht ans Webfront senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht an Visualiserung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
 Ab Stufe der Warnmeldung       | Auswahl ab welcher Stufe (1-4) die Meldung erfolgen soll
 Text in Variable schreiben     | Auswahl ob Nachricht in Statusvariable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch | Trennzeichen bei mehreren Ereignissen
 Format der Textmitteilung      | Frei wählbares Format der zu sendenden Nachricht/Meldung
-WebFront Instanz               | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll (WebFront oder TileVisu Instanz)
+Visualisierungs-Instanz        | ID der Visualisierung, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll (WebFront oder TileVisu Instanz)
 Meldsungsskript                | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
 > Erweiterte Einstellungen ...
@@ -217,7 +217,7 @@ v2.0.20240811
 * _NEU_: Darstellung der Farbskala der Warnstufen (Legende)
 * _NEU_: Medizin-Meteorologische Meldung (Hitzewarnungen) werden speziell behandelt (Level)
 * _NEU_: Stylesheets können für alle HTML-Elemente individuell definiert werden
-* _NEU_: Farauswahl für Karten-Pin kann durch Platzhalter {{color}} im Stylesheet verwendet werden
+* _NEU_: Farbauswahl für Karten-Pin kann durch Platzhalter {{color}} im Stylesheet verwendet werden
 * _NEU_: Kompatibilität auf IPS 6.4 hoch gesetzt
 * _FIX_: Icon für extreme Hitze wird jetzt korrekt angezeigt
 * _FIX_: HTML-Struktur vereinheitlicht und verbessert

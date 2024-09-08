@@ -608,11 +608,11 @@ class WeatherWarning extends IPSModule
             // send to webfront
             if ($isNotify && $webfront != 0) {
                 if ($value['LEVEL'] >= $levelNotify) {
-                    if ($this->IsWebFrontVisuInstance($webfrontId)) {
+                    if ($this->IsWebFrontVisuInstance($webfront)) {
                         WFC_PushNotification($webfront, $this->Translate('Weather Warning'), $output, 'WindSpeed', 0);
                     }
-                    if ($this->IsTileVisuInstance($webfrontId)) {
-                        VISU_PostNotificationEx($webfrontId, $this->Translate('Weather Warning'), $output, 'WindSpeed', 'siren', 0);
+                    if ($this->IsTileVisuInstance($webfront)) {
+                        VISU_PostNotificationEx($webfront, $this->Translate('Weather Warning'), $output, 'wind-warning', 'siren', 0);
                     }
                 }
             }
