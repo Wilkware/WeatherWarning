@@ -219,11 +219,11 @@ v3.0.20250801
 * _NEU_: HTML für Legende in Konfiguration aufgenommen
 * _NEU_: Continuous Integration mit Check Style, Static Code Analysis und Unit Tests eingeführt
 * _NEU_: Debugging Funktionen komplett überarbeitet
-* _FIX_: Update Event-Tabelle für korrekte Zurodnung Ereignis zu Icon
-* _FIX_: Zeiten korrigiert (TimeZone wird jetzt korrektgesetzt)
+* _FIX_: Update der Event-Tabelle für korrekte Zurodnung von Ereignis zu Icon
+* _FIX_: Zeiten korrigiert (TimeZone wird jetzt korrekt gesetzt)
 * _FIX_: Meta-Tag für viewport gelöscht, kommt automatisch vom System
 * _FIX_: Farben der Profilassoziationen passenend zu Symbolfarbe
-* _FIX_: (Warn)Symbole hür Hitze und UV wewrden jetzt korrekt gesetzt
+* _FIX_: (Warn)Symbole hür Hitze und UV werden jetzt korrekt gesetzt
 * _FIX_: Warnungskategorie `Health` korrigiert
 * _FIX_: Dokumentation für PHP Static Analysis komplett überarbeitet
 * _FIX_: Bibliotheksfunktionen überarbeitet in Vorbereitung auf IPSModuleStrict
