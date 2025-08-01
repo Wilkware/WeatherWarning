@@ -79,6 +79,7 @@ Ost                     | Östlicher Breitengrad (Begrenzung der Bildbox im Oste
 Süd                     | Nördlicher Längengrad (Begrenzung der Bildbox im Norden)
 Markierung anzeigern?   | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
 Farbe der Markierung    | Farbauswahl für Marker Pin, welcher als Platzhalter {{color}} in der CSS-Definition verwendet werden kann!
+Legende (Html)          | Html Vorlage für Legende-Tabelle
 
 > Bilder und Radarfilm ...
 
