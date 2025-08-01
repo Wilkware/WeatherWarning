@@ -2,9 +2,9 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-2.0.20240813-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-3.0.20250801-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/WeatherWarning/style.yml?branch=main&label=CheckStyle&style=flat-square)](https://github.com/Wilkware/WeatherWarning/actions)
+[![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/WeatherWarning/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/WeatherWarning/actions)
 
 Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (Gewitter, Stark- und Dauerregen, Schneefall, Wind, Nebel, Frost, Glatteis, Tauwetter, UV-Strahlung, Hitze).
 
