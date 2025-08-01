@@ -149,8 +149,8 @@ const DWD_EVENT_CODE = [
  */
 const DWD_EVENT_MAP = [
     'gewitter'    => [31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49, 90, 91, 92, 93, 95, 96],
-    'wind'        => [11, 12, 13, 14, 15, 16, (31), 33, (34), 36, 38, 40, 41, 44, 45, (46), 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 74, 75, 76, 79, 96],
-    'regen'       => [34, 36, 38, (40), (41), 42, 44, 45, 46, 48, 49, 61, 62, 63, 64, 65, 66, 88, 89, 95, 96],
+    'wind'        => [11, 12, 13, 14, 15, 16, 33, 36, 38, 40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 79, 96],
+    'regen'       => [61, 62, 63, 64, 65, 66],
     'schnee'      => [70, 71, 72, 73,  74, 75, 76],
     'nebel'       => [59],
     'frost'       => [22, 82, 83],
@@ -212,23 +212,28 @@ const DWD_LINKS = [
  */
 const DWD_ICONS = [
     # Check Icon
-    '0' => 'https://api.asmium.de/images/warning_check.png',
+    '0' => 'https://wilkware.github.io/img/dwd/warning_check.png',
     # Level Icons
-    '1' => 'https://www.wettergefahren.de/stat/warnungen/wetterwarnkriterien/<EVENT>_<LEVEL>.png',
-    '2' => 'https://www.wettergefahren.de/stat/warnungen/wetterwarnkriterien/<EVENT>_<LEVEL>.png',
-    '3' => 'https://www.wettergefahren.de/stat/warnungen/unwetterkriterien/<EVENT>_<LEVEL>.png',
-    '4' => 'https://www.wettergefahren.de/stat/warnungen/unwetterkriterien/<EVENT>_<LEVEL>.png',
+    '1' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+    '2' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+    '3' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+    '4' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
 ];
 
+/**
+ * Default stylesheets
+ */
 const CSS_STYLES = [
     'MapStyle'      => "body { margin:0px; overflow: hidden; }\n#uwwImg {width:100%; height:auto;}\n#uwwPin {position:absolute; top:-20px; left:-20px; margin:-30px 0 0 -10px; border-radius:50% 50% 50% 0; border:4px solid {{color}}; width:20px; height:20px; transform:rotate(-45deg); }\n#uwwPin::after {position:absolute; content:''; width:10px; height:10px; border-radius:50%; top:50%; left:50%; margin:-5px -5px; background-color:{{color}}; }",
     'WarningStyle'  => "body { margin:0px; }\n::-webkit-scrollbar { height:4px; width:4px; }\n::-webkit-scrollbar-track { border-radius:5px; background:transparent; border:solid 3px transparent; }\n::-webkit-scrollbar-thumb { border-radius:5px; color:gray; background: gray; }\n::-webkit-scrollbar-thumb:hover { background: #555; }\n::-webkit-scrollbar-corner { background: transparent; }\ntable.uww { width:100%; border-collapse:collapse; font-size:14px; }\ntr:nth-child(even) { background-color:rgba(0, 0, 0, 0.3); }\n.uww td.img { width:50px; border:0px; vertical-align:top; text-align:left; }\n.uww td.txt { vertical-align:top; text-align:left; padding:0px 10px 10px 10px; }\n.uww .hl { font-weight:bold; }\n.uww .ts { font-style:italic; font-size:smaller; }\n.uww .desc {}\n.uww .warn {}",
     'LegendStyle'   => "body { margin:0px; overflow: hidden; }\n#legend { display:table; width:100%; font-size:11px; }\n#legend .row { display:table-row; }\n#legend .cell1 { display:table-cell; width:60%; }\n#legend .cell2 { display:table-cell; width:40%; }\n#legend .box { width:15px; height:15px; border:#000 solid 1px; vertical-align:middle; margin-right:10px; float:left; }\n#legend .text { height:16px; padding:2px; vertical-align:middle; }\n.yellow { background-color:#ffeb3b!important; }\n.orange { background-color:#fb8c00!important; }\n.red { background-color:#e53935!important; }\n.violet { background-color:#880e4f!important; }\n.green { background-color:#c5e566!important; }\n.pink { background-color:#fe68fe!important; }\n.lightpurple { background-color:#c9f!important; }\n.darkpurple { background-color:#9e46f8!important; }",
 ];
 
-const HTML_META = '<meta name="viewport" content="width=device-width, initial-scale=1">';
-const HTML_LEGEND = '
-<body>
+/**
+ * Content of the legend HTMLCox
+ */
+const HTML_LEGEND =
+    '<body>
     <div id="legend">
         <div class="row">
             <div class="cell1">
@@ -269,12 +274,12 @@ const HTML_LEGEND = '
 const DWD_SEVERITY = [
     [0, 'None', '', 0xc5E566, 'gruen'],             // Stufe 0 (Grün)
     [1, 'Minor', '', 0xFFEB3B, 'gelb'],             // Stufe 1 (Gelb)
-    [2, 'Moderate', '', 0xFB8C00, 'ocker'],         // Stufe 2 (Orange)
+    [2, 'Moderate', '', 0xFB8C00, 'orange'],         // Stufe 2 (Orange)
     [3, 'Severe', '', 0xE53935, 'rot'],             // Stufe 3 (Rot)
-    [4, 'Extreme', '', 0x880E4f, 'lila'],           // Stufe 4 (Violett)
-    [10, 'UV', '', 0xFE68FE, 'lila'],               // Stufe 1 (Hellrosa)
-    [11, 'Heat', '', 0xCC99FF, 'lila'],             // Stufe 1 (Malve)
-    [13, 'Heat (extreme)', '', 0x9E46F8, 'lila'],   // Stufe 3 (Blau-Magenta)
+    [4, 'Extreme', '', 0x880E4f, 'violett'],        // Stufe 4 (Violett)
+    [10, 'UV', '', 0xFE68FE, 'rosa'],               // Stufe 1 (Rosa)
+    [11, 'Heat', '', 0xCC99FF, 'lila'],             // Stufe 1 (Lila)
+    [13, 'Heat (extreme)', '', 0x9E46F8, 'violett'],   // Stufe 3 (Violett)
 ];
 
 /**
@@ -285,6 +290,7 @@ const DWD_CERTAINTY = [
     'Likely'   => 'Vorhersage, Auftreten wahrscheinlich (p > ~50%)',
 ];
 
+// CLASS: GeoHelper
 trait GeoHelper
 {
     /**
@@ -294,24 +300,25 @@ trait GeoHelper
      * 3rd level => LINKS (title, link) || CELLS (cell, name)
      * 4th level => CELLS (cell, name)
      */
-    private static $BASEURL = 'https://api.asmium.de/warning/de/';
+    private static string $BASEURL = 'https://api.asmium.de/warning/de/';
 
     /**
      * Get and extract data from json format.
      *
      * @param string $type area type
      * @param string $id Warn Cell ID
+     *
      * @return string GeoServer request URL
      */
     private function BuildURL(string $type, string $id): string
     {
         // Debug output
-        $this->SendDebug(__FUNCTION__, 'Type: ' . $type . ', WarnCellID: ' . $id);
+        $this->LogDebug(__FUNCTION__, 'Type: ' . $type . ', WarnCellID: ' . $id);
         // Build URL
         $base = DWD_GEO_BASEURL . DWD_GEO_PRAMS[intval($type)][0];
         $param = str_replace('<WARNCELLID>', $id, DWD_GEO_PRAMS[intval($type)][1]);
         // return the url
-        $this->SendDebug(__FUNCTION__, $base . $param);
+        $this->LogDebug(__FUNCTION__, $base . $param);
         return $base . $param;
     }
 
@@ -321,12 +328,13 @@ trait GeoHelper
      * @param string $type area type
      * @param string $state State identifier
      * @param string $county County identifier
-     * @return array Options array with caption and value.
+     *
+     * @return array<int,array{caption:string,value:string}> Options array with caption and value.
      */
     private function ExtractData(string $type, string $state = null, string $county = null): array
     {
         // Debug output
-        $this->SendDebug(__FUNCTION__, 'Type: ' . $type . ',State: ' . $state . ',County: ' . $county);
+        $this->LogDebug(__FUNCTION__, 'Type: ' . $type . ',State: ' . $state . ',County: ' . $county);
         // Build URL
         $url = self::$BASEURL;
         // Add Type
@@ -346,7 +354,7 @@ trait GeoHelper
         // error handling
         if ($json === false) {
             $this->LogMessage($this->Translate('Could not load json data!'), KL_ERROR);
-            $this->SendDebug(__FUNCTION__, 'ERROR LOAD DATA');
+            $this->LogDebug(__FUNCTION__, 'ERROR LOAD DATA');
             return [];
         }
         // Json decode
@@ -374,23 +382,18 @@ trait GeoHelper
     /**
      * Extract icon url from data.
      *
-     * @param array $value warning data
+     * @param array{CODE:string,LEVEL:int} $value warning data
+     *
      * @return string Url for warning icon.
      */
     private function ExtractIcon(array $value): string
     {
-        $this->SendDebug(__FUNCTION__, $value);
+        $this->LogDebug(__FUNCTION__, $value);
         $url = '';
         foreach (DWD_EVENT_MAP as $event => $map) {
             if (in_array($value['CODE'], $map)) {
-                if ($event == 'hitze' || $event == 'uv') {
-                    // not beautiful, but rare
-                    $url = str_replace('<EVENT>', $event, DWD_ICONS[1]);
-                    $url = str_replace('<LEVEL>', 'lila', $url);
-                } else {
-                    $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
-                    $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
-                }
+                $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
+                $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
             }
         }
         return $url;
@@ -400,7 +403,28 @@ trait GeoHelper
      * Replace capitalization with normal spelling
      *
      * @param string $json Json formated warnings
-     * @return array Normalized warnings
+     *
+     * @return array<int,array{
+     *     AREA?:string,
+     *     WARNCELLID?:string,
+     *     SENT?:string,
+     *     STATUS?:string,
+     *     TYPE?:string,
+     *     CATEGORY?:string,
+     *     EVENT?:string,
+     *     URGENCY?:string,
+     *     SEVERITY?:string,
+     *     LEVEL?:int|string,
+     *     CERTAINTY?:string,
+     *     CODE?:string,
+     *     GROUP?:string,
+     *     TIMESTAMP?:string,
+     *     START?:string,
+     *     END?:string,
+     *     HEADLINE?:string,
+     *     DESCRIPTION?:string,
+     *     INSTRUCTION?:string
+     * }>
      */
     private function PrepareWarnings(string $json): array
     {
@@ -411,7 +435,7 @@ trait GeoHelper
         foreach ($geo['features'] as $idx => $feature) {
             $prop = [];
             foreach ($feature['properties'] as $key => $value) {
-                $this->SendDebug(__FUNCTION__, $key . ': ' . $value);
+                $this->LogDebug(__FUNCTION__, $key . ': ' . $value);
                 switch ($key) {
                     case 'NAME':
                         $prop['AREA'] = $value;
@@ -470,11 +494,13 @@ trait GeoHelper
                         break;
                     case 'ONSET':
                         $ts = new DateTime($value);
+                        $ts->setTimezone(new DateTimeZone('Europe/Berlin'));
                         $prop['START'] = $ts->format('Y-m-d H:i:s');
                         break;
                     case 'EXPIRES':
                         if ($value != null) {
                             $ts = new DateTime($value);
+                            $ts->setTimezone(new DateTimeZone('Europe/Berlin'));
                             $prop['END'] = $ts->format('Y-m-d H:i:s');
                         } else {
                             $prop['END'] = '';
@@ -493,7 +519,7 @@ trait GeoHelper
             }
             $data[] = $prop;
         }
-        $this->SendDebug(__FUNCTION__, 'Features #' . $geo['totalFeatures']);
+        $this->LogDebug(__FUNCTION__, 'Features #' . $geo['totalFeatures']);
         return $data;
     }
 
@@ -501,6 +527,7 @@ trait GeoHelper
      * Replace capitalization with normal spelling
      *
      * @param string $str Text with capitalization
+     *
      * @return string Normal spelling
      */
     private function ReplaceCaseSensitiveWords(string $str): string
@@ -523,7 +550,7 @@ trait GeoHelper
         $str = str_replace('Amtliche ', '', $str);
         // All to lower case
         $str = mb_strtolower($str);
-        $this->SendDebug(__FUNCTION__, $str);
+        $this->LogDebug(__FUNCTION__, $str);
         // Replace case sensitive words
         $out = '';
         foreach (explode(' ', $str) as $key => $word) {
@@ -531,7 +558,7 @@ trait GeoHelper
         }
         // Fix small spellchecking for UV
         $out = str_replace('Uv', 'UV', $out);
-        $this->SendDebug(__FUNCTION__, $out);
+        $this->LogDebug(__FUNCTION__, $out);
         // return trimmed
         return rtrim($out);
     }
@@ -540,12 +567,13 @@ trait GeoHelper
      * Extract assoziated key for textual value
      *
      * @param string $value Textual expression of the value
-     * @param array $profile Profile assoziation array
-     * @return integer Associated key
+     * @param array<int,array{0:int,1:string}> $profile Profile association array
+     *
+     * @return int Associated key
      */
-    private function GetKeyFromProfile($value, $profile): int
+    private function GetKeyFromProfile(string $value, array $profile): int
     {
-        if (is_null($profile) || empty($profile)) {
+        if (empty($profile)) {
             return 0;
         }
         foreach ($profile as $asso) {

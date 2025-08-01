@@ -345,6 +345,24 @@
                             "width": "221px"
                         }
                     ]
+                },
+                {
+                    "type": "ExpansionPanel",
+                    "caption": "Legend ...",
+                    "items": [
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "LegendHtml",
+                            "caption": "Html:",
+                            "width": "100%",
+                            "multiline": true
+                        },
+                        {
+                            "type": "Button",
+                            "caption": "Reset",
+                            "onClick": "IPS_RequestAction($id,'ResetHtml', 'LegendHtml');"
+                        }
+                    ]
                 }
             ]
         },
@@ -669,40 +687,58 @@
                     "caption": "... the following styles can be set for the display of HTML elements:"
                 },
                 {
-                    "type": "ValidationTextBox",
-                    "name": "MapStyle",
-                    "caption": "Storm map:",
-                    "width": "100%",
-                    "multiline": true
+                    "type": "ExpansionPanel",
+                    "caption": "Storm map ...",
+                    "items": [
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "MapStyle",
+                            "caption": "Styles:",
+                            "width": "100%",
+                            "multiline": true
+                        },
+                        {
+                            "type": "Button",
+                            "caption": "Reset",
+                            "onClick": "IPS_RequestAction($id,'ResetStyle', 'MapStyle');"
+                        }
+                    ]
                 },
                 {
-                    "type": "Button",
-                    "caption": "Reset",
-                    "onClick": "IPS_RequestAction($id,'ResetStyle', 'MapStyle');"
+                    "type": "ExpansionPanel",
+                    "caption": "Warning messages ...",
+                    "items": [
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "WarningStyle",
+                            "caption": "Styles:",
+                            "width": "100%",
+                            "multiline": true
+                        },
+                        {
+                            "type": "Button",
+                            "caption": "Reset",
+                            "onClick": "IPS_RequestAction($id,'ResetStyle', 'WarningStyle');"
+                        }
+                    ]
                 },
                 {
-                    "type": "ValidationTextBox",
-                    "name": "WarningStyle",
-                    "caption": "Warning messages:",
-                    "width": "100%",
-                    "multiline": true
-                },
-                {
-                    "type": "Button",
-                    "caption": "Reset",
-                    "onClick": "IPS_RequestAction($id,'ResetStyle', 'WarningStyle');"
-                },
-                {
-                    "type": "ValidationTextBox",
-                    "name": "LegendStyle",
-                    "caption": "Legend:",
-                    "width": "100%",
-                    "multiline": true
-                },
-                {
-                    "type": "Button",
-                    "caption": "Reset",
-                    "onClick": "IPS_RequestAction($id,'ResetStyle', 'LegendStyle');"
+                    "type": "ExpansionPanel",
+                    "caption": "Legend ...",
+                    "items": [
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "LegendStyle",
+                            "caption": "Styles:",
+                            "width": "100%",
+                            "multiline": true
+                        },
+                        {
+                            "type": "Button",
+                            "caption": "Reset",
+                            "onClick": "IPS_RequestAction($id,'ResetStyle', 'LegendStyle');"
+                        }
+                    ]
                 }
             ]
         },
@@ -939,10 +975,6 @@
             "type": "Button",
             "caption": "Update",
             "onClick": "UWW_Update($id);"
-        },
-        {
-            "type": "Label",
-            "caption": "\n"
         },
         {
             "type": "ExpansionPanel",

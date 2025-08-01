@@ -1,0 +1,42 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    name: "CI Pipeline"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@master
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.2
+        
+    - name: Clone symcon stubs
+      run: git clone https://github.com/symcon/SymconStubs.git ../_ips-stubs
+        
+
+    # ✅ PHP-CS-Fixer Style Check
+    - name: Check style
+      uses: wilkware/action-ips-style@main
+
+    # ✅ PHPStan Static Analysis
+    - name: Download PHPStan
+      run: wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
+
+    - name: Static Alalysis
+      run: php phpstan.phar analyse --configuration=phpstan.neon
+
+    # ✅ PHPUnit Unit Tests
+    - name: Download PHPUnit
+      run: wget -O phpunit.phar https://phar.phpunit.de/phpunit-10.phar
+
+    - name: Unit Tests
+      env:
+        IPS_STUBS_PATH: ${{ github.workspace }}/../_ips-stubs
+      run: php phpunit.phar tests --testdox -c tests/phpunit.xml
+

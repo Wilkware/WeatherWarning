@@ -17,8 +17,10 @@ class WeatherWarning extends IPSModule
 
     /**
      * Create.
+     *
+     * @return void
      */
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
@@ -39,6 +41,7 @@ class WeatherWarning extends IPSModule
         $this->RegisterPropertyFloat('MapNorth', 0.000000);
         $this->RegisterPropertyBoolean('MapPinActivated', false);
         $this->RegisterPropertyInteger('MapPinColor', 16777215); // Weiß
+        $this->RegisterPropertyString('LegendHtml', HTML_LEGEND);
         // Image & films
         $this->RegisterPropertyBoolean('ISOActTempActivated', false);
         $this->RegisterPropertyString('ISOActTempIdent', 'de');
@@ -83,8 +86,10 @@ class WeatherWarning extends IPSModule
 
     /**
      * Destroy.
+     *
+     * @return void
      */
-    public function Destroy()
+    public function Destroy(): void
     {
         parent::Destroy();
     }
@@ -92,9 +97,9 @@ class WeatherWarning extends IPSModule
     /**
      * Configuration Form.
      *
-     * @return JSON configuration string.
+     * @return string configuration string.
      */
-    public function GetConfigurationForm()
+    public function GetConfigurationForm(): string
     {
         // Read setup
         $type = $this->ReadPropertyString('WarningType');
@@ -103,7 +108,7 @@ class WeatherWarning extends IPSModule
         $community = $this->ReadPropertyString('WarningCommunity');
         $map = $this->ReadPropertyString('MapSelected');
         // Debug output
-        $this->SendDebug(__FUNCTION__, 'type=' . $type . ', state=' . $state . ', county=' . $county . ', community=' . $community);
+        $this->LogDebug(__FUNCTION__, 'type=' . $type . ', state=' . $state . ', county=' . $county . ', community=' . $community);
         // Check properties
         if ($state == 'null') {
             $county = 'null';
@@ -132,14 +137,16 @@ class WeatherWarning extends IPSModule
         $form['elements'][3]['items'][5]['items'][0]['enabled'] = ($map != '00');
         $form['elements'][3]['items'][5]['items'][1]['enabled'] = ($map != '00');
         // Debug output
-        //$this->SendDebug('GetConfigurationForm', $form);
+        //$this->LogDebug('GetConfigurationForm', $form);
         return json_encode($form);
     }
 
     /**
      * Apply Configuration Changes.
+     *
+     * @return void
      */
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         // Never delete this line!
         parent::ApplyChanges();
@@ -192,7 +199,7 @@ class WeatherWarning extends IPSModule
         $varLegend = $this->ReadPropertyBoolean('LegendVariable');
         $timeUpdate = $this->ReadPropertyInteger('UpdateInterval');
         // Debug
-        $this->SendDebug(__FUNCTION__, 'Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity .
+        $this->LogDebug(__FUNCTION__, 'Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity .
                         ', Tmp=' . $tmpActiv . ', Img=' . $imgActiv . ', Mov=' . $movActiv);
         // Profile
         $this->RegisterProfileInteger('UWW.Level', 'Warning', '', '', 0, 0, 0, DWD_SEVERITY);
@@ -243,12 +250,12 @@ class WeatherWarning extends IPSModule
         // - Legend
         $this->MaintainVariable('Legend', $this->Translate('Legend'), VARIABLETYPE_STRING, 'HTMLBox', 4, $varLegend);
         if ($varLegend) {
-            $val = HTML_META . "\n<style type=\"text/css\">" . $this->ReadPropertyString('LegendStyle') . "</style>\n<bod>" . HTML_LEGEND . '</body>';
+            $val = '<style type="text/css">' . $this->ReadPropertyString('LegendStyle') . "</style>\n<body>" . $this->ReadPropertyString('LegendHtml') . '</body>';
             $this->SetValueString('Legend', $val);
         }
         // Status
         if (($warnState == 'null') || ($warnCounty == 'null') || (($warnType == 8) && ($warnCommunity == 'null'))) {
-            $this->SendDebug(__FUNCTION__, 'Status 104: Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity);
+            $this->LogDebug(__FUNCTION__, 'Status 104: Type=' . $warnType . ', State=' . $warnState . ', County=' . $warnCounty . ', Community=' . $warnCommunity);
             $this->SetStatus(104);
             $this->SetTimerInterval('UpdateWeatherWarning', 0);
             return;
@@ -262,13 +269,15 @@ class WeatherWarning extends IPSModule
     /**
      * RequestAction.
      *
-     *  @param string $ident Ident.
-     *  @param string $value Value.
+     * @param string $ident Ident.
+     * @param string $value Value.
+     *
+     * @return bool Always true
      */
-    public function RequestAction($ident, $value)
+    public function RequestAction($ident, $value): bool
     {
         // Debug output
-        $this->SendDebug('RequestAction', $ident . ' => ' . $value);
+        $this->LogDebug('RequestAction', $ident . ' => ' . $value);
         // Ident == OnXxxxxYyyyy
         switch ($ident) {
             case 'OnWarningType':
@@ -283,11 +292,14 @@ class WeatherWarning extends IPSModule
             case 'OnWarningMap':
                 $this->OnWarningMap($value);
                 break;
+            case 'ResetHtml':
+                $this->ResetHtml($value);
+                break;
             case 'ResetStyle':
                 $this->ResetStyle($value);
                 break;
         }
-        // return true;
+        return true;
     }
 
     /**
@@ -295,12 +307,14 @@ class WeatherWarning extends IPSModule
      * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
      *
      * UWW_Update($id);
+     *
+     * @return void
      */
-    public function Update()
+    public function Update(): void
     {
         // Check instance state
         if ($this->GetStatus() != 102) {
-            $this->SendDebug(__FUNCTION__, 'Status: Instance is not active.');
+            $this->LogDebug(__FUNCTION__, 'Status: Instance is not active.');
             return;
         }
         // TimeStamp
@@ -322,15 +336,17 @@ class WeatherWarning extends IPSModule
      * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
      *
      * UWW_WarningInfo($id);
+     *
+     * @return string all extracted warning information as json
      */
-    public function WarningInfo()
+    public function WarningInfo(): string
     {
         // Output array
         $data = [];
-        $this->SendDebug(__FUNCTION__, $data);
+        $this->LogDebug(__FUNCTION__, $data);
         // Check instance state
         if ($this->GetStatus() != 102) {
-            $this->SendDebug(__FUNCTION__, 'Status: Instance is not active.');
+            $this->LogDebug(__FUNCTION__, 'Status: Instance is not active.');
             return json_encode($data);
         }
         // Setup Warning
@@ -348,7 +364,7 @@ class WeatherWarning extends IPSModule
         $json = @file_get_contents($url);
         // Error handling
         if ($json === false) {
-            $this->SendDebug(__FUNCTION__, 'ERROR LOAD DATA');
+            $this->LogDebug(__FUNCTION__, 'ERROR LOAD DATA');
             return json_encode($data);
         }
         // Extract data
@@ -361,8 +377,10 @@ class WeatherWarning extends IPSModule
      * Select another warning area type.
      *
      * @param string $value Type (1,2,4,5,8,9).
+     *
+     * @return void
      */
-    protected function OnWarningType($value)
+    protected function OnWarningType(string $value): void
     {
         // State Options
         $this->UpdateFormField('WarningState', 'value', 'null');
@@ -378,10 +396,12 @@ class WeatherWarning extends IPSModule
      * Select another state.
      *
      * @param string $value State (01 - 16).
+     *
+     * @return void
      */
-    protected function OnWarningState($value)
+    protected function OnWarningState(string $value): void
     {
-        $this->SendDebug(__FUNCTION__, $value);
+        $this->LogDebug(__FUNCTION__, $value);
         $data = unserialize($value);
         // County Options
         $this->UpdateFormField('WarningCounty', 'options', json_encode($this->GetWarningCounties($data['type'], $data['state'])));
@@ -396,10 +416,12 @@ class WeatherWarning extends IPSModule
      * Select another region/county/county town.
      *
      * @param string $value County (Xxxxxxxxx | xyz).
+     *
+     * @return void
      */
-    protected function OnWarningCounty($value)
+    protected function OnWarningCounty(string $value): void
     {
-        $this->SendDebug(__FUNCTION__, $value);
+        $this->LogDebug(__FUNCTION__, $value);
         $data = unserialize($value);
         // Community Options (only Type 8)
         if ($data['type'] == 8) {
@@ -416,10 +438,12 @@ class WeatherWarning extends IPSModule
      * Select another map area.
      *
      * @param string $value Area.
+     *
+     * @return void
      */
-    protected function OnWarningMap($value)
+    protected function OnWarningMap(string $value): void
     {
-        $this->SendDebug(__FUNCTION__, $value);
+        $this->LogDebug(__FUNCTION__, $value);
         // Enable?
         $enable = ($value != '00');
         $this->UpdateFormField('MapArea', 'enabled', $enable);
@@ -445,13 +469,29 @@ class WeatherWarning extends IPSModule
     }
 
     /**
+     * Reset to the default html definition.
+     *
+     * @param string $value Html name.
+     *
+     * @return void
+     */
+    protected function ResetHtml($value): void
+    {
+        $this->LogDebug(__FUNCTION__, $value);
+        // value
+        $this->UpdateFormField($value, 'value', HTML_LEGEND);
+    }
+
+    /**
      * Reset to the default css definition.
      *
      * @param string $value Syle name.
+     *
+     * @return void
      */
-    protected function ResetStyle($value)
+    protected function ResetStyle($value): void
     {
-        $this->SendDebug(__FUNCTION__, $value);
+        $this->LogDebug(__FUNCTION__, $value);
         // value
         $this->UpdateFormField($value, 'value', CSS_STYLES[$value]);
     }
@@ -460,11 +500,12 @@ class WeatherWarning extends IPSModule
      * Returns for the dropdown menu the selectable states for the warning type.
      *
      * @param string $type Warning type Identifier
-     * @return array List of states.
+     *
+     * @return array<int,array{caption:string,value:string}> List of states.
      */
-    protected function GetWarningStates($type)
+    protected function GetWarningStates(string $type): array
     {
-        $this->SendDebug(__FUNCTION__, $type);
+        $this->LogDebug(__FUNCTION__, $type);
         // Extract states
         $options = $this->ExtractData($type);
         // Always add the selection prompt
@@ -478,11 +519,12 @@ class WeatherWarning extends IPSModule
      *
      * @param string $type Warning type identifier
      * @param string $state State identifier
-     * @return array List of states.
+     *
+     * @return array<int,array{caption:string,value:string}> List of counties.
      */
-    protected function GetWarningCounties($type, $state)
+    protected function GetWarningCounties(string $type, string $state): array
     {
-        $this->SendDebug(__FUNCTION__, $type . ' => ' . $state);
+        $this->LogDebug(__FUNCTION__, $type . ' => ' . $state);
         // Options
         $options = [];
         // Extract counties
@@ -501,11 +543,12 @@ class WeatherWarning extends IPSModule
      * @param string $type Warning type identifier
      * @param string $state State identifier
      * @param string $county County identifier
-     * @return array List of states.
+     *
+     * @return array<int,array{caption:string,value:string}> List of communities.
      */
-    protected function GetWarningCommunities($type, $state, $county)
+    protected function GetWarningCommunities(string $type, string $state, string $county): array
     {
-        $this->SendDebug(__FUNCTION__, $type . ' => ' . $state . ' => ' . $county);
+        $this->LogDebug(__FUNCTION__, $type . ' => ' . $state . ' => ' . $county);
         // Options
         $options = [];
         // Extract counties
@@ -521,22 +564,24 @@ class WeatherWarning extends IPSModule
     /**
      * Updates the level indicator
      *
-     * @param array $warning Array of warning data.
+     * @param array<int,array{LEVEL:int,CATEGORY:string}> $warnings Array of warning data.
      * @param int $ts Timestamp
+     *
+     * @return void
      */
-    private function UpdateLevel(array $warnings, int $ts)
+    private function UpdateLevel(array $warnings, int $ts): void
     {
         $varWarning = $this->ReadPropertyBoolean('IndicatorVariable');
-        $this->SendDebug(__FUNCTION__, 'IndicatorVariable: ' . $varWarning);
+        $this->LogDebug(__FUNCTION__, 'IndicatorVariable: ' . $varWarning);
         if ($varWarning) {
             $level = 0;
             $offset = false;
             foreach ($warnings as $value) {
-                $this->SendDebug(__FUNCTION__, $value);
+                $this->LogDebug(__FUNCTION__, $value);
                 if ($value['LEVEL'] > $level) {
                     $level = $value['LEVEL'];
                     // Offset for medizinische Warnungen
-                    if ($level > 0 && $value['CATEGORY'] == DWD_CATEGORY['Health']) {
+                    if ($value['CATEGORY'] === DWD_CATEGORY['Health']) {
                         $offset = true;
                     } else {
                         $offset = false;
@@ -553,10 +598,32 @@ class WeatherWarning extends IPSModule
     /**
      * Builds the Text variable for the warnings.
      *
-     * @param array $warning Array of warning data.
+     * @param array<int,array{
+     *     AREA?:string,
+     *     WARNCELLID?:string,
+     *     SENT?:string,
+     *     STATUS?:string,
+     *     TYPE?:string,
+     *     CATEGORY?:string,
+     *     EVENT?:string,
+     *     URGENCY?:string,
+     *     SEVERITY?:string,
+     *     LEVEL?:int|string,
+     *     CERTAINTY?:string,
+     *     CODE?:string,
+     *     GROUP?:string,
+     *     TIMESTAMP?:string,
+     *     START?:string,
+     *     END?:string,
+     *     HEADLINE?:string,
+     *     DESCRIPTION?:string,
+     *     INSTRUCTION?:string
+     * }> $warnings Array of warning data.
      * @param int $ts Timestamp
+     *
+     * @return void
      */
-    private function UpdateText(array $warnings, int $ts)
+    private function UpdateText(array $warnings, int $ts): void
     {
         // Selected?
         $isDashboard = $this->ReadPropertyInteger('DashboardMessage');
@@ -609,9 +676,13 @@ class WeatherWarning extends IPSModule
             if ($isNotify && $webfront != 0) {
                 if ($value['LEVEL'] >= $levelNotify) {
                     if ($this->IsWebFrontVisuInstance($webfront)) {
+                        //TODO:Update if added
+                        /** @phpstan-ignore-next-line */
                         WFC_PushNotification($webfront, $this->Translate('Weather Warning'), $output, 'WindSpeed', 0);
                     }
                     if ($this->IsTileVisuInstance($webfront)) {
+                        //TODO:Update if added
+                        /** @phpstan-ignore-next-line */
                         VISU_PostNotificationEx($webfront, $this->Translate('Weather Warning'), $output, 'wind-warning', 'siren', 0);
                     }
                 }
@@ -634,15 +705,35 @@ class WeatherWarning extends IPSModule
     /**
      * Builds the HTML Table for the warnings.
      *
-     * @param array $warning Array of warning data.
+     * @param array<int,array{
+     *     AREA?:string,
+     *     WARNCELLID?:string,
+     *     SENT?:string,
+     *     STATUS?:string,
+     *     TYPE?:string,
+     *     CATEGORY?:string,
+     *     EVENT?:string,
+     *     URGENCY?:string,
+     *     SEVERITY?:string,
+     *     LEVEL?:int|string,
+     *     CERTAINTY?:string,
+     *     CODE?:string,
+     *     GROUP?:string,
+     *     TIMESTAMP?:string,
+     *     START?:string,
+     *     END?:string,
+     *     HEADLINE?:string,
+     *     DESCRIPTION?:string,
+     *     INSTRUCTION?:string
+     * }> $warnings Array of warning data.
      * @param int $ts Timestamp
+     *
+     * @return void
      */
-    private function UpdateTable(array $warnings, int $ts)
+    private function UpdateTable(array $warnings, int $ts): void
     {
-        // Meta
-        $html = HTML_META;
         // Style
-        $html .= "\n<style type=\"text/css\">" . $this->ReadPropertyString('WarningStyle') . "\n</style>";
+        $html = '<style type="text/css">' . $this->ReadPropertyString('WarningStyle') . "\n</style>";
         // Body
         $html .= "\n<body>";
         $html .= "\n<table class='uww'>";
@@ -678,13 +769,35 @@ class WeatherWarning extends IPSModule
     /**
      * Updates the storm map
      *
-     * @param array $warning Array of warning data.
+     * @param array<int,array{
+     *     AREA?:string,
+     *     WARNCELLID?:string,
+     *     SENT?:string,
+     *     STATUS?:string,
+     *     TYPE?:string,
+     *     CATEGORY?:string,
+     *     EVENT?:string,
+     *     URGENCY?:string,
+     *     SEVERITY?:string,
+     *     LEVEL?:int|string,
+     *     CERTAINTY?:string,
+     *     CODE?:string,
+     *     GROUP?:string,
+     *     TIMESTAMP?:string,
+     *     START?:string,
+     *     END?:string,
+     *     HEADLINE?:string,
+     *     DESCRIPTION?:string,
+     *     INSTRUCTION?:string
+     * }> $warnings Array of warning data.
      * @param int $ts Timestamp
+     *
+     * @return void
      */
-    private function UpdateMap(array $warnings, int $ts)
+    private function UpdateMap(array $warnings, int $ts): void
     {
         $mapSelected = $this->ReadPropertyString('MapSelected');
-        $this->SendDebug(__FUNCTION__, 'MAP: ' . $mapSelected);
+        $this->LogDebug(__FUNCTION__, 'MAP: ' . $mapSelected);
 
         if ($mapSelected == '00') {
             // Nothing to do
@@ -803,15 +916,14 @@ class WeatherWarning extends IPSModule
         $filter .= implode(';', $fa);
         // Build url
         $url = DWD_GEO_MAPSURL . $service . $version . $request . $layers . $transparent . $height . $width . $style . $bbox . $srs . $format . $filter . $test;
-        $this->SendDebug(__FUNCTION__, $url);
+        $this->LogDebug(__FUNCTION__, $url);
         // Build css
         $pin = $this->ReadPropertyBoolean('MapPinActivated');
         $col = $this->ReadPropertyInteger('MapPinColor');
         $css = $this->ReadPropertyString('MapStyle');
         $css = str_replace('{{color}}', '#' . dechex($col), $css);
         // Build html
-        $html = HTML_META;
-        $html .= "\n<style type=\"text/css\">" . $css . "\n</style>";
+        $html = '<style type="text/css">' . $css . "\n</style>";
         $html .= "\n<body>";
         $html .= '<div id="uwwMap">';
         $html .= '<img id="uwwImg" src="' . $url . '" alt="Karte" title="Karte" />';
@@ -825,8 +937,14 @@ class WeatherWarning extends IPSModule
                 $id = $lc[0];
                 $location = IPS_GetProperty($id, 'Location');
                 $pos = json_decode($location, true);
-                $x = ceil(($pos['longitude'] - $mapBox[0]) * $mapWidth / ($mapBox[2] - $mapBox[0]));
-                $y = ceil(($mapBox[3] - $pos['latitude']) * $mapHeight / ($mapBox[3] - $mapBox[1]));
+                $lon = (float) $pos['longitude'];
+                $lat = (float) $pos['latitude'];
+                $minLon = (float) $mapBox[0];
+                $maxLon = (float) $mapBox[2];
+                $minLat = (float) $mapBox[1];
+                $maxLat = (float) $mapBox[3];
+                $x = ceil(($lon - $minLon) * $mapWidth / ($maxLon - $minLon));
+                $y = ceil(($maxLat - $lat) * $mapHeight / ($maxLat - $minLat));
                 $html .= '<script>';
                 $html .= 'function handler() {';
                 $html .= 'var ow = document.getElementById("uwwImg").offsetWidth;';
@@ -850,12 +968,34 @@ class WeatherWarning extends IPSModule
     }
 
     /**
-     * Format a given array to a string.
+     * Format a given warning array to a string.
      *
-     * @param array $value Weather warning data
-     * @param string $format Format string
+     * @param array{
+     *     AREA?:string,
+     *     WARNCELLID?:string,
+     *     SENT?:string,
+     *     STATUS?:string,
+     *     TYPE?:string,
+     *     CATEGORY?:string,
+     *     EVENT?:string,
+     *     URGENCY?:string,
+     *     SEVERITY?:string,
+     *     LEVEL?:int|string,
+     *     CERTAINTY?:string,
+     *     CODE?:string,
+     *     GROUP?:string,
+     *     TIMESTAMP?:string,
+     *     START?:string,
+     *     END?:string,
+     *     HEADLINE?:string,
+     *     DESCRIPTION?:string,
+     *     INSTRUCTION?:string
+     * } $value Weather warning data
+     * @param string $format Format string (supports %L, %N, %T, %M, %D)
+     *
+     * @return string Formatted string
      */
-    private function FormatWarning(array $value, $format)
+    private function FormatWarning(array $value, string $format): string
     {
         $output = str_replace('%L', $this->Translate(DWD_SEVERITY[$value['LEVEL']][1]), $format);
         $output = str_replace('%N', (string) $value['LEVEL'], $output);
