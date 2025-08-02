@@ -52,7 +52,7 @@ trait VersionHelper
      * Check, if given instance id of type tile visu
      *
      * @param int $iid Instance ID
-     * 
+     *
      * @return bool TRUE if match the desired type, otherwise FALSE.
      */
     protected function IsTileVisuInstance(int $iid): bool
@@ -73,7 +73,7 @@ trait VersionHelper
      * Check, if given instance id of type webfront visu
      *
      * @param int $iid Instance ID
-     * 
+     *
      * @return bool TRUE if match the desired type, otherwise FALSE.
      */
     protected function IsWebFrontVisuInstance(int $iid): bool
