@@ -38,7 +38,7 @@ trait VersionHelper
      *
      * @return bool TRUE if version > 7.x, otherwise FALSE.
      */
-    protected function IsTileVisuSupported()
+    protected function IsTileVisuSupported(): bool
     {
         // Version check
         $version = (float) IPS_GetKernelVersion();
@@ -52,9 +52,10 @@ trait VersionHelper
      * Check, if given instance id of type tile visu
      *
      * @param int $iid Instance ID
+     * 
      * @return bool TRUE if match the desired type, otherwise FALSE.
      */
-    protected function IsTileVisuInstance(int $iid)
+    protected function IsTileVisuInstance(int $iid): bool
     {
         // Check if the instance exists
         if (IPS_InstanceExists($iid)) {
@@ -72,9 +73,10 @@ trait VersionHelper
      * Check, if given instance id of type webfront visu
      *
      * @param int $iid Instance ID
+     * 
      * @return bool TRUE if match the desired type, otherwise FALSE.
      */
-    protected function IsWebFrontVisuInstance(int $iid)
+    protected function IsWebFrontVisuInstance(int $iid): bool
     {
         // Check if the instance exists
         if (IPS_InstanceExists($iid)) {

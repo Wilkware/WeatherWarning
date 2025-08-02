@@ -255,7 +255,7 @@ class WeatherWarning extends IPSModule
         if ($isoMfcActiv) {
             $src = DWD_LINKS['FORECAST'];
             $val = '<div style="' . $isoMfcStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
-            $this->SetValueString('MovRadar', $val);
+            $this->SetValueString('ISOMovForecast', $val);
         }
         // - Indicator
         $this->MaintainVariable('Level', $this->Translate('Warning level'), VARIABLETYPE_INTEGER, 'UWW.Level', 0, $varWarning);
