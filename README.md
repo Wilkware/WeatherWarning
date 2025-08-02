@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-3.0.20250801-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
+[![Version](https://img.shields.io/badge/Modul%20Version-3.1.20250802-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/WeatherWarning/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/WeatherWarning/actions)
 
@@ -212,6 +212,10 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 8. Versionshistorie
+
+v3.1.20250802
+
+* _NEU_: Niederschlagsradar-Vorhersage hinzugefügt
 
 v3.0.20250801
 

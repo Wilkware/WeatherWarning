@@ -205,6 +205,8 @@ const DWD_LINKS = [
     'MOVIE'     => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
     # Karte mit allen Warnungen
     'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png',
+    # Niederschlagsradar-Vorhersage
+    'FORECAST'  => 'https://www.dwd.de/DWD/wetter/radar/radarvhs.gif',
 ];
 
 /**

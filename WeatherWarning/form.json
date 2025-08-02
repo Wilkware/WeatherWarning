@@ -377,7 +377,7 @@
                             "type": "CheckBox",
                             "name": "ISOActTempActivated",
                             "caption": "Current temperature",
-                            "width": "200px"
+                            "width": "221px"
                         },
                         {
                             "type": "Select",
@@ -406,7 +406,7 @@
                             "type": "CheckBox",
                             "name": "ISOImgRadarActivated",
                             "caption": "Rainfall radar image",
-                            "width": "200px"
+                            "width": "221px"
                         },
                         {
                             "type": "Select",
@@ -435,7 +435,7 @@
                             "type": "CheckBox",
                             "name": "ISOMovRadarActivated",
                             "caption": "Rainfall radar film",
-                            "width": "200px"
+                            "width": "221px"
                         },
                         {
                             "type": "Select",
@@ -462,9 +462,38 @@
                     "items": [
                         {
                             "type": "CheckBox",
+                            "name": "ISOMovForecastActivated",
+                            "caption": "Rainfall forecast",
+                            "width": "221px"
+                        },
+                        {
+                            "type": "Select",
+                            "name": "ISOMovForecastIdent",
+                            "caption": "Country:",
+                            "width": "250px",
+                            "options": [
+                                {
+                                    "caption": "Deutschland",
+                                    "value": "de"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "ISOMovForecastStyle",
+                            "caption": "Inline Style [div]:",
+                            "width": "425px"
+                        }
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {
+                            "type": "CheckBox",
                             "name": "ActTempActivated",
                             "caption": "Current temperature",
-                            "width": "200px"
+                            "width": "221px"
                         },
                         {
                             "type": "Select",
@@ -537,7 +566,7 @@
                             "type": "CheckBox",
                             "name": "ImgRadarActivated",
                             "caption": "Rainfall radar image",
-                            "width": "200px"
+                            "width": "221px"
                         },
                         {
                             "type": "Select",
@@ -610,7 +639,7 @@
                             "type": "CheckBox",
                             "name": "MovRadarActivated",
                             "caption": "Rainfall radar film",
-                            "width": "200px"
+                            "width": "221px"
                         },
                         {
                             "type": "Select",

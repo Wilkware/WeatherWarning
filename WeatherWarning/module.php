@@ -52,6 +52,9 @@ class WeatherWarning extends IPSModule
         $this->RegisterPropertyBoolean('ISOMovRadarActivated', false);
         $this->RegisterPropertyString('ISOMovRadarIdent', 'de');
         $this->RegisterPropertyString('ISOMovRadarStyle', 'height: 225px;');
+        $this->RegisterPropertyBoolean('ISOMovForecastActivated', false);
+        $this->RegisterPropertyString('ISOMovForecastIdent', 'de');
+        $this->RegisterPropertyString('ISOMovForecastStyle', 'height: 225px;');
         $this->RegisterPropertyBoolean('ActTempActivated', false);
         $this->RegisterPropertyString('ActTempIdent', 'baw');
         $this->RegisterPropertyString('ActTempStyle', 'height: 225px;');
@@ -183,6 +186,9 @@ class WeatherWarning extends IPSModule
         $isoMovActiv = $this->ReadPropertyBoolean('ISOMovRadarActivated');
         $isoMovIdent = $this->ReadPropertyString('ISOMovRadarIdent');
         $isoMovStyle = $this->ReadPropertyString('ISOMovRadarStyle');
+        $isoMfcActiv = $this->ReadPropertyBoolean('ISOMovForecastActivated');
+        $isoMfcIdent = $this->ReadPropertyString('ISOMovForecastIdent');
+        $isoMfcStyle = $this->ReadPropertyString('ISOMovForecastStyle');
         $tmpActiv = $this->ReadPropertyBoolean('ActTempActivated');
         $tmpIdent = $this->ReadPropertyString('ActTempIdent');
         $tmpStyle = $this->ReadPropertyString('ActTempStyle');
@@ -244,6 +250,12 @@ class WeatherWarning extends IPSModule
             $src = str_replace('<STATE>', 'brd', DWD_LINKS['MOVIE']);
             $val = '<div style="' . $isoMovStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOMovRadar', $val);
+        }
+        $this->MaintainVariable('ISOMovForecast', $this->Translate('Precipitation radar forecast') . ' (' . $isoMfcIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 34, $isoMfcActiv);
+        if ($isoMfcActiv) {
+            $src = DWD_LINKS['FORECAST'];
+            $val = '<div style="' . $isoMfcStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
+            $this->SetValueString('MovRadar', $val);
         }
         // - Indicator
         $this->MaintainVariable('Level', $this->Translate('Warning level'), VARIABLETYPE_INTEGER, 'UWW.Level', 0, $varWarning);
