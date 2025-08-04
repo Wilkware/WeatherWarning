@@ -7,7 +7,7 @@
  *
  * @package       traits
  * @author        Heiko Wilknitz <heiko@wilkware.de>
- * @copyright     2024 Heiko Wilknitz
+ * @copyright     2025 Heiko Wilknitz
  * @link          https://wilkware.de
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
@@ -51,8 +51,7 @@ trait VersionHelper
     /**
      * Check, if given instance id of type tile visu
      *
-     * @param int $iid Instance ID
-     *
+     * @param int $iid Instance ID.
      * @return bool TRUE if match the desired type, otherwise FALSE.
      */
     protected function IsTileVisuInstance(int $iid): bool
@@ -72,8 +71,7 @@ trait VersionHelper
     /**
      * Check, if given instance id of type webfront visu
      *
-     * @param int $iid Instance ID
-     *
+     * @param int $iid Instance ID.
      * @return bool TRUE if match the desired type, otherwise FALSE.
      */
     protected function IsWebFrontVisuInstance(int $iid): bool

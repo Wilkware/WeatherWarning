@@ -7,7 +7,7 @@
  *
  * @package       traits
  * @author        Heiko Wilknitz <heiko@wilkware.de>
- * @copyright     2020 Heiko Wilknitz
+ * @copyright     2025 Heiko Wilknitz
  * @link          https://wilkware.de
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
@@ -24,7 +24,6 @@ trait ProfileHelper
      *
      * @param string $name    Profil name.
      * @param int    $vartype Type of the variable.
-     *
      * @return void
      */
     protected function RegisterProfileType(string $name, int $vartype): void
@@ -42,12 +41,12 @@ trait ProfileHelper
     /**
      * Create a profile for boolean values.
      *
-     * @param string     $name   Profil name.
-     * @param string     $icon   Icon to display.
-     * @param string     $prefix Variable prefix.
-     * @param string     $suffix Variable suffix.
-     * @param array<int, array{0: bool, 1: string, 2: string, 3:int}> $asso Associations of the values.
-     *
+     * @param string $name   Profil name.
+     * @param string $icon   Icon to display.
+     * @param string $prefix Variable prefix.
+     * @param string $suffix Variable suffix.
+     * @param array<int,array{0:bool,1:string,2:string,3:int}> $asso
+     *      Associations of the values.
      * @return void
      */
     protected function RegisterProfileBoolean(string $name, string $icon, string $prefix, string $suffix, array $asso = null): void
@@ -74,8 +73,8 @@ trait ProfileHelper
      * @param int    $minvalue  Minimum value.
      * @param int    $maxvalue  Maximum value.
      * @param int    $stepsize  Increment.
-     * @param array<int, array{0: int, 1: string, 2: string, 3:int}> $asso Associations of the values.
-     *
+     * @param array<int,array{0:int,1:string,2:string,3:int}> $asso
+     *      Associations of the values.
      * @return void
      */
     protected function RegisterProfileInteger(string $name, string $icon, string $prefix, string $suffix, int $minvalue, int $maxvalue, int $stepsize, array $asso = null): void
@@ -104,8 +103,8 @@ trait ProfileHelper
      * @param int    $maxvalue Maximum value.
      * @param int    $stepsize Increment.
      * @param int    $digits   Decimal places.
-     * @param array<int, array{0: float, 1: string, 2: string, 3:int}> $asso Associations of the values.
-     *
+     * @param array<int,array{0:float,1:string,2:string,3:int}>$asso
+     *      Associations of the values.
      * @return void
      */
     protected function RegisterProfileFloat(string $name, string $icon, string $prefix, string $suffix, int $minvalue, int $maxvalue, int $stepsize, int $digits, array $asso = null): void
@@ -131,8 +130,8 @@ trait ProfileHelper
      * @param string $icon   Icon to display.
      * @param string $prefix Variable prefix.
      * @param string $suffix Variable suffix.
-     * @param array<int, array{0: string, 1: string, 2: string, 3:int}>  $asso   Associations of the values.
-     *
+     * @param array<int,array{0:string,1:string,2:string,3:int}> $asso
+     *      Associations of the values.
      * @return void
      */
     protected function RegisterProfileString(string $name, string $icon, string $prefix, string $suffix, array $asso): void
@@ -153,7 +152,6 @@ trait ProfileHelper
      * Returns the used profile name of a variable
      *
      * @param int $id Variable ID
-     *
      * @return string Empty, or name of the profile
      */
     protected function GetVariableProfile(int $id): string

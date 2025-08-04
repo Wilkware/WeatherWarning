@@ -7,7 +7,7 @@
  *
  * @package       traits
  * @author        Heiko Wilknitz <heiko@wilkware.de>
- * @copyright     2020 Heiko Wilknitz
+ * @copyright     2025 Heiko Wilknitz
  * @link          https://wilkware.de
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
@@ -26,7 +26,6 @@ trait EventHelper
      * @param int    $hour   Start hour.
      * @param int    $minute Start minute.
      * @param int    $second Start second.
-     *
      * @return void
      */
     protected function UpdateTimerInterval(string $ident, int $hour, int $minute, int $second): void
@@ -43,15 +42,14 @@ trait EventHelper
     /**
      * Creates a weekly schedule.
      *
-     * @param int    $id     Parent ID
-     * @param string $name   Schedule name
-     * @param string $ident  Internal identifier
-     * @param array<int, array{0: string, 1: int, 2: string}> $datas Array with switch states.
-     * @param int    $pos    Position (sort order)
-     *
+     * @param int    $id     Parent ID.
+     * @param string $name   Schedule name.
+     * @param string $ident  Internal identifier.
+     * @param array<int,array{0:string,1:int,2:string}> $data Array with switch states.
+     * @param int    $pos    Position (sort order).
      * @return int ID of the existing schedule or of the new created schedule.
      */
-    protected function CreateWeeklySchedule(int $id, string $name, string $ident, array $datas, int $pos = 0): int
+    protected function CreateWeeklySchedule(int $id, string $name, string $ident, array $data, int $pos = 0): int
     {
         $eid = @IPS_GetObjectIDByIdent($ident, $id);
         if ($eid === false) {
@@ -60,7 +58,7 @@ trait EventHelper
             IPS_SetIdent($eid, $ident);
             IPS_SetParent($eid, $id);
             IPS_SetPosition($eid, $pos);
-            foreach ($datas as $key => $value) {
+            foreach ($data as $key => $value) {
                 IPS_SetEventScheduleAction($eid, $key, $this->Translate($value[0]), $value[1], $value[2]);
             }
             // Mo - So (1 + 2 + 4 + 8 + 16 + 32 + 64) = 127; Mo - Fr (1 + 2 + 4 + 8 + 16) = 31; Sa + So (32 + 64) = 96
@@ -74,10 +72,9 @@ trait EventHelper
     /**
      * Reads out the status of a desired weekly schedule event.
      *
-     * @param int $id Weekly schedule ID
-     * @param int $time Query time as system time
-     * @param bool $checkonly Check only slot
-     *
+     * @param int  $id        Weekly schedule ID.
+     * @param int  $time      Query time as system time.
+     * @param bool $checkonly Check only slot.
      * @return array{
      *     ActionID: int,               // Active state at the time of the query
      *     ActionName: string,          // Status description at the time of the query
@@ -98,9 +95,9 @@ trait EventHelper
      *     WeekPlanID: int,             // ID of the weekly schedule
      *     WeekPlanName: string,        // Name of the weekly plan
      *     WeekPlanActiv: int           // State whether the weekly schedule is active or not
-     * }|false
+     * }
      */
-    protected function GetWeeklyScheduleInfo(int $id, int $time = null, bool $checkonly = false)
+    protected function GetWeeklyScheduleInfo(int $id, int $time = null, bool $checkonly = false): array
     {
         if ($time == null) {
             $time = time();
@@ -431,11 +428,10 @@ trait EventHelper
     }
 
     /**
-     * Versucht eine Semaphore zu setzen und wiederholt dies bei Misserfolg bis zu 100 mal.
+     * Attempts to set a semaphore and retries up to 100 times upon failure.
      *
-     * @param string $ident Ein String der den Lock bezeichnet.
-     *
-     * @return boolean TRUE bei Erfolg, FALSE bei Misserfolg.
+     * @param string $ident A string that identifies the lock.
+     * @return bool TRUE on success, FALSE on failure.
      */
     private function SemaphoreEnter(string $ident): bool
     {
@@ -450,10 +446,9 @@ trait EventHelper
     }
 
     /**
-     * Löscht eine Semaphore.
+     * Deletes a semaphore.
      *
-     * @param string $ident Ein String der den Lock bezeichnet.
-     *
+     * @param string $ident  A string that identifies the lock.
      * @return void
      */
     private function SemaphoreLeave(string $ident): void
