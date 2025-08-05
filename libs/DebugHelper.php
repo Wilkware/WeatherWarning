@@ -14,6 +14,10 @@
 
 declare(strict_types=1);
 
+/** @symcon-namespace */
+
+namespace Wilkware\WeatherWarning;
+
 /**
  * Helper class for the debug output.
  */
@@ -25,6 +29,7 @@ trait DebugHelper
      * @param string $msg       Title of the debug message.
      * @param mixed  $data      Data to be logged (array, object, scalar, etc.).
      * @param bool   $multiline Output arrays/objects in separate lines if true, otherwise as string.
+     *
      * @return void
      */
     protected function LogDebug(string $msg, $data, bool $multiline = true): void
@@ -59,6 +64,7 @@ trait DebugHelper
      * Wrapper to print various object/variable types.
      *
      * @param mixed $var Variable to string.
+     *
      * @return string Line based print message.
      */
     protected function Stringify($var): string
@@ -81,10 +87,11 @@ trait DebugHelper
      *
      * @param string $msg  Title of the log message.
      * @param int    $type message typ (KL_DEBUG| KL_ERROR| KL_MESSAGE| KL_NOTIFY (default)| KL_WARNING).
-     * @return void
+     *
+     * @return bool  Always true
      */
-    protected function LogMessage($msg, $type = KL_NOTIFY): void
+    protected function LogMessage($msg, $type = KL_NOTIFY): bool
     {
-        parent::LogMessage($msg, $type);
+        return parent::LogMessage($msg, $type);
     }
 }

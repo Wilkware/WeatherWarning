@@ -6,7 +6,7 @@
         stopOnError="true">
     <testsuites>
         <testsuite name="Symcon Modul Test Suite">
-            <directory>./</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

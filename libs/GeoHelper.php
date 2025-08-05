@@ -14,287 +14,293 @@
 
 declare(strict_types=1);
 
-/**
- * DWD GeoServer URL base prefix
- */
-const DWD_GEO_BASEURL = 'https://maps.dwd.de/geoserver/dwd/ows?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application/json';
+/** @symcon-namespace */
+
+namespace Wilkware\WeatherWarning;
 
 /**
- * DWD GeoServer MAPS URL base prefix
+ * Helper Class für Geo data
  */
-const DWD_GEO_MAPSURL = 'https://maps.dwd.de/geoserver/dwd/wms';
-
-/**
- * DWD GeoServer URL type parameter
- */
-const DWD_GEO_PRAMS = [
-    1 => ['&typeName=dwd:Warnungen_Landkreise', '&CQL_FILTER=GC_WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
-    2 => ['&typeName=dwd:Warnungen_Binnenseen', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
-    4 => ['&typeName=dwd:Warnungen_See', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
-    5 => ['&typeName=dwd:Warnungen_Kueste', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
-    8 => ['&typeName=dwd:Warnungen_Gemeinden', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
-    9 => ['&typeName=dwd:Warnungen_Landkreise', '&CQL_FILTER=GC_WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
-];
-
-/**
- * DWD MapServer
- */
-const DWD_GEO_MAPS = [
-    # NO
-    '00' => [500, 500, 0.000000, 0.000000, 0.000000, 0.000000],     // Keine Karte
-    # BL
-    '01' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein
-    '02' => [500, 225, 8.421364, 53.394925, 10.324258, 53.964437],  // Hamburg
-    '03' => [500, 400, 6.654584, 51.295415, 11.597698, 53.894151],  // Niedersachsen
-    '04' => [500, 810, 8.481357, 53.010370, 8.983047, 53.606166],   // Bremen
-    '05' => [500, 470, 5.865998, 50.322698, 9.447658, 52.531035],   // Nordrhein-Westfalen
-    '06' => [500, 690, 7.773170, 49.394822, 10.234015, 51.654049],  // Hessen
-    '07' => [500, 615, 6.117359, 48.966274, 8.508475, 50.940443],   // Rheinland-Pfalz
-    '08' => [500, 570, 7.511393, 47.533800, 10.491823, 49.791374],  // Baden-Württemberg
-    '09' => [500, 510, 8.977158, 47.270362, 13.835042, 50.564452],  // Bayern
-    '10' => [500, 375, 6.358469, 49.113099, 7.403490, 49.639346],   // Saarland
-    '11' => [500, 375, 13.088209, 52.341823, 13.760610, 52.669724], // Berlin
-    '12' => [500, 470, 11.268166, 51.360662, 14.764710, 53.557950], // Brandenburg
-    '13' => [500, 310, 10.593246, 53.115863, 14.412279, 54.684988], // Mecklenburg-Vorpommern
-    '14' => [500, 355, 11.872308, 50.171541, 15.037743, 51.683140], // Sachsen
-    '15' => [500, 625, 10.561475, 50.937997, 13.186560, 53.042131], // Sachsen-Anhalt
-    '16' => [500, 390, 9.877844, 50.204233, 12.653196, 51.649067],  // Thüringen
-    # MO
-    '17' => [500, 615, 6.117359, 48.966274, 8.508475, 50.940443],   // Rheinland-Pfalz, Saarland
-    '21' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein, Hamburg
-    '23' => [500, 470, 11.268166, 51.360662, 14.764710, 53.557950], // Berlin, Brandenburg
-    '34' => [500, 400, 6.654584, 51.295415, 11.597698, 53.894151],  // Niedersachsen, Bremen
-    # DE
-    '99' => [500, 640, 5.876914, 47.270362, 15.037507, 55.044381],  // Deutschland
-];
-
-/**
- * DWD Event Codes
- */
-const DWD_EVENT_CODE = [
-    '11'  => 'Böen',
-    '12'  => 'Wind',
-    '13'  => 'Sturm',
-    '14'  => 'Starkwind',
-    '15'  => 'Sturm',
-    '16'  => 'Schwerer Sturm',
-    '22'  => 'Frost',
-    '24'  => 'Glätte',
-    '31'  => 'Gewitter',
-    '33'  => 'Starkes Gewitter',
-    '34'  => 'Starkes Gewitter',
-    '36'  => 'Starkes Gewitter',
-    '38'  => 'Starkes Gewitter',
-    '40'  => 'Schweres Gewitter mit Orkanböen',
-    '41'  => 'Schweres Gewitter mit extremen Orkanböen',
-    '42'  => 'Schweres Gewitter mit heftigem Starkregen',
-    '44'  => 'Schweres Gewitter mit Orkanböen und heftigem Starkregen',
-    '45'  => 'Schweres Gewitter mit extremen Orkanböen und heftigem Starkregen',
-    '46'  => 'Schweres Gewitter mit heftigem Starkregen und Hagel',
-    '48'  => 'Schweres Gewitter mit Orkanböen, heftigem Starkregen und Hagel',
-    '49'  => 'Schweres Gewitter mit extremen Orkanböen, heftigem Starkregen und Hagel',
-    '51'  => 'Windböen',
-    '52'  => 'Sturmböen',
-    '53'  => 'Schwere Sturmböen',
-    '54'  => 'Orkanartige Böen',
-    '55'  => 'Orkanböen',
-    '56'  => 'Extreme Orkanböen',
-    '57'  => 'Starkwind',
-    '58'  => 'Sturm',
-    '59'  => 'Nebel',
-    '61'  => 'Starkregen',
-    '62'  => 'Heftiger Starkregen',
-    '63'  => 'Dauerregen',
-    '64'  => 'Ergiebiger Dauerregen',
-    '65'  => 'Extrem ergiebiger Dauerregen',
-    '66'  => 'Extrem heftiger Starkregen',
-    '70'  => 'Leichter Schneefall',
-    '71'  => 'Schneefall',
-    '72'  => 'Starker Schneefall',
-    '73'  => 'Extrem starker Schneefall',
-    '74'  => 'Schneeverwehung',
-    '75'  => 'Starke Schneeverwehung',
-    '76'  => 'Extrem starke Schneeverwehung',
-    '79'  => 'Leiterseilschwingungen',
-    '82'  => 'Strenger Frost',
-    '84'  => 'Glätte',
-    '85'  => 'Glatteis',
-    '87'  => 'Glatteis',
-    '88'  => 'Tauwetter',
-    '89'  => 'Starkes Tauwetter',
-    '90'  => 'Gewitter',
-    '91'  => 'Starkes Gewitter',
-    '92'  => 'Schweres Gewitter',
-    '93'  => 'Extremes Gewitter',
-    '95'  => 'Schweres Gewitter mit extrem heftigem Starkregen und Hagel',
-    '96'  => 'Extremes Gewitter mit Orkanböen, extrem heftigem Starkregen und Hagel',
-    '98'  => 'Test-Warnung',
-    '99'  => 'Test-Unwetterwarnung',
-    '246' => 'UV-Index',
-    '247' => 'Starke Hitze',
-    '248' => 'Extreme Hitze',
-];
-/*
-    '40' => 'VORABINFORMATION SCHWERES GEWITTER',
-    '55' => 'VORABINFORMATION ORKANBÖEN',
-    '65' => 'VORABINFORMATION HEFTIGER / ERGIEBIGER REGEN',
-    '75' => 'VORABINFORMATION STARKER SCHNEEFALL / SCHNEEVERWEHUNG',
-    '85' => 'VORABINFORMATION GLATTEIS',
-    '89' => 'VORABINFORMATION STARKES TAUWETTER',
-    '99' => 'TEST-VORABINFORMATION UNWETTER',
- */
-
-/**
- * DWD Event Mapper
- */
-const DWD_EVENT_MAP = [
-    'gewitter'    => [31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49, 90, 91, 92, 93, 95, 96],
-    'wind'        => [11, 12, 13, 14, 15, 16, 33, 36, 38, 40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 79, 96],
-    'regen'       => [61, 62, 63, 64, 65, 66],
-    'schnee'      => [70, 71, 72, 73,  74, 75, 76],
-    'nebel'       => [59],
-    'frost'       => [22, 82, 83],
-    'glaette'     => [24, 84, 85, 87],
-    'tauwetter'   => [88, 89],
-    'uv'          => [246],
-    'hitze'       => [247, 248],
-];
-
-/**
- * Status of alert message
- */
-const DWD_MSGTYPE = [
-    'Alert'  => 'Erstausgabe der Meldung',
-    'Update' => 'Aktualisierung der Meldung',
-    'Cancel' => 'Stornierung der Meldung',
-];
-
-/**
- * Status of alert message
- */
-const DWD_STATUS = [
-    'Actual' => 'Aktuelle Meldung',
-    'Test'   => 'Technischer Test',
-];
-
-/**
- * Categorie of alert message
- */
-const DWD_CATEGORY = [
-    'Met'    => 'Meteorologische Meldung',
-    'Health' => 'Medizin-Meteorologische Meldung', // e.g. Hitzewarnung
-];
-
-/**
- * Time frame of the message
- */
-const DWD_URGENCY = [
-    'Immediate' => 'Warnung',
-    'Future'    => 'Vorabinformation',
-];
-
-/**
- * Images & films
- */
-const DWD_LINKS = [
-    # Temperatur Image
-    'TEMP'      => 'https://www.dwd.de/DWD/wetter/aktuell/deutschland/bilder/wx_<STATE>_akt.jpg',
-    # Niederschlag Radar
-    'RADAR'     => 'https://www.dwd.de/DWD/wetter/radar/rad_<STATE>_akt.jpg',
-    # Niederschlag Radarfilm
-    'MOVIE'     => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
-    # Karte mit allen Warnungen
-    'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png',
-    # Niederschlagsradar-Vorhersage
-    'FORECAST'  => 'https://www.dwd.de/DWD/wetter/radar/radarvhs.gif',
-];
-
-/**
- * Symbole & Icons
- */
-const DWD_ICONS = [
-    # Check Icon
-    '0' => 'https://wilkware.github.io/img/dwd/warning_check.png',
-    # Level Icons
-    '1' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-    '2' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-    '3' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-    '4' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-];
-
-/**
- * Default stylesheets
- */
-const CSS_STYLES = [
-    'MapStyle'      => "body { margin:0px; overflow: hidden; }\n#uwwImg {width:100%; height:auto;}\n#uwwPin {position:absolute; top:-20px; left:-20px; margin:-30px 0 0 -10px; border-radius:50% 50% 50% 0; border:4px solid {{color}}; width:20px; height:20px; transform:rotate(-45deg); }\n#uwwPin::after {position:absolute; content:''; width:10px; height:10px; border-radius:50%; top:50%; left:50%; margin:-5px -5px; background-color:{{color}}; }",
-    'WarningStyle'  => "body { margin:0px; }\n::-webkit-scrollbar { height:4px; width:4px; }\n::-webkit-scrollbar-track { border-radius:5px; background:transparent; border:solid 3px transparent; }\n::-webkit-scrollbar-thumb { border-radius:5px; color:gray; background: gray; }\n::-webkit-scrollbar-thumb:hover { background: #555; }\n::-webkit-scrollbar-corner { background: transparent; }\ntable.uww { width:100%; border-collapse:collapse; font-size:14px; }\ntr:nth-child(even) { background-color:rgba(0, 0, 0, 0.3); }\n.uww td.img { width:50px; border:0px; vertical-align:top; text-align:left; }\n.uww td.txt { vertical-align:top; text-align:left; padding:0px 10px 10px 10px; }\n.uww .hl { font-weight:bold; }\n.uww .ts { font-style:italic; font-size:smaller; }\n.uww .desc {}\n.uww .warn {}",
-    'LegendStyle'   => "body { margin:0px; overflow: hidden; }\n#legend { display:table; width:100%; font-size:11px; }\n#legend .row { display:table-row; }\n#legend .cell1 { display:table-cell; width:60%; }\n#legend .cell2 { display:table-cell; width:40%; }\n#legend .box { width:15px; height:15px; border:#000 solid 1px; vertical-align:middle; margin-right:10px; float:left; }\n#legend .text { height:16px; padding:2px; vertical-align:middle; }\n.yellow { background-color:#ffeb3b!important; }\n.orange { background-color:#fb8c00!important; }\n.red { background-color:#e53935!important; }\n.violet { background-color:#880e4f!important; }\n.green { background-color:#c5e566!important; }\n.pink { background-color:#fe68fe!important; }\n.lightpurple { background-color:#c9f!important; }\n.darkpurple { background-color:#9e46f8!important; }",
-];
-
-/**
- * Content of the legend HTMLCox
- */
-const HTML_LEGEND =
-    '<body>
-    <div id="legend">
-        <div class="row">
-            <div class="cell1">
-                <div class="box yellow" title="Wetterwarnungen"></div>
-                <div class="text">Wetterwarnungen (Stufe 1)</div>
-                <div class="box orange" title="Warnungen vor markantem Wetter"></div>
-                <div class="text">Markante Wetterwarnung (Stufe 2)</div>
-                <div class="box red" title="Unwetterwarnungen"></div>
-                <div class="text">Unwetterwarnungen (Stufe 3)</div>
-                <div class="box violet" title="Warnungen vor extremem Unwetter"></div>
-                <div class="text">Extreme Unwetterwarnung (Stufe 4)</div>
-            </div>
-            <div class="cell2">
-                <div class="box green" title="Keine Warnungen"></div>
-                <div class="text">Keine Warnungen</div>
-                <div class="box pink" title="UV-Warnungen"></div>
-                <div class="text">UV-Warnung</div>
-                <div class="box lightpurple" title="Hitzewarnungen"></div>
-                <div class="text">Hitzewarnung</div>
-                <div class="box darkpurple" title="Extreme Hitzewarnung"></div>
-                <div class="text">Extreme Hitzewarnung</div>
-            </div>
-        </div>
-    </div>
-</body>';
-
-/**
- * Warning level of the message
- * https://www.wettergefahren.de/warnungen/warnsituation.html
- * https://www.wettergefahren.de/warnungen/wetterwarnkriterien.html
- * https://www.wettergefahren.de/warnungen/unwetterwarnkriterien.html
- * https://www.wettergefahren.de/stat/warnungen/warnapp/img/icn_check.png
- * 'Minor' => 'Wetterwarnung'                // Stufe 1 (Gelb)
- * 'Moderate' => 'Markante Wetterwarnung'    // Stufe 2 (Orange)
- * 'Severe' => 'Unwetterwarnung'             // Stufe 3 (Rot)
- * 'Extreme' => 'Extreme Unwetterwarnung'    // Stufe 4 (Violett)
- */
-const DWD_SEVERITY = [
-    [0, 'None', '', 0xc5E566, 'gruen'],             // Stufe 0 (Grün)
-    [1, 'Minor', '', 0xFFEB3B, 'gelb'],             // Stufe 1 (Gelb)
-    [2, 'Moderate', '', 0xFB8C00, 'orange'],         // Stufe 2 (Orange)
-    [3, 'Severe', '', 0xE53935, 'rot'],             // Stufe 3 (Rot)
-    [4, 'Extreme', '', 0x880E4f, 'violett'],        // Stufe 4 (Violett)
-    [10, 'UV', '', 0xFE68FE, 'rosa'],               // Stufe 1 (Rosa)
-    [11, 'Heat', '', 0xCC99FF, 'lila'],             // Stufe 1 (Lila)
-    [13, 'Heat (extreme)', '', 0x9E46F8, 'violett'],   // Stufe 3 (Violett)
-];
-
-/**
- * Typ of message
- */
-const DWD_CERTAINTY = [
-    'Observed' => 'Beobachtung',
-    'Likely'   => 'Vorhersage, Auftreten wahrscheinlich (p > ~50%)',
-];
-
-// CLASS: GeoHelper
 trait GeoHelper
 {
+    /**
+     * DWD GeoServer URL base prefix
+     */
+    private const DWD_GEO_BASEURL = 'https://maps.dwd.de/geoserver/dwd/ows?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG:4326&outputFormat=application/json';
+
+    /**
+     * DWD GeoServer MAPS URL base prefix
+     */
+    private const DWD_GEO_MAPSURL = 'https://maps.dwd.de/geoserver/dwd/wms';
+
+    /**
+     * DWD GeoServer URL type parameter
+     */
+    private const DWD_GEO_PRAMS = [
+        1 => ['&typeName=dwd:Warnungen_Landkreise', '&CQL_FILTER=GC_WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+        2 => ['&typeName=dwd:Warnungen_Binnenseen', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+        4 => ['&typeName=dwd:Warnungen_See', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+        5 => ['&typeName=dwd:Warnungen_Kueste', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+        8 => ['&typeName=dwd:Warnungen_Gemeinden', '&CQL_FILTER=WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+        9 => ['&typeName=dwd:Warnungen_Landkreise', '&CQL_FILTER=GC_WARNCELLID%20IN%20(\'<WARNCELLID>\')'],
+    ];
+
+    /**
+     * DWD MapServer
+     */
+    private const DWD_GEO_MAPS = [
+        # NO
+        '00' => [500, 500, 0.000000, 0.000000, 0.000000, 0.000000],     // Keine Karte
+        # BL
+        '01' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein
+        '02' => [500, 225, 8.421364, 53.394925, 10.324258, 53.964437],  // Hamburg
+        '03' => [500, 400, 6.654584, 51.295415, 11.597698, 53.894151],  // Niedersachsen
+        '04' => [500, 810, 8.481357, 53.010370, 8.983047, 53.606166],   // Bremen
+        '05' => [500, 470, 5.865998, 50.322698, 9.447658, 52.531035],   // Nordrhein-Westfalen
+        '06' => [500, 690, 7.773170, 49.394822, 10.234015, 51.654049],  // Hessen
+        '07' => [500, 615, 6.117359, 48.966274, 8.508475, 50.940443],   // Rheinland-Pfalz
+        '08' => [500, 570, 7.511393, 47.533800, 10.491823, 49.791374],  // Baden-Württemberg
+        '09' => [500, 510, 8.977158, 47.270362, 13.835042, 50.564452],  // Bayern
+        '10' => [500, 375, 6.358469, 49.113099, 7.403490, 49.639346],   // Saarland
+        '11' => [500, 375, 13.088209, 52.341823, 13.760610, 52.669724], // Berlin
+        '12' => [500, 470, 11.268166, 51.360662, 14.764710, 53.557950], // Brandenburg
+        '13' => [500, 310, 10.593246, 53.115863, 14.412279, 54.684988], // Mecklenburg-Vorpommern
+        '14' => [500, 355, 11.872308, 50.171541, 15.037743, 51.683140], // Sachsen
+        '15' => [500, 625, 10.561475, 50.937997, 13.186560, 53.042131], // Sachsen-Anhalt
+        '16' => [500, 390, 9.877844, 50.204233, 12.653196, 51.649067],  // Thüringen
+        # MO
+        '17' => [500, 615, 6.117359, 48.966274, 8.508475, 50.940443],   // Rheinland-Pfalz, Saarland
+        '21' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein, Hamburg
+        '23' => [500, 470, 11.268166, 51.360662, 14.764710, 53.557950], // Berlin, Brandenburg
+        '34' => [500, 400, 6.654584, 51.295415, 11.597698, 53.894151],  // Niedersachsen, Bremen
+        # DE
+        '99' => [500, 640, 5.876914, 47.270362, 15.037507, 55.044381],  // Deutschland
+    ];
+
+    /**
+     * DWD Event Codes
+     */
+    /*
+    private const DWD_EVENT_CODE = [
+        '11'  => 'Böen',
+        '12'  => 'Wind',
+        '13'  => 'Sturm',
+        '14'  => 'Starkwind',
+        '15'  => 'Sturm',
+        '16'  => 'Schwerer Sturm',
+        '22'  => 'Frost',
+        '24'  => 'Glätte',
+        '31'  => 'Gewitter',
+        '33'  => 'Starkes Gewitter',
+        '34'  => 'Starkes Gewitter',
+        '36'  => 'Starkes Gewitter',
+        '38'  => 'Starkes Gewitter',
+        '40'  => 'Schweres Gewitter mit Orkanböen',
+        '41'  => 'Schweres Gewitter mit extremen Orkanböen',
+        '42'  => 'Schweres Gewitter mit heftigem Starkregen',
+        '44'  => 'Schweres Gewitter mit Orkanböen und heftigem Starkregen',
+        '45'  => 'Schweres Gewitter mit extremen Orkanböen und heftigem Starkregen',
+        '46'  => 'Schweres Gewitter mit heftigem Starkregen und Hagel',
+        '48'  => 'Schweres Gewitter mit Orkanböen, heftigem Starkregen und Hagel',
+        '49'  => 'Schweres Gewitter mit extremen Orkanböen, heftigem Starkregen und Hagel',
+        '51'  => 'Windböen',
+        '52'  => 'Sturmböen',
+        '53'  => 'Schwere Sturmböen',
+        '54'  => 'Orkanartige Böen',
+        '55'  => 'Orkanböen',
+        '56'  => 'Extreme Orkanböen',
+        '57'  => 'Starkwind',
+        '58'  => 'Sturm',
+        '59'  => 'Nebel',
+        '61'  => 'Starkregen',
+        '62'  => 'Heftiger Starkregen',
+        '63'  => 'Dauerregen',
+        '64'  => 'Ergiebiger Dauerregen',
+        '65'  => 'Extrem ergiebiger Dauerregen',
+        '66'  => 'Extrem heftiger Starkregen',
+        '70'  => 'Leichter Schneefall',
+        '71'  => 'Schneefall',
+        '72'  => 'Starker Schneefall',
+        '73'  => 'Extrem starker Schneefall',
+        '74'  => 'Schneeverwehung',
+        '75'  => 'Starke Schneeverwehung',
+        '76'  => 'Extrem starke Schneeverwehung',
+        '79'  => 'Leiterseilschwingungen',
+        '82'  => 'Strenger Frost',
+        '84'  => 'Glätte',
+        '85'  => 'Glatteis',
+        '87'  => 'Glatteis',
+        '88'  => 'Tauwetter',
+        '89'  => 'Starkes Tauwetter',
+        '90'  => 'Gewitter',
+        '91'  => 'Starkes Gewitter',
+        '92'  => 'Schweres Gewitter',
+        '93'  => 'Extremes Gewitter',
+        '95'  => 'Schweres Gewitter mit extrem heftigem Starkregen und Hagel',
+        '96'  => 'Extremes Gewitter mit Orkanböen, extrem heftigem Starkregen und Hagel',
+        '98'  => 'Test-Warnung',
+        '99'  => 'Test-Unwetterwarnung',
+        '246' => 'UV-Index',
+        '247' => 'Starke Hitze',
+        '248' => 'Extreme Hitze',
+    ];
+        '40' => 'VORABINFORMATION SCHWERES GEWITTER',
+        '55' => 'VORABINFORMATION ORKANBÖEN',
+        '65' => 'VORABINFORMATION HEFTIGER / ERGIEBIGER REGEN',
+        '75' => 'VORABINFORMATION STARKER SCHNEEFALL / SCHNEEVERWEHUNG',
+        '85' => 'VORABINFORMATION GLATTEIS',
+        '89' => 'VORABINFORMATION STARKES TAUWETTER',
+        '99' => 'TEST-VORABINFORMATION UNWETTER',
+     */
+
+    /**
+     * DWD Event Mapper
+     */
+    private const DWD_EVENT_MAP = [
+        'gewitter'    => [31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49, 90, 91, 92, 93, 95, 96],
+        'wind'        => [11, 12, 13, 14, 15, 16, 33, 36, 38, 40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 79, 96],
+        'regen'       => [61, 62, 63, 64, 65, 66],
+        'schnee'      => [70, 71, 72, 73,  74, 75, 76],
+        'nebel'       => [59],
+        'frost'       => [22, 82, 83],
+        'glaette'     => [24, 84, 85, 87],
+        'tauwetter'   => [88, 89],
+        'uv'          => [246],
+        'hitze'       => [247, 248],
+    ];
+
+    /**
+     * Status of alert message
+     */
+    private const DWD_MSGTYPE = [
+        'Alert'  => 'Erstausgabe der Meldung',
+        'Update' => 'Aktualisierung der Meldung',
+        'Cancel' => 'Stornierung der Meldung',
+    ];
+
+    /**
+     * Status of alert message
+     */
+    private const DWD_STATUS = [
+        'Actual' => 'Aktuelle Meldung',
+        'Test'   => 'Technischer Test',
+    ];
+
+    /**
+     * Categorie of alert message
+     */
+    private const DWD_CATEGORY = [
+        'Met'    => 'Meteorologische Meldung',
+        'Health' => 'Medizin-Meteorologische Meldung', // e.g. Hitzewarnung
+    ];
+
+    /**
+     * Time frame of the message
+     */
+    private const DWD_URGENCY = [
+        'Immediate' => 'Warnung',
+        'Future'    => 'Vorabinformation',
+    ];
+
+    /**
+     * Images & films
+     */
+    private const DWD_LINKS = [
+        # Temperatur Image
+        'TEMP'      => 'https://www.dwd.de/DWD/wetter/aktuell/deutschland/bilder/wx_<STATE>_akt.jpg',
+        # Niederschlag Radar
+        'RADAR'     => 'https://www.dwd.de/DWD/wetter/radar/rad_<STATE>_akt.jpg',
+        # Niederschlag Radarfilm
+        'MOVIE'     => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
+        # Karte mit allen Warnungen
+        'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png',
+        # Niederschlagsradar-Vorhersage
+        'FORECAST'  => 'https://www.dwd.de/DWD/wetter/radar/radarvhs.gif',
+    ];
+
+    /**
+     * Symbole & Icons
+     */
+    private const DWD_ICONS = [
+        # Check Icon
+        '0' => 'https://wilkware.github.io/img/dwd/warning_check.png',
+        # Level Icons
+        '1' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+        '2' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+        '3' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+        '4' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
+    ];
+
+    /**
+     * Default stylesheets
+     */
+    private const CSS_STYLES = [
+        'MapStyle'      => "body { margin:0px; overflow: hidden; }\n#uwwImg {width:100%; height:auto;}\n#uwwPin {position:absolute; top:-20px; left:-20px; margin:-30px 0 0 -10px; border-radius:50% 50% 50% 0; border:4px solid {{color}}; width:20px; height:20px; transform:rotate(-45deg); }\n#uwwPin::after {position:absolute; content:''; width:10px; height:10px; border-radius:50%; top:50%; left:50%; margin:-5px -5px; background-color:{{color}}; }",
+        'WarningStyle'  => "body { margin:0px; }\n::-webkit-scrollbar { height:4px; width:4px; }\n::-webkit-scrollbar-track { border-radius:5px; background:transparent; border:solid 3px transparent; }\n::-webkit-scrollbar-thumb { border-radius:5px; color:gray; background: gray; }\n::-webkit-scrollbar-thumb:hover { background: #555; }\n::-webkit-scrollbar-corner { background: transparent; }\ntable.uww { width:100%; border-collapse:collapse; font-size:14px; }\ntr:nth-child(even) { background-color:rgba(0, 0, 0, 0.3); }\n.uww td.img { width:50px; border:0px; vertical-align:top; text-align:left; }\n.uww td.txt { vertical-align:top; text-align:left; padding:0px 10px 10px 10px; }\n.uww .hl { font-weight:bold; }\n.uww .ts { font-style:italic; font-size:smaller; }\n.uww .desc {}\n.uww .warn {}",
+        'LegendStyle'   => "body { margin:0px; overflow: hidden; }\n#legend { display:table; width:100%; font-size:11px; }\n#legend .row { display:table-row; }\n#legend .cell1 { display:table-cell; width:60%; }\n#legend .cell2 { display:table-cell; width:40%; }\n#legend .box { width:15px; height:15px; border:#000 solid 1px; vertical-align:middle; margin-right:10px; float:left; }\n#legend .text { height:16px; padding:2px; vertical-align:middle; }\n.yellow { background-color:#ffeb3b!important; }\n.orange { background-color:#fb8c00!important; }\n.red { background-color:#e53935!important; }\n.violet { background-color:#880e4f!important; }\n.green { background-color:#c5e566!important; }\n.pink { background-color:#fe68fe!important; }\n.lightpurple { background-color:#c9f!important; }\n.darkpurple { background-color:#9e46f8!important; }",
+    ];
+
+    /**
+     * Content of the legend HTMLCox
+     */
+    private const HTML_LEGEND =
+        '<body>
+        <div id="legend">
+            <div class="row">
+                <div class="cell1">
+                    <div class="box yellow" title="Wetterwarnungen"></div>
+                    <div class="text">Wetterwarnungen (Stufe 1)</div>
+                    <div class="box orange" title="Warnungen vor markantem Wetter"></div>
+                    <div class="text">Markante Wetterwarnung (Stufe 2)</div>
+                    <div class="box red" title="Unwetterwarnungen"></div>
+                    <div class="text">Unwetterwarnungen (Stufe 3)</div>
+                    <div class="box violet" title="Warnungen vor extremem Unwetter"></div>
+                    <div class="text">Extreme Unwetterwarnung (Stufe 4)</div>
+                </div>
+                <div class="cell2">
+                    <div class="box green" title="Keine Warnungen"></div>
+                    <div class="text">Keine Warnungen</div>
+                    <div class="box pink" title="UV-Warnungen"></div>
+                    <div class="text">UV-Warnung</div>
+                    <div class="box lightpurple" title="Hitzewarnungen"></div>
+                    <div class="text">Hitzewarnung</div>
+                    <div class="box darkpurple" title="Extreme Hitzewarnung"></div>
+                    <div class="text">Extreme Hitzewarnung</div>
+                </div>
+            </div>
+        </div>
+    </body>';
+
+    /**
+     * Warning level of the message
+     * https://www.wettergefahren.de/warnungen/warnsituation.html
+     * https://www.wettergefahren.de/warnungen/wetterwarnkriterien.html
+     * https://www.wettergefahren.de/warnungen/unwetterwarnkriterien.html
+     * https://www.wettergefahren.de/stat/warnungen/warnapp/img/icn_check.png
+     * 'Minor' => 'Wetterwarnung'                // Stufe 1 (Gelb)
+     * 'Moderate' => 'Markante Wetterwarnung'    // Stufe 2 (Orange)
+     * 'Severe' => 'Unwetterwarnung'             // Stufe 3 (Rot)
+     * 'Extreme' => 'Extreme Unwetterwarnung'    // Stufe 4 (Violett)
+     */
+    private const DWD_SEVERITY = [
+        [0, 'None', '', 0xc5E566, 'gruen'],             // Stufe 0 (Grün)
+        [1, 'Minor', '', 0xFFEB3B, 'gelb'],             // Stufe 1 (Gelb)
+        [2, 'Moderate', '', 0xFB8C00, 'orange'],         // Stufe 2 (Orange)
+        [3, 'Severe', '', 0xE53935, 'rot'],             // Stufe 3 (Rot)
+        [4, 'Extreme', '', 0x880E4f, 'violett'],        // Stufe 4 (Violett)
+        [10, 'UV', '', 0xFE68FE, 'rosa'],               // Stufe 1 (Rosa)
+        [11, 'Heat', '', 0xCC99FF, 'lila'],             // Stufe 1 (Lila)
+        [13, 'Heat (extreme)', '', 0x9E46F8, 'violett'],   // Stufe 3 (Violett)
+    ];
+
+    /**
+     * Typ of message
+     */
+    private const DWD_CERTAINTY = [
+        'Observed' => 'Beobachtung',
+        'Likely'   => 'Vorhersage, Auftreten wahrscheinlich (p > ~50%)',
+    ];
+
     /**
      * JSON API BASE URL!
      * 1st level => LINKS (title, link)
@@ -317,8 +323,8 @@ trait GeoHelper
         // Debug output
         $this->LogDebug(__FUNCTION__, 'Type: ' . $type . ', WarnCellID: ' . $id);
         // Build URL
-        $base = DWD_GEO_BASEURL . DWD_GEO_PRAMS[intval($type)][0];
-        $param = str_replace('<WARNCELLID>', $id, DWD_GEO_PRAMS[intval($type)][1]);
+        $base = self::DWD_GEO_BASEURL . self::DWD_GEO_PRAMS[intval($type)][0];
+        $param = str_replace('<WARNCELLID>', $id, self::DWD_GEO_PRAMS[intval($type)][1]);
         // return the url
         $this->LogDebug(__FUNCTION__, $base . $param);
         return $base . $param;
@@ -331,9 +337,9 @@ trait GeoHelper
      * @param string $state State identifier
      * @param string $county County identifier
      *
-     * @return array<int,array{caption:string,value:string}> Options array with caption and value.
+     * @return array<mixed> Options array with caption and value.
      */
-    private function ExtractData(string $type, string $state = null, string $county = null): array
+    private function ExtractData(string $type, ?string $state = null, ?string $county = null): array
     {
         // Debug output
         $this->LogDebug(__FUNCTION__, 'Type: ' . $type . ',State: ' . $state . ',County: ' . $county);
@@ -392,10 +398,16 @@ trait GeoHelper
     {
         $this->LogDebug(__FUNCTION__, $value);
         $url = '';
-        foreach (DWD_EVENT_MAP as $event => $map) {
+        foreach (self::DWD_EVENT_MAP as $event => $map) {
             if (in_array($value['CODE'], $map)) {
-                $url = str_replace('<EVENT>', $event, DWD_ICONS[$value['LEVEL']]);
-                $url = str_replace('<LEVEL>', DWD_SEVERITY[$value['LEVEL']][4], $url);
+                if ($event == 'hitze' || $event == 'uv') {
+                    // not beautiful, but rare
+                    $url = str_replace('<EVENT>', $event, self::DWD_ICONS[1]);
+                    $url = str_replace('<LEVEL>', 'lila', $url);
+                } else {
+                    $url = str_replace('<EVENT>', $event, self::DWD_ICONS[$value['LEVEL']]);
+                    $url = str_replace('<LEVEL>', self::DWD_SEVERITY[$value['LEVEL']][4], $url);
+                }
             }
         }
         return $url;
@@ -452,57 +464,57 @@ trait GeoHelper
                         $prop['WARNCELLID'] = $value;
                         break;
                     case 'SENT':
-                        $ts = new DateTime($value);
+                        $ts = new \DateTime($value);
                         $prop['SENT'] = $ts->format('Y-m-d H:i:s');
                         break;
                     case 'STATUS':
-                        $prop['STATUS'] = DWD_STATUS[$value];
+                        $prop['STATUS'] = self::DWD_STATUS[$value];
                         break;
                     case 'MSGTYPE':
-                        $prop['TYPE'] = DWD_MSGTYPE[$value];
+                        $prop['TYPE'] = self::DWD_MSGTYPE[$value];
                         break;
                     case 'CATEGORY':
-                        $prop['CATEGORY'] = DWD_CATEGORY[$value];
+                        $prop['CATEGORY'] = self::DWD_CATEGORY[$value];
                         break;
                     case 'EVENT':
                         $prop['EVENT'] = $value;
                         break;
                     case 'URGENCY':
-                        $prop['URGENCY'] = DWD_URGENCY[$value];
+                        $prop['URGENCY'] = self::DWD_URGENCY[$value];
                         break;
                     case 'SEVERITY':
                         $prop['SEVERITY'] = $this->Translate($value);
-                        $prop['LEVEL'] = $this->GetKeyFromProfile($value, DWD_SEVERITY);
+                        $prop['LEVEL'] = $this->GetKeyFromProfile($value, self::DWD_SEVERITY);
                         break;
                     case 'CERTAINTY':
-                        $prop['CERTAINTY'] = DWD_CERTAINTY[$value];
+                        $prop['CERTAINTY'] = self::DWD_CERTAINTY[$value];
                         break;
                     case 'EC_II':
-                        $prop['CODE'] = $value; // . ':' . DWD_EVENT_CODE[$value];
+                        $prop['CODE'] = $value; // . ':' . self::DWD_EVENT_CODE[$value];
                         break;
                     case 'EC_GROUP':
                         $prop['GROUP'] = $value;
                         break;
                     case 'EFFECTIVE':
-                        $ts = new DateTime($value);
+                        $ts = new \DateTime($value);
                         $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
                         // no break is correct
                         // No break. Add additional comment above this line if intentional!
                     case 'SENT':
                         if (!isset($prop['TIMESTAMP'])) {
-                            $ts = new DateTime($value);
+                            $ts = new \DateTime($value);
                             $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
                         }
                         break;
                     case 'ONSET':
-                        $ts = new DateTime($value);
-                        $ts->setTimezone(new DateTimeZone('Europe/Berlin'));
+                        $ts = new \DateTime($value);
+                        $ts->setTimezone(new \DateTimeZone('Europe/Berlin'));
                         $prop['START'] = $ts->format('Y-m-d H:i:s');
                         break;
                     case 'EXPIRES':
                         if ($value != null) {
-                            $ts = new DateTime($value);
-                            $ts->setTimezone(new DateTimeZone('Europe/Berlin'));
+                            $ts = new \DateTime($value);
+                            $ts->setTimezone(new \DateTimeZone('Europe/Berlin'));
                             $prop['END'] = $ts->format('Y-m-d H:i:s');
                         } else {
                             $prop['END'] = '';
@@ -569,7 +581,7 @@ trait GeoHelper
      * Extract assoziated key for textual value
      *
      * @param string $value Textual expression of the value
-     * @param array<int,array{0:int,1:string}> $profile Profile association array
+     * @param array<int,mixed> $profile Profile association array
      *
      * @return int Associated key
      */

@@ -1,4 +1,4 @@
-# Unwetterwarnung (Weather Warning)
+# 🌩️ Unwetterwarnung (Weather Warning)
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
@@ -34,13 +34,13 @@ Darüber hinaus können noch Variablen zur Darstellung verschiedener Wetterbilde
 
 ### 3. Installation
 
-* Über den Modul Store das Modul Weather Warning installieren.
+* Über den Modul Store das Modul Unwetterwarnung (🇬🇧 Weather Warning) installieren.
 * Alternativ Über das Modul-Control folgende URL hinzufügen.  
 `https://github.com/Wilkware/WeatherWarning` oder `git://github.com/Wilkware/WeatherWarning.git`
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
-* Unter "Instanz hinzufügen" ist das _'Weather Warning'_-Modul (Alias: _'Unwetterwarnung'_) unter dem Hersteller _'(Geräte)'_ aufgeführt.
+* Unter "Instanz hinzufügen" ist das _'Unwetterwarnung'_-Modul unter dem Hersteller _'(Geräte)'_ aufgeführt.
 
 __Konfigurationsseite__:
 

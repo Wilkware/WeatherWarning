@@ -6,8 +6,7 @@ $stubBasePath = getenv('IPS_STUBS_PATH');
 
 if ($stubBasePath === false) {
     $possiblePaths = [
-        __DIR__ . '/../../_ips-stubs',
-        __DIR__ . '/../../../_ips-stubs',
+        __DIR__ . '/stubs',
     ];
     foreach ($possiblePaths as $path) {
         if (file_exists($path . '/Validator.php')) {
