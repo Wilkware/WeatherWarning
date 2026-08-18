@@ -28,6 +28,44 @@ class WeatherWarning extends IPSModuleStrict
     use VersionHelper;
 
     // -------------------------------------------------------------------------
+    // Presentations
+    // -------------------------------------------------------------------------
+
+    /**
+     * @var array<string,mixed> Html Presentation (Web)
+     */
+    private const UWW_PRESENTATION_HTML = [
+        'PRESENTATION' => VARIABLE_PRESENTATION_WEB_CONTENT,
+        'PADDING'      => false,
+        'HTML_TYPE'    => 0,
+    ];
+
+    /**
+     * @var array<string,mixed> Level Presentation (Value)
+     */
+    private const UWW_PRESENTATION_LEVEL = [
+        'USAGE_TYPE'          => 0,
+        'THOUSANDS_SEPARATOR' => '',
+        'SHOW_PREVIEW'        => true,
+        'PRESENTATION'        => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+        'SUFFIX'              => '',
+        'COLOR'               => -1,
+        'MAX'                 => 0,
+        'MULTILINE'           => false,
+        'DECIMAL_SEPARATOR'   => 'Client',
+        'PERCENTAGE'          => false,
+        'DIGITS'              => 0,
+        'INTERVALS'           => '[{"ColorDisplay":12969318,"ContentColorDisplay":-1,"IntervalMinValue":0,"IntervalMaxValue":0,"ConstantActive":true,"ConstantValue":"None","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":12969318,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16771899,"ContentColorDisplay":-1,"IntervalMinValue":1,"IntervalMaxValue":1,"ConstantActive":true,"ConstantValue":"Minor","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16771899,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16485376,"ContentColorDisplay":-1,"IntervalMinValue":2,"IntervalMaxValue":2,"ConstantActive":true,"ConstantValue":"Moderate","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16485376,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":15022389,"ContentColorDisplay":-1,"IntervalMinValue":3,"IntervalMaxValue":3,"ConstantActive":true,"ConstantValue":"Severe","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":15022389,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":8916559,"ContentColorDisplay":-1,"IntervalMinValue":4,"IntervalMaxValue":4,"ConstantActive":true,"ConstantValue":"Extreme","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8916559,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16673022,"ContentColorDisplay":-1,"IntervalMinValue":10,"IntervalMaxValue":10,"ConstantActive":true,"ConstantValue":"UV","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16673022,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":13408767,"ContentColorDisplay":-1,"IntervalMinValue":11,"IntervalMaxValue":11,"ConstantActive":true,"ConstantValue":"Heat","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":13408767,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16673022,"ContentColorDisplay":-1,"IntervalMinValue":12,"IntervalMaxValue":12,"ConstantActive":true,"ConstantValue":"UV","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16673022,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":10372856,"ContentColorDisplay":-1,"IntervalMinValue":13,"IntervalMaxValue":13,"ConstantActive":true,"ConstantValue":"Heat (extreme)","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":10372856,"ContentColorActive":false,"ContentColorValue":-1}]',
+        'DISPLAY_TYPE'        => 0,
+        'ICON'                => 'Warning',
+        'INTERVALS_ACTIVE'    => true,
+        'PREVIEW_STYLE'       => 1,
+        'MIN'                 => 0,
+        'CONTENT_COLOR'       => -1,
+        'PREFIX'              => '',
+    ];
+
+    // -------------------------------------------------------------------------
     // Methods
     // -------------------------------------------------------------------------
 
@@ -89,6 +127,7 @@ class WeatherWarning extends IPSModuleStrict
         $this->RegisterPropertyString('MapStyle', self::CSS_STYLES['MapStyle']);
         $this->RegisterPropertyString('WarningStyle', self::CSS_STYLES['WarningStyle']);
         $this->RegisterPropertyString('LegendStyle', self::CSS_STYLES['LegendStyle']);
+
         // Message management
         $this->RegisterPropertyInteger('DashboardMessage', 0);
         $this->RegisterPropertyInteger('DashboardLevel', 1);
@@ -100,10 +139,12 @@ class WeatherWarning extends IPSModuleStrict
         $this->RegisterPropertyString('TextSeparator', ', ');
         $this->RegisterPropertyInteger('InstanceWebfront', 0);
         $this->RegisterPropertyInteger('ScriptMessage', 0);
+
         // Settings
         $this->RegisterPropertyBoolean('IndicatorVariable', false);
         $this->RegisterPropertyBoolean('LegendVariable', false);
         $this->RegisterPropertyInteger('UpdateInterval', 15);
+
         // Register daily update timer
         $this->RegisterTimer('UpdateWeatherWarning', 0, 'UWW_Update(' . $this->InstanceID . ');');
     }
@@ -128,14 +169,19 @@ class WeatherWarning extends IPSModuleStrict
      */
     public function GetConfigurationForm(): string
     {
+        // Get Form
+        $form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
+
         // Read setup
         $type = $this->ReadPropertyString('WarningType');
         $state = $this->ReadPropertyString('WarningState');
         $county = $this->ReadPropertyString('WarningCounty');
         $community = $this->ReadPropertyString('WarningCommunity');
         $map = $this->ReadPropertyString('MapSelected');
+
         // Debug output
         $this->LogDebug(__FUNCTION__, 'type=' . $type . ', state=' . $state . ', county=' . $county . ', community=' . $community);
+
         // Check properties
         if ($state == 'null') {
             $county = 'null';
@@ -143,15 +189,16 @@ class WeatherWarning extends IPSModuleStrict
         if ($county == 'null') {
             $community = 'null';
         }
-        // Get Form
-        $form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
+
         // Options
         $form['elements'][2]['items'][1]['items'][1]['options'] = $this->GetWarningStates($type);
         $form['elements'][2]['items'][2]['items'][0]['options'] = $this->GetWarningCounties($type, $state);
         $form['elements'][2]['items'][2]['items'][1]['options'] = $this->GetWarningCommunities($type, $state, $county);
+
         // Visible
         $form['elements'][2]['items'][2]['items'][0]['visible'] = ($state != 'null');
         $form['elements'][2]['items'][2]['items'][1]['visible'] = ($type == 8 && $county != 'null');
+
         // Enable
         $form['elements'][3]['items'][2]['items'][0]['enabled'] = ($map != '00');
         $form['elements'][3]['items'][2]['items'][1]['enabled'] = ($map != '00');
@@ -163,6 +210,7 @@ class WeatherWarning extends IPSModuleStrict
         $form['elements'][3]['items'][4]['items'][3]['enabled'] = ($map != '00');
         $form['elements'][3]['items'][5]['items'][0]['enabled'] = ($map != '00');
         $form['elements'][3]['items'][5]['items'][1]['enabled'] = ($map != '00');
+
         // Debug output
         //$this->LogDebug('GetConfigurationForm', $form);
         return json_encode($form);
@@ -238,53 +286,53 @@ class WeatherWarning extends IPSModuleStrict
                         ', Tmp=' . $tmpActiv . ', Img=' . $imgActiv . ', Mov=' . $movActiv);
 
         // Profile
-        //$this->RegisterProfileInteger('UWW.Level', 'Warning', '', '', 0, 0, 0, self::DWD_SEVERITY);
+        $level = $this->TranslatePresentation(self::UWW_PRESENTATION_LEVEL, 'INTERVALS', 'ConstantValue');
 
         // Maintain variables
-        $this->MaintainVariable('Table', $this->Translate('Warning messages'), VARIABLETYPE_STRING, '~HTMLBox', 1, true);
+        $this->MaintainVariable('Table', $this->Translate('Warning messages'), VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 1, true);
         $this->MaintainVariable('Text', $this->Translate('Warning text'), VARIABLETYPE_STRING, '', 2, $varText == 1);
 
         // - Map
-        $this->MaintainVariable('Map', $this->Translate('Storm map'), VARIABLETYPE_STRING, '~HTMLBox', 3, $mapSelected != '00');
+        $this->MaintainVariable('Map', $this->Translate('Storm map'), VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 3, $mapSelected != '00');
 
         // - Images & Movie
-        $this->MaintainVariable('ActTemp', $this->Translate('Current temperatures'), VARIABLETYPE_STRING, '~HTMLBox', 21, $tmpActiv);
+        $this->MaintainVariable('ActTemp', $this->Translate('Current temperatures'), VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 21, $tmpActiv);
         if ($tmpActiv) {
             $src = str_replace('<STATE>', $tmpIdent, self::DWD_LINKS['TEMP']);
             $val = '<div style="' . $tmpStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ActTemp', $val);
         }
-        $this->MaintainVariable('ImgRadar', $this->Translate('Precipitation radar image'), VARIABLETYPE_STRING, '~HTMLBox', 22, $imgActiv);
+        $this->MaintainVariable('ImgRadar', $this->Translate('Precipitation radar image'), VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 22, $imgActiv);
         if ($imgActiv) {
             $src = str_replace('<STATE>', $imgIdent, self::DWD_LINKS['RADAR']);
             $val = '<div style="' . $imgStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ImgRadar', $val);
         }
-        $this->MaintainVariable('MovRadar', $this->Translate('Precipitation radar film'), VARIABLETYPE_STRING, '~HTMLBox', 23, $movActiv);
+        $this->MaintainVariable('MovRadar', $this->Translate('Precipitation radar film'), VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 23, $movActiv);
         if ($movActiv) {
             $src = str_replace('<STATE>', $movIdent, self::DWD_LINKS['MOVIE']);
             $val = '<div style="' . $movStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('MovRadar', $val);
         }
-        $this->MaintainVariable('ISOActTemp', $this->Translate('Current temperatures') . ' (' . $isoTmpIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 31, $isoTmpActiv);
+        $this->MaintainVariable('ISOActTemp', $this->Translate('Current temperatures') . ' (' . $isoTmpIdent . ')', VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 31, $isoTmpActiv);
         if ($isoTmpActiv) {
             $src = str_replace('<STATE>', 'brd', self::DWD_LINKS['TEMP']);
             $val = '<div style="' . $isoTmpStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOActTemp', $val);
         }
-        $this->MaintainVariable('ISOImgRadar', $this->Translate('Precipitation radar image') . ' (' . $isoImgIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 32, $isoImgActiv);
+        $this->MaintainVariable('ISOImgRadar', $this->Translate('Precipitation radar image') . ' (' . $isoImgIdent . ')', VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 32, $isoImgActiv);
         if ($isoImgActiv) {
             $src = str_replace('<STATE>', 'brd', self::DWD_LINKS['RADAR']);
             $val = '<div style="' . $isoImgStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOImgRadar', $val);
         }
-        $this->MaintainVariable('ISOMovRadar', $this->Translate('Precipitation radar film') . ' (' . $isoMovIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 33, $isoMovActiv);
+        $this->MaintainVariable('ISOMovRadar', $this->Translate('Precipitation radar film') . ' (' . $isoMovIdent . ')', VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 33, $isoMovActiv);
         if ($isoMovActiv) {
             $src = str_replace('<STATE>', 'brd', self::DWD_LINKS['MOVIE']);
             $val = '<div style="' . $isoMovStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
             $this->SetValueString('ISOMovRadar', $val);
         }
-        $this->MaintainVariable('ISOMovForecast', $this->Translate('Precipitation radar forecast') . ' (' . $isoMfcIdent . ')', VARIABLETYPE_STRING, '~HTMLBox', 34, $isoMfcActiv);
+        $this->MaintainVariable('ISOMovForecast', $this->Translate('Precipitation radar forecast') . ' (' . $isoMfcIdent . ')', VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 34, $isoMfcActiv);
         if ($isoMfcActiv) {
             $src = self::DWD_LINKS['FORECAST'];
             $val = '<div style="' . $isoMfcStyle . '"><img src="' . $src . '" style="height: 100%; width: 100%; object-fit: contain" /></div>';
@@ -292,10 +340,10 @@ class WeatherWarning extends IPSModuleStrict
         }
 
         // - Indicator
-        $this->MaintainVariable('Level', $this->Translate('Warning level'), VARIABLETYPE_INTEGER, 'UWW.Level', 0, $varWarning);
+        $this->MaintainVariable('Level', $this->Translate('Warning level'), VARIABLETYPE_INTEGER, $level, 0, $varWarning);
 
         // - Legend
-        $this->MaintainVariable('Legend', $this->Translate('Legend'), VARIABLETYPE_STRING, 'HTMLBox', 4, $varLegend);
+        $this->MaintainVariable('Legend', $this->Translate('Legend'), VARIABLETYPE_STRING, self::UWW_PRESENTATION_HTML, 4, $varLegend);
         if ($varLegend) {
             $val = '<style type="text/css">' . $this->ReadPropertyString('LegendStyle') . "</style>\n<body>" . $this->ReadPropertyString('LegendHtml') . '</body>';
             $this->SetValueString('Legend', $val);
