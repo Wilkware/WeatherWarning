@@ -44,25 +44,10 @@ class WeatherWarning extends IPSModuleStrict
      * @var array<string,mixed> Level Presentation (Value)
      */
     private const UWW_PRESENTATION_LEVEL = [
-        'USAGE_TYPE'          => 0,
-        'THOUSANDS_SEPARATOR' => '',
-        'SHOW_PREVIEW'        => true,
-        'PRESENTATION'        => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
-        'SUFFIX'              => '',
-        'COLOR'               => -1,
-        'MAX'                 => 0,
-        'MULTILINE'           => false,
-        'DECIMAL_SEPARATOR'   => 'Client',
-        'PERCENTAGE'          => false,
-        'DIGITS'              => 0,
-        'INTERVALS'           => '[{"ColorDisplay":12969318,"ContentColorDisplay":-1,"IntervalMinValue":0,"IntervalMaxValue":0,"ConstantActive":true,"ConstantValue":"None","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":12969318,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16771899,"ContentColorDisplay":-1,"IntervalMinValue":1,"IntervalMaxValue":1,"ConstantActive":true,"ConstantValue":"Minor","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16771899,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16485376,"ContentColorDisplay":-1,"IntervalMinValue":2,"IntervalMaxValue":2,"ConstantActive":true,"ConstantValue":"Moderate","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16485376,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":15022389,"ContentColorDisplay":-1,"IntervalMinValue":3,"IntervalMaxValue":3,"ConstantActive":true,"ConstantValue":"Severe","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":15022389,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":8916559,"ContentColorDisplay":-1,"IntervalMinValue":4,"IntervalMaxValue":4,"ConstantActive":true,"ConstantValue":"Extreme","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8916559,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16673022,"ContentColorDisplay":-1,"IntervalMinValue":10,"IntervalMaxValue":10,"ConstantActive":true,"ConstantValue":"UV","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16673022,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":13408767,"ContentColorDisplay":-1,"IntervalMinValue":11,"IntervalMaxValue":11,"ConstantActive":true,"ConstantValue":"Heat","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":13408767,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16673022,"ContentColorDisplay":-1,"IntervalMinValue":12,"IntervalMaxValue":12,"ConstantActive":true,"ConstantValue":"UV","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16673022,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":10372856,"ContentColorDisplay":-1,"IntervalMinValue":13,"IntervalMaxValue":13,"ConstantActive":true,"ConstantValue":"Heat (extreme)","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":10372856,"ContentColorActive":false,"ContentColorValue":-1}]',
-        'DISPLAY_TYPE'        => 0,
-        'ICON'                => 'Warning',
-        'INTERVALS_ACTIVE'    => true,
-        'PREVIEW_STYLE'       => 1,
-        'MIN'                 => 0,
-        'CONTENT_COLOR'       => -1,
-        'PREFIX'              => '',
+        'ICON'             => 'Warning',
+        'INTERVALS'        => '[{"IntervalMinValue":0,"IntervalMaxValue":0,"ConstantActive":true,"ConstantValue":"None","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":12969318,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":1,"IntervalMaxValue":1,"ConstantActive":true,"ConstantValue":"Minor","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16771899,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":2,"IntervalMaxValue":2,"ConstantActive":true,"ConstantValue":"Moderate","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16485376,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":3,"IntervalMaxValue":3,"ConstantActive":true,"ConstantValue":"Severe","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":15022389,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":4,"IntervalMaxValue":4,"ConstantActive":true,"ConstantValue":"Extreme","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8916559,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":10,"IntervalMaxValue":10,"ConstantActive":true,"ConstantValue":"UV","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16673022,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":11,"IntervalMaxValue":11,"ConstantActive":true,"ConstantValue":"Heat","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":13408767,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":12,"IntervalMaxValue":12,"ConstantActive":true,"ConstantValue":"UV","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16673022,"ContentColorActive":false,"ContentColorValue":-1},{"IntervalMinValue":13,"IntervalMaxValue":13,"ConstantActive":true,"ConstantValue":"Heat (extreme)","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":10372856,"ContentColorActive":false,"ContentColorValue":-1}]',
+        'INTERVALS_ACTIVE' => true,
+        'PRESENTATION'     => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
     ];
 
     // -------------------------------------------------------------------------
@@ -70,7 +55,7 @@ class WeatherWarning extends IPSModuleStrict
     // -------------------------------------------------------------------------
 
     /**
-     * In contrast to Construct, this function is called only once when creating the instance and starting IP-Symcon.
+     * In contrast to Construct, this function is called only once when creating the instance and starting Symcon.
      * Therefore, status variables and module properties which the module requires permanently should be created here.
      *
      * @return void
@@ -151,7 +136,7 @@ class WeatherWarning extends IPSModuleStrict
 
     /**
      * This function is called when deleting the instance during operation and when updating via "Module Control".
-     * The function is not called when exiting IP-Symcon.
+     * The function is not called when exiting Symcon.
      *
      * @return void
      */

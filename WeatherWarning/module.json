@@ -1,7 +1,7 @@
 {
     "id": "{DCDBF64A-F2DC-B23B-2483-69BCAFFE091A}",
     "name": "Weather Warning",
-    "url": "https://wilkware.de/ip-symcon-module/unwetterwarnung/",
+    "url": "https://wilkware.de/module/unwetterwarnung/",
     "type": 3,
     "vendor": "",
     "aliases": [],

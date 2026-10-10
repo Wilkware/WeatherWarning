@@ -1,5 +1,6 @@
 # 🌩️ Unwetterwarnung (Weather Warning)
 
+[![Home](https://img.shields.io/badge/Home-wilkware.de-0b1830.svg?style=flat-square)](https://wilkware.de/module/unwetterwarnung/)
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
 [![Version](https://img.shields.io/badge/Modul%20Version-3.1.20250802-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
@@ -13,11 +14,12 @@ Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (G
 1. [Funktionsumfang](#user-content-1-funktionsumfang)
 2. [Voraussetzungen](#user-content-2-voraussetzungen)
 3. [Installation](#user-content-3-installation)
-4. [Einrichten der Instanzen in IP-Symcon](#user-content-4-einrichten-der-instanzen-in-ip-symcon)
-5. [Statusvariablen und Profile](#user-content-5-statusvariablen-und-profile)
-6. [Visualisierung](#user-content-6-visualisierung)
-7. [PHP-Befehlsreferenz](#user-content-7-php-befehlsreferenz)
-8. [Versionshistorie](#user-content-8-versionshistorie)
+4. [Einrichtung](#user-content-4-einrichtung)
+5. [Statusvariablen](#user-content-5-statusvariablen)
+6. [Darstellungen](#user-content-6-darstellungen)
+7. [Visualisierung](#user-content-7-visualisierung)
+8. [Befehlsreferenz](#user-content-8-befehlsreferenz)
+9. [Versionshistorie](#user-content-9-versionshistorie)
 
 ### 1. Funktionsumfang
 
@@ -30,17 +32,17 @@ Darüber hinaus können noch Variablen zur Darstellung verschiedener Wetterbilde
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 6.4
+* Symcon ab Version 6.4
 
 ### 3. Installation
 
-* Über den Modul Store das Modul Unwetterwarnung (🇬🇧 Weather Warning) installieren.
-* Alternativ Über das Modul-Control folgende URL hinzufügen.  
+* Über den Modul Store das Modul _Unwetterwarnung_ installieren.
+* Alternativ über das Modul Control folgende URL hinzufügen.  
 `https://github.com/Wilkware/WeatherWarning` oder `git://github.com/Wilkware/WeatherWarning.git`
 
-### 4. Einrichten der Instanzen in IP-Symcon
+### 4. Einrichtung
 
-* Unter "Instanz hinzufügen" ist das _'Unwetterwarnung'_-Modul unter dem Hersteller _'(Geräte)'_ aufgeführt.
+* Unter 'Instanz hinzufügen' ist das _Unwetterwarnung_-Modul unter dem Hersteller '(Geräte)' aufgeführt.
 
 __Konfigurationsseite__:
 
@@ -49,7 +51,7 @@ Einstellungsbereich:
 > Warngebiet ...
 
 Entsprechend der gewählten Auswahl verändert sich das Formular dynamisch.
-Eine komplette Neuauswahl erreicht man durch Auswahl einens anderen "Gebietstyp" oder durch
+Eine komplette Neuauswahl erreicht man durch Auswahl eines anderen "Gebietstyp" oder durch
 "Bitte wählen ..." an der gewünschten Stelle.
 
 Name                       | Beschreibung
@@ -63,7 +65,7 @@ Gemeinde                   | Auswahl einer Gemeinde, wenn der Typ diese Auflösu
 > Unwetterkarten ...
 
 Hier kann eine Unwetterübersichtskarte aktiviert und konfiguriert werden. Neben der großen Deutschlandkarte kann auch eine
-detailiertere Variant auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild kann durch verschiedene Parameter angepasst werden.  
+detailliertere Variante auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild kann durch verschiedene Parameter angepasst werden.  
 Der darzustellende Bereich (so g. Bounding Box) wird dabei durch die Längen- und Breitengrade der 4 Himmelsrichtungen begrenzt!
 
 Name                    | Beschreibung
@@ -76,27 +78,27 @@ Bildhöhe                | Höhe in Pixel des zu generierenden Bildes
 West                    | Westlicher Breitengrad (Begrenzung der Bildbox im Westen)
 Süd                     | Südlicher Längengrad (Begrenzung der Bildbox im Süden)
 Ost                     | Östlicher Breitengrad (Begrenzung der Bildbox im Osten)
-Süd                     | Nördlicher Längengrad (Begrenzung der Bildbox im Norden)
-Markierung anzeigern?   | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
+Nord                    | Nördlicher Längengrad (Begrenzung der Bildbox im Norden)
+Markierung anzeigen?    | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
 Farbe der Markierung    | Farbauswahl für Marker Pin, welcher als Platzhalter {{color}} in der CSS-Definition verwendet werden kann!
 Legende (Html)          | Html Vorlage für Legende-Tabelle
 
 > Bilder und Radarfilm ...
 
-Hier können Bildder bzw. der Radarfilm für die aktuellen Temperaturen und Niederschläge je Bundesland und/oder Detuschland aktiviert werden.  
+Hier können Bilder bzw. der Radarfilm für die aktuellen Temperaturen und Niederschläge je Bundesland und/oder Deutschland aktiviert werden.  
 Das Erscheinungsbild kann wieder über die Stylesheet-Angaben beeinflußt werden.
 
 Name                    | Beschreibung
 ----------------------- | ---------------------------------
 Aktuelle Temperatur     | Darstellung der aktuellen Temperatur zum aktuellen Tageszeitpunkt
 Niederschlag Radarbild  | Radarbild des aktuellen Niederschlages zum aktuellen Tageszeitpunkt
-Niederschlag Radarfim   | Animation des aktuellen Niederschlages zum mitlaufenden Tageszeitpunkt
+Niederschlag Radarfilm  | Animation des aktuellen Niederschlages zum mitlaufenden Tageszeitpunkt
 
 > Formatvorlagen ...
 
 Name                    | Beschreibung
 ------------------------| ---------------------------------
-Unwetterkarte           | Sytle für die Unwetterkarte (Deutschlandkarte mit Pin)
+Unwetterkarte           | Style für die Unwetterkarte (Deutschlandkarte mit Pin)
 Warnmeldung             | Style für die Warnmeldungen (Tabelle, Icon, Überschrift, Beschreibung und Zeitspanne)
 Legende                 | Style für die Legende (Farbskala und deren Zuordnung zu Gefahrenstufen)
 ZURÜCKSETZEN            | Schalter, um wieder die jeweilig vordefinierten Stylesheet-Angaben einzusetzen
@@ -107,20 +109,20 @@ Name                           | Beschreibung
 ------------------------------ | ---------------------------------
 Meldung an Anzeige senden      | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
 Ab Stufe der Warnmeldung       | Auswahl ab welcher Stufe (1-4) die Nachricht erfolgen soll
-Lebensdauer der Nachricht      | Wie lange so die Meldung angezeigt werden?
-Nachricht an Visualiserung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht      | Wie lange soll die Meldung angezeigt werden?
+Nachricht an Visualisierung senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
 Ab Stufe der Warnmeldung       | Auswahl ab welcher Stufe (1-4) die Meldung erfolgen soll
 Text in Variable schreiben     | Auswahl ob Nachricht in Statusvariable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch | Trennzeichen bei mehreren Ereignissen
 Format der Textmitteilung      | Frei wählbares Format der zu sendenden Nachricht/Meldung
 Visualisierungs-Instanz        | ID der Visualisierung, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll (WebFront oder TileVisu Instanz)
-Meldsungsskript                | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
+Meldungsskript                 | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
 > Erweiterte Einstellungen ...
 
 Name                                                            | Beschreibung
 --------------------------------------------------------------- | ---------------------------------
-Indikatorvariable für aktive Warnungen anlegen (höchste Stufe)! | Schalter, ob eine Statusvariable als Indikator für Warnungen (höste Stufe) angelegt und aktualisiert werden soll.
+Indikatorvariable für aktive Warnungen anlegen (höchste Stufe)! | Schalter, ob eine Statusvariable als Indikator für Warnungen (höchste Stufe) angelegt und aktualisiert werden soll.
 Variable für Bilderklärung (Legende) anlegen!                   | Schalter, ob eine Statusvariable für die Erklärung der Zuordnung Farbe zu Warnstufe angelegt werden soll.
 Aktualisierungsinterval                                         | Auswahl aller wieviel Minuten Informationen abgerufen werden sollen (Standard: 15 min)
 
@@ -132,44 +134,47 @@ Aktion         | Beschreibung
 -------------- | ------------------------------------------------------------
 AKTUALISIEREN  | Ruft die aktuellen Unwetterwarnungen von DWD ab (Update)
 
-### 5. Statusvariablen und Profile
+### 5. Statusvariablen
 
 Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
 
-Name                          | Typ       | Beschreibung
-------------------------------| --------- | ----------------
-Warnstufe                     | Integer   | Höchste Warnstufe aller verfügbaren Meldungen
-Warnmeldung                   | String    | Darstellung aller Meldungen als HTML Tabelle
-Warnnachricht                 | String    | Darstellung aller Meldungen in textuellen Format
-Unwetterkarte Land            | String    | HTML-Link auf Unwetterkarte Deutschland
-Unwetterkarte Bundesland      | String    | HTML-Link auf Unwetterkarte ausgewähltes Bundesland
-Temperaturen aktuell          | String    | HTML-Link auf aktuelle Temperaturübersichtskarte für ausgewähltes Bundesland
-Niederschlag Radarbild        | String    | HTML-Link auf aktuelles Radarbild (Niederschlag) für ausgewähltes Bundesland
-Niederschlag Radarfilm        | String    | HTML-Link auf aktuellen Radarfilm (Niederschlag) für ausgewähltes Bundesland
-Temperaturen aktuell (de)     | String    | HTML-Link auf aktuelle Temperaturübersichtskarte für Deutschland
-Niederschlag Radarbild (de)   | String    | HTML-Link auf aktuelles Radarbild (Niederschlag) für Deutschland
-Niederschlag Radarfilm (de)   | String    | HTML-Link auf aktuellen Radarfilm (Niederschlag) für Deutschland
+Name                           | Typ     | Beschreibung
+------------------------------ | ------- | ------------------------------------------------------------
+Warnstufe                      | Integer | Höchste Warnstufe aller verfügbaren Meldungen
+Warnmeldungen                  | String  | Darstellung aller Meldungen als HTML Tabelle
+Warnnachricht                  | String  | Darstellung aller Meldungen in textuellen Format
+Unwetterkarte                  | String  | Unwetterkarte für Deutschland bzw. das ausgewählte Bundesland
+Legende                        | String  | Erklärung der Zuordnung Farbe zu Warnstufe
+Temperaturen aktuell           | String  | Aktuelle Temperaturübersichtskarte für ausgewähltes Bundesland
+Niederschlag Radarbild         | String  | Aktuelles Radarbild (Niederschlag) für ausgewähltes Bundesland
+Niederschlag Radarfilm         | String  | Aktueller Radarfilm (Niederschlag) für ausgewähltes Bundesland
+Temperaturen aktuell (de)      | String  | Aktuelle Temperaturübersichtskarte für Deutschland
+Niederschlag Radarbild (de)    | String  | Aktuelles Radarbild (Niederschlag) für Deutschland
+Niederschlag Radarfilm (de)    | String  | Aktueller Radarfilm (Niederschlag) für Deutschland
+Niederschlags Vorhersage (de)  | String  | Niederschlagsvorhersage für Deutschland
 
-Folgendes Profil wird angelegt:
+_Hinweis:_ Bis auf _Warnmeldungen_ werden die Statusvariablen nur entsprechend der Auswahl in der Konfiguration angelegt.
 
-Name                 | Typ       | Beschreibung
--------------------- | --------- | ----------------
-UWW.Level            | Integer   | Warnstufen (0 - 4)
+### 6. Darstellungen
 
-> 0: Keine Warnung  
-> 1: Wetterwarnung  
-> 2: Markante Wetterwarnung  
-> 3: Unwetterwarnung  
-> 4: Extreme Unwetterwarnung  
-> 10: UV-Warnung  
-> 11: Hitzewarnung  
-> 13: Extreme Hitzwarnung  
+Die Darstellungen werden direkt an den Statusvariablen hinterlegt, es werden keine Profile angelegt.
 
-### 6. Visualisierung
+Variable                       | Darstellung   | Werte
+------------------------------ | ------------- | ------------------------------------------------------------
+Warnstufe                      | Wertanzeige   | Keine Warnung (0), Wetterwarnung (1), Markante Wetterwarnung (2), Unwetterwarnung (3), Extreme Unwetterwarnung (4), UV-Warnung (10, 12), Hitzewarnung (11), Extreme Hitzewarnung (13)
+Warnmeldungen                  | Webinhalt     | HTML
+Unwetterkarte                  | Webinhalt     | HTML
+Legende                        | Webinhalt     | HTML
+Temperaturen aktuell (...)     | Webinhalt     | HTML
+Niederschlag Radarbild (...)   | Webinhalt     | HTML
+Niederschlag Radarfilm (...)   | Webinhalt     | HTML
+Niederschlags Vorhersage (de)  | Webinhalt     | HTML
+
+### 7. Visualisierung
 
 Man kann die Statusvariablen direkt in die Visualisierung verlinken.
 
-### 7. PHP-Befehlsreferenz
+### 8. Befehlsreferenz
 
 ```php
 void UWW_Update(int $InstanzID):
@@ -211,7 +216,7 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > "INSTRUCTION":""  
 > }\]  
 
-### 8. Versionshistorie
+### 9. Versionshistorie
 
 v3.1.20250802
 
@@ -317,7 +322,7 @@ Vielen Dank an Euch!
 
 ## Entwickler
 
-Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der IP-Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
+Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
 
 [![GitHub](https://img.shields.io/badge/GitHub-@wilkware-181717.svg?style=for-the-badge&logo=github)](https://wilkware.github.io/)
 
