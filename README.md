@@ -2,14 +2,16 @@
 
 [![Home](https://img.shields.io/badge/Home-wilkware.de-0b1830.svg?style=flat-square)](https://wilkware.de/module/unwetterwarnung/)
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-3.1.20250802-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
+[![Product](https://img.shields.io/badge/Symcon%20Version-8.1-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-4.0.20261124-orange.svg?style=flat-square)](https://github.com/Wilkware/WeatherWarning)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/WeatherWarning/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/WeatherWarning/actions)
 
 Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (Gewitter, Stark- und Dauerregen, Schneefall, Wind, Nebel, Frost, Glatteis, Tauwetter, UV-Strahlung, Hitze).
 
-## Inhaltverzeichnis
+![Module-Visu](imgs/weather-warning.png)
+
+## Inhaltsverzeichnis
 
 1. [Funktionsumfang](#user-content-1-funktionsumfang)
 2. [Voraussetzungen](#user-content-2-voraussetzungen)
@@ -23,16 +25,18 @@ Dieses Modul dient zum Abrufen der von DWD bereitgestellten Unwetterwarnungen (G
 
 ### 1. Funktionsumfang
 
-Das Modul nutzt die vom GeoWebservice des deutschen Wetterdienstes (DWD) bereitgestellten WMS-Dienste um (Un)Wetterwarnungen in IPS zu integrieren.
+Das Modul nutzt die vom GeoWebservice des deutschen Wetterdienstes (DWD) bereitgestellten WMS-Dienste um (Un)Wetterwarnungen in Symcon zu integrieren.
 Je nach ausgewählter Region bzw. Gebietstyp werden die Warnungen gefiltert und in verschiedene Kanäle (Text, HTML, Push-Nachricht) ausgegeben.
 
 Für die Auswahl des Gebietstyps/Region nutzt das Modul eine eigens entwickelte JSON-API (CDN basierend) damit der Nutzer schnell die richtige Gebiets-ID (WARNCELLID) einstellen kann (derzeit 12144).
+
+Für die Kachel-Visualisierung bringt das Modul eine eigene Kachel mit: Warnstufe, Meldungen mit den Warnsymbolen des DWD und die Unwetterkarte mit Legende und wählbarem Kartenausschnitt, passend zur Größe der Kachel.
 
 Darüber hinaus können noch Variablen zur Darstellung verschiedener Wetterbilder und Radarfilme angelegt werden.
 
 ### 2. Voraussetzungen
 
-* Symcon ab Version 6.4
+* Symcon ab Version 8.1
 
 ### 3. Installation
 
@@ -48,7 +52,7 @@ __Konfigurationsseite__:
 
 Einstellungsbereich:
 
-> Warngebiet ...
+> 📍 Warngebiet ...
 
 Entsprechend der gewählten Auswahl verändert sich das Formular dynamisch.
 Eine komplette Neuauswahl erreicht man durch Auswahl eines anderen "Gebietstyp" oder durch
@@ -62,7 +66,7 @@ Bundesland                 | Auswahl des Bundeslandes welches für den Warntyp v
 Landkreis/kreisfreie Stadt | Auswahl des Landkreises oder einer kreisfreien Stadt im Bundesgebiet
 Gemeinde                   | Auswahl einer Gemeinde, wenn der Typ diese Auflösung unterstützt (Warntyp: Gemeinden)
 
-> Unwetterkarten ...
+> 🗺️ Unwetterkarte ...
 
 Hier kann eine Unwetterübersichtskarte aktiviert und konfiguriert werden. Neben der großen Deutschlandkarte kann auch eine
 detailliertere Variante auf Basis des Bundeslandes gewählt werden. Das Erscheinungsbild kann durch verschiedene Parameter angepasst werden.  
@@ -70,7 +74,7 @@ Der darzustellende Bereich (so g. Bounding Box) wird dabei durch die Längen- un
 
 Name                    | Beschreibung
 ----------------------- | ---------------------------------
-Auswahl                 | Aktiviert Statusvariable für Unwetterkarte bei Auswahl eines konkreten Gebietes
+Auswahl                 | Aktiviert Statusvariable für Unwetterkarte bei Auswahl eines konkreten Gebietes, gleichzeitig Vorgabe für den Kartenausschnitt der Kachel
 Detailgrad              | Kreis- oder Gemeindeebene (Gemeinde dauert sehr lange zum Generieren)
 Hintergrund             | Auswahl des Hintergrundlayers oder transparent
 Bildbreite              | Breite in Pixel des zu generierenden Bildes (vordefiniert 500px und die Ration entsprechend in Richtung Höhe)
@@ -80,10 +84,10 @@ Süd                     | Südlicher Längengrad (Begrenzung der Bildbox im Sü
 Ost                     | Östlicher Breitengrad (Begrenzung der Bildbox im Osten)
 Nord                    | Nördlicher Längengrad (Begrenzung der Bildbox im Norden)
 Markierung anzeigen?    | Schalter, ob Markierung des eigenen Standortes (Location Control) angezeigt werden soll.
-Farbe der Markierung    | Farbauswahl für Marker Pin, welcher als Platzhalter {{color}} in der CSS-Definition verwendet werden kann!
+Farbe der Markierung    | Farbauswahl für Marker Pin, welcher als Platzhalter {{color}} in der CSS-Definition verwendet werden kann! Gilt auch für den Pin in der Kachel.
 Legende (Html)          | Html Vorlage für Legende-Tabelle
 
-> Bilder und Radarfilm ...
+> 📡 Bilder und Radarfilm ...
 
 Hier können Bilder bzw. der Radarfilm für die aktuellen Temperaturen und Niederschläge je Bundesland und/oder Deutschland aktiviert werden.  
 Das Erscheinungsbild kann wieder über die Stylesheet-Angaben beeinflußt werden.
@@ -94,7 +98,7 @@ Aktuelle Temperatur     | Darstellung der aktuellen Temperatur zum aktuellen Tag
 Niederschlag Radarbild  | Radarbild des aktuellen Niederschlages zum aktuellen Tageszeitpunkt
 Niederschlag Radarfilm  | Animation des aktuellen Niederschlages zum mitlaufenden Tageszeitpunkt
 
-> Formatvorlagen ...
+> 🎨 Formatvorlagen ...
 
 Name                    | Beschreibung
 ------------------------| ---------------------------------
@@ -103,7 +107,7 @@ Warnmeldung             | Style für die Warnmeldungen (Tabelle, Icon, Überschr
 Legende                 | Style für die Legende (Farbskala und deren Zuordnung zu Gefahrenstufen)
 ZURÜCKSETZEN            | Schalter, um wieder die jeweilig vordefinierten Stylesheet-Angaben einzusetzen
 
-> Meldungsverwaltung ...
+> 📢 Meldungsverwaltung ...
 
 Name                           | Beschreibung
 ------------------------------ | ---------------------------------
@@ -115,10 +119,21 @@ Ab Stufe der Warnmeldung       | Auswahl ab welcher Stufe (1-4) die Meldung erfo
 Text in Variable schreiben     | Auswahl ob Nachricht in Statusvariable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch | Trennzeichen bei mehreren Ereignissen
 Format der Textmitteilung      | Frei wählbares Format der zu sendenden Nachricht/Meldung
-Visualisierungs-Instanz        | ID der Visualisierung, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll (WebFront oder TileVisu Instanz)
+Visualisierungs-Instanz        | ID der Visualisierung, an welches die Push-Nachrichten zu Unwetterwarnungen gesendet werden soll (WebFront oder TileVisu Instanz)
+Ton der Benachrichtigung       | Ton der Push-Nachricht (WebFront und Kachel-Visu, Standard: siren)
 Meldungsskript                 | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
+Meldungsschlüssel (optional)   | Leer = jede neue Warnung wird einmalig als Meldung hinzugefügt (Entfernen per Klick oder über die Lebensdauer). Mit Schlüssel erhält jede Warnung eine eigene Meldung mit dem Schlüssel `<Schlüssel>.<ID>`, die nach Ende der Warnung automatisch entfernt wird (Meldungsskript ab v8, ältere Skripte ignorieren den Schlüssel).
 
-> Erweiterte Einstellungen ...
+_Hinweis:_ Push-Nachrichten und Meldungen werden pro Warnung nur einmal gesendet, nicht bei jeder Aktualisierung. Ändert der DWD Inhalt oder Zeitraum einer Warnung, gilt sie als neue Warnung. Nach einem Neustart von Symcon werden die aktiven Warnungen einmalig erneut gemeldet (mit Schlüssel wird die bestehende Meldung nur aktualisiert).
+
+> ✨ Visualisierung ...
+
+Name                                 | Beschreibung
+------------------------------------ | ---------------------------------
+Schaltfläche Legende                 | Ecke der Karte für die Schaltfläche (i) der Legende oder ausgeblendet (Standard: unten rechts)
+Schaltfläche Kartenausschnitt        | Ecke der Karte für die Auswahl des Kartenausschnitts oder ausgeblendet (Standard: oben links)
+
+> ⚙️ Erweiterte Einstellungen ...
 
 Name                                                            | Beschreibung
 --------------------------------------------------------------- | ---------------------------------
@@ -128,7 +143,7 @@ Aktualisierungsinterval                                         | Auswahl aller 
 
 Aktionsbereich:
 
-> Wetterwarnungen ...
+> 🌩️ Wetterwarnungen ...
 
 Aktion         | Beschreibung
 -------------- | ------------------------------------------------------------
@@ -138,20 +153,20 @@ AKTUALISIEREN  | Ruft die aktuellen Unwetterwarnungen von DWD ab (Update)
 
 Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
 
-Name                           | Typ     | Beschreibung
------------------------------- | ------- | ------------------------------------------------------------
-Warnstufe                      | Integer | Höchste Warnstufe aller verfügbaren Meldungen
-Warnmeldungen                  | String  | Darstellung aller Meldungen als HTML Tabelle
-Warnnachricht                  | String  | Darstellung aller Meldungen in textuellen Format
-Unwetterkarte                  | String  | Unwetterkarte für Deutschland bzw. das ausgewählte Bundesland
-Legende                        | String  | Erklärung der Zuordnung Farbe zu Warnstufe
-Temperaturen aktuell           | String  | Aktuelle Temperaturübersichtskarte für ausgewähltes Bundesland
-Niederschlag Radarbild         | String  | Aktuelles Radarbild (Niederschlag) für ausgewähltes Bundesland
-Niederschlag Radarfilm         | String  | Aktueller Radarfilm (Niederschlag) für ausgewähltes Bundesland
-Temperaturen aktuell (de)      | String  | Aktuelle Temperaturübersichtskarte für Deutschland
-Niederschlag Radarbild (de)    | String  | Aktuelles Radarbild (Niederschlag) für Deutschland
-Niederschlag Radarfilm (de)    | String  | Aktueller Radarfilm (Niederschlag) für Deutschland
-Niederschlags Vorhersage (de)  | String  | Niederschlagsvorhersage für Deutschland
+Ident            | Name                           | Typ     | Beschreibung
+---------------- | ------------------------------ | ------- | ------------------------------------------------------------
+Level            | Warnstufe                      | Integer | Höchste Warnstufe aller verfügbaren Meldungen
+Table            | Warnmeldungen                  | String  | Darstellung aller Meldungen als HTML Tabelle
+Text             | Warnnachricht                  | String  | Darstellung aller Meldungen in textuellen Format
+Map              | Unwetterkarte                  | String  | Unwetterkarte für Deutschland bzw. das ausgewählte Bundesland
+Legend           | Legende                        | String  | Erklärung der Zuordnung Farbe zu Warnstufe
+ActTemp          | Temperaturen aktuell           | String  | Aktuelle Temperaturübersichtskarte für ausgewähltes Bundesland
+ImgRadar         | Niederschlag Radarbild         | String  | Aktuelles Radarbild (Niederschlag) für ausgewähltes Bundesland
+MovRadar         | Niederschlag Radarfilm         | String  | Aktueller Radarfilm (Niederschlag) für ausgewähltes Bundesland
+ISOActTemp       | Temperaturen aktuell (de)      | String  | Aktuelle Temperaturübersichtskarte für Deutschland
+ISOImgRadar      | Niederschlag Radarbild (de)    | String  | Aktuelles Radarbild (Niederschlag) für Deutschland
+ISOMovRadar      | Niederschlag Radarfilm (de)    | String  | Aktueller Radarfilm (Niederschlag) für Deutschland
+ISOMovForecast   | Niederschlags Vorhersage (de)  | String  | Niederschlagsvorhersage für Deutschland
 
 _Hinweis:_ Bis auf _Warnmeldungen_ werden die Statusvariablen nur entsprechend der Auswahl in der Konfiguration angelegt.
 
@@ -163,6 +178,7 @@ Variable                       | Darstellung   | Werte
 ------------------------------ | ------------- | ------------------------------------------------------------
 Warnstufe                      | Wertanzeige   | Keine Warnung (0), Wetterwarnung (1), Markante Wetterwarnung (2), Unwetterwarnung (3), Extreme Unwetterwarnung (4), UV-Warnung (10, 12), Hitzewarnung (11), Extreme Hitzewarnung (13)
 Warnmeldungen                  | Webinhalt     | HTML
+Warnnachricht                  | Wertanzeige   | Text (Icon: message-exclamation)
 Unwetterkarte                  | Webinhalt     | HTML
 Legende                        | Webinhalt     | HTML
 Temperaturen aktuell (...)     | Webinhalt     | HTML
@@ -172,7 +188,26 @@ Niederschlags Vorhersage (de)  | Webinhalt     | HTML
 
 ### 7. Visualisierung
 
-Man kann die Statusvariablen direkt in die Visualisierung verlinken.
+Das Modul bringt eine eigene Kachel für die Kachel-Visualisierung mit (Instanz direkt in die Visualisierung einfügen).
+Die Kachel passt ihr Layout an die Größe an:
+
+* __Klein__ (z. B. 1×1): Warnstufe und Meldungen zum Durchblättern
+* __Mittel__ (z. B. 2×2): Warnstufe, Umschaltung zwischen Meldungen und Karte
+* __Groß__ (z. B. 4×2): Warnstufe und Meldungen neben der Unwetterkarte
+* __Flach__ (z. B. 4×1): kompakte Meldungen neben einer schmalen Karte
+
+![Kachelgrößen: Groß, Flach und Klein](imgs/tile-sizes-light.png)
+
+Oben steht immer die Gesamtlage: eine Stufenskala (1 bis 4 Balken in der Farbe der höchsten Warnstufe, ohne Warnung ein grünes Häkchen),
+die Warnstufe als Text und die Anzahl der Meldungen. Darunter folgen die einzelnen Meldungen mit dem Warnsymbol des DWD, Zeitraum und Beschreibung
+(antippen klappt die Beschreibung auf). Schlägt der Abruf fehl, zeigt die Kachel die zuletzt bekannten Warnungen mit einem Hinweis auf den Stand der Daten.
+
+Auf der Karte blendet (i) die Legende ein, über das Kartensymbol lässt sich der Kartenausschnitt (Deutschland, Bundesländer) wechseln.
+In welcher Ecke der Karte die beiden Schaltflächen sitzen (oder ob sie ausgeblendet sind), wird in der Konfiguration festgelegt.
+Kartenausschnitt und gewählte Ansicht (Meldungen oder Karte) werden pro Gerät gemerkt, Vorgabe sind der in der Konfiguration gewählte Ausschnitt und die Meldungen.
+Farben und Schrift kommen vom gewählten Theme der Visualisierung, die Warnsymbole und die Karte direkt vom DWD.
+
+Alternativ kann man weiterhin die Statusvariablen direkt in die Visualisierung verlinken.
 
 ### 8. Befehlsreferenz
 
@@ -181,18 +216,21 @@ void UWW_Update(int $InstanzID):
 ```
 
 Holt entsprechend der Konfiguration die gewählten Daten vom Deutschen Wetterdienst (DWD).  
-Die Funktion liefert keinerlei Rückgabewert.
+Die Funktion liefert keinerlei Rückgabewert.  
+__HINWEIS:__ Schlägt der Abruf fehl, bleiben die zuletzt erfolgreich geladenen Warnungen stehen (abgelaufene Warnungen werden ausgeblendet),
+Tabelle und Kachel zeigen einen Hinweis mit dem Stand der Daten und die Instanz wechselt in den Status 201. Push-Nachrichten und Meldungen werden in diesem Fall nicht versendet.
+Nach einem Neustart von Symcon ist bis zum ersten erfolgreichen Abruf kein Stand vorhanden.
 
 __Beispiel__: `UWW_Update(12345);`
 
 ```php
-void UWW_WaringInfo(int $InstanzID):
+void UWW_WarningInfo(int $InstanzID):
 ```
 
 Gibt alle Unwetterwarnungen als multidimensionales assoziatives Array zurück.
 __HINWEIS:__ Sollten keine Warnungen vorliegen, wird ein leeres Array geliefert.
 
-__Beispiel__: `UWW_WaringInfo(12345);`
+__Beispiel__: `UWW_WarningInfo(12345);`
 
 > \[{  
 > "AREA": "Chiemsee",  
@@ -217,6 +255,28 @@ __Beispiel__: `UWW_WaringInfo(12345);`
 > }\]  
 
 ### 9. Versionshistorie
+
+v4.0.20261124
+
+* _NEU_: Eigene Kachel für die Kachel-Visualisierung (größenabhängiges Layout, Stufenskala, Meldungen mit DWD-Symbolen, Unwetterkarte mit Legende)
+* _NEU_: Kartenausschnitt und Ansicht der Kachel direkt in der Kachel wählbar und pro Gerät gemerkt, Position der Schaltflächen auf der Karte einstellbar
+* _NEU_: Kompatibilität auf Symcon 8.1 hoch gesetzt
+* _NEU_: Ton der Push-Nachricht ist jetzt einstellbar
+* _NEU_: Optionaler Meldungsschlüssel für das Meldungsskript (eigene Meldung pro Warnung, automatisches Entfernen nach Ende der Warnung)
+* _NEU_: Push-Nachrichten und Meldungen werden pro Warnung nur noch einmal gesendet
+* _NEU_: Schlägt der Abruf fehl, bleiben die zuletzt bekannten Warnungen stehen (inkl. Hinweis und Instanzstatus 201)
+* _NEU_: Konfigurationsformular auf Standardlayout umgestellt (inkl. Versionsanzeige)
+* _NEU_: Daten werden direkt nach dem Übernehmen der Konfiguration und nach dem Start von Symcon aktualisiert
+* _NEU_: Darstellungen der Statusvariablen bereinigt, Warnstufe und Warnnachricht mit Icon
+* _NEU_: Timeout für Abfragen, robustere Auswertung der DWD-Daten
+* _NEU_: Warnsymbole kommen wieder direkt vom DWD (aktueller Symbolsatz), Symbol für "Keine Warnungen" ist eingebettet
+* _FIX_: Veraltete Funktion strftime ersetzt, Datumsangaben und Texte der Tabelle übersetzbar
+* _FIX_: Standortmarkierung auf der Karte bei fehlendem Standort oder ungültigem Kartenausschnitt
+* _FIX_: Farbe der Standortmarkierung wurde bei Farben mit führenden Nullen falsch gesetzt
+* _FIX_: Fehlgeschlagener Abruf wurde als "Keine Warnungen vorhanden" angezeigt
+* _FIX_: Ungültiger Ton bei Push-Nachrichten an das WebFront
+* _FIX_: Fehlende Übersetzungen im Formular korrigiert, nicht mehr benötigte Übersetzungen entfernt
+* _FIX_: Dokumentation überarbeitet
 
 v3.1.20250802
 

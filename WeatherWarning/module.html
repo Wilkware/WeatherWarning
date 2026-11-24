@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        /* The root variables --accent-color, --content-color and --card-color are predefined by the visualization */
+        :root {
+            /* Fixed colors of the warning levels (same as the variable presentation) */
+            --lvl0: #C5E566;
+            --lvl1: #FFEB3B;
+            --lvl2: #FB8C00;
+            --lvl3: #E53935;
+            --lvl4: #880E4F;
+            --uv: #FE68FE;
+            --heat: #CC99FF;
+            --heat-x: #9E46F8;
+            --level: var(--lvl0);
+            --margin-top: 0px;
+            --margin-side: 0px;
+            --margin-bottom: 0px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* app-like scrollbar */
+        ::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: color-mix(in srgb, var(--content-color) 25%, transparent);
+        }
+
+        .ww {
+            position: absolute;
+            inset: 0;
+            padding: var(--margin-top) var(--margin-side) var(--margin-bottom);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .split {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            min-height: 0;
+        }
+
+        .left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .right {
+            display: none;
+            position: relative;
+            min-height: 0;
+            background: color-mix(in srgb, var(--content-color) 3%, transparent);
+            border-radius: 8px;
+        }
+
+        /* Pictogram box: DWD images and inline symbols share exactly the same size */
+        .pic {
+            display: block;
+            width: var(--pic, 44px);
+            height: var(--pic, 44px);
+            flex: 0 0 var(--pic, 44px);
+            border-radius: 3px;
+        }
+
+        .label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            letter-spacing: .02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Status block: label aligned with the top and level text with the bottom edge of the icon,
+           number of messages right aligned with its unit below (like the waste modules) */
+        /* Same paddings and gap as the message cards, so icons and texts line up */
+        .status {
+            display: flex;
+            align-items: stretch;
+            gap: 12px;
+            border-radius: 8px;
+            padding: 8px 10px;
+            background: color-mix(in srgb, var(--level) 16%, transparent);
+        }
+
+        .status.neutral {
+            background: color-mix(in srgb, var(--content-color) 3%, transparent);
+        }
+
+        /* Same size as the pictograms of the message cards, the DWD images have their own frame */
+        .status .badge {
+            flex: 0 0 40px;
+            width: 40px;
+            height: 40px;
+            --pic: 40px;
+        }
+
+        .status .txt {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Level color mixed with the text color: keeps the hue and stays readable in light and dark themes */
+        .status .label {
+            font-size: 15px;
+            line-height: 1;
+            color: color-mix(in srgb, var(--level) 50%, var(--content-color));
+        }
+
+        .status.neutral .label {
+            color: var(--accent-color);
+        }
+
+        /* Level scale instead of a single pictogram, it describes the overall situation */
+        .scale {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .scale rect {
+            fill: color-mix(in srgb, var(--content-color) 18%, transparent);
+        }
+
+        .scale rect.on {
+            fill: var(--level);
+        }
+
+        .status .value {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status .count {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .status .count .num {
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .status .count .unit {
+            font-size: 10px;
+            line-height: 1;
+            color: color-mix(in srgb, var(--content-color) 50%, transparent);
+        }
+
+        .neutral .count {
+            display: none;
+        }
+
+        /* View toggle (medium size only): segmented like the enumeration buttons of the presentations,
+           rounded outside, straight edges between the buttons */
+        .toggle {
+            display: none;
+            gap: 0;
+            margin: 2px 0;
+        }
+
+        .toggle button {
+            flex: 1;
+            min-height: 32px;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 0;
+            background: color-mix(in srgb, var(--content-color) 8%, transparent);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--content-color);
+            transition: background .2s ease;
+        }
+
+        .toggle button:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .toggle button:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .toggle button:hover {
+            background: color-mix(in srgb, var(--accent-color) 15%, transparent);
+        }
+
+        .toggle button.active {
+            background: var(--accent-color);
+            color: var(--content-color);
+        }
+
+        /* Warning cards */
+        .list {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .card {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            border-radius: 8px;
+            padding: 8px 10px;
+            background: color-mix(in srgb, var(--content-color) 3%, transparent);
+            cursor: pointer;
+            transition: background .3s ease;
+            --pic: 40px;
+        }
+
+        .card:hover {
+            background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+        }
+
+        .card.static {
+            cursor: default;
+        }
+
+        .card.static:hover {
+            background: color-mix(in srgb, var(--content-color) 3%, transparent);
+        }
+
+        .card.hint,
+        .card.hint:hover {
+            background: color-mix(in srgb, var(--lvl2) 14%, transparent);
+        }
+
+        .card .body {
+            min-width: 0;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .card .hl {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.25;
+        }
+
+        .card .ts {
+            font-size: 12px;
+            opacity: .7;
+            margin: 2px 0;
+        }
+
+        .card .desc {
+            font-size: 13px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .ww.lg .card .desc {
+            -webkit-line-clamp: 3;
+        }
+
+        .card.open .desc {
+            -webkit-line-clamp: unset;
+            display: block;
+        }
+
+        .stale .card:not(.hint) {
+            opacity: .7;
+        }
+
+        /* Map, legend and map area selection */
+        .map {
+            position: absolute;
+            inset: 6px;
+            display: grid;
+            place-items: center;
+        }
+
+        .mapfit {
+            position: relative;
+        }
+
+        .mapfit img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Location marker, the tip points exactly at the location */
+        .pin {
+            position: absolute;
+            display: none;
+            width: 24px;
+            height: 32px;
+            transform: translate(-50%, -100%);
+            color: var(--pin-color, #FF0000);
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .5));
+            pointer-events: none;
+        }
+
+        .pin svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* outline and dot contrast with the configured pin color (dark for light colors like white) */
+        .pin .pin-body {
+            fill: currentColor;
+            stroke: var(--pin-contrast, #ffffff);
+            stroke-width: 1.5;
+        }
+
+        .pin .pin-dot {
+            fill: var(--pin-contrast, #ffffff);
+        }
+
+        .map-error {
+            font-size: 12px;
+            opacity: .7;
+            text-align: center;
+            padding: 12px;
+        }
+
+        /* Button corners, the position of each button is configurable */
+        .tools {
+            position: absolute;
+            display: flex;
+            gap: 6px;
+        }
+
+        .tools.top-left {
+            top: 8px;
+            left: 8px;
+        }
+
+        .tools.top-right {
+            top: 8px;
+            right: 8px;
+        }
+
+        .tools.bottom-left {
+            bottom: 8px;
+            left: 8px;
+        }
+
+        .tools.bottom-right {
+            bottom: 8px;
+            right: 8px;
+        }
+
+        .tool {
+            width: 32px;
+            height: 32px;
+            border-radius: 5px;
+            border: 0;
+            padding: 0;
+            background: color-mix(in srgb, var(--accent-color), transparent 85%);
+            color: var(--accent-color);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .tool.active {
+            background: var(--accent-color);
+            color: var(--content-color);
+        }
+
+        .tool svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .overlay {
+            position: absolute;
+            right: 8px;
+            bottom: 48px;
+            width: max-content;
+            max-width: calc(100% - 16px);
+            max-height: calc(100% - 56px);
+            overflow: auto;
+            background: var(--card-color);
+            border: 1px solid color-mix(in srgb, var(--content-color) 12%, transparent);
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: none;
+            grid-template-columns: max-content;
+            gap: 5px 18px;
+            font-size: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .35);
+        }
+
+        .overlay.open {
+            display: grid;
+        }
+
+        /* The overlay opens at the corner of its button */
+        .overlay.top-left,
+        .overlay.top-right {
+            top: 48px;
+            bottom: auto;
+        }
+
+        .overlay.top-left,
+        .overlay.bottom-left {
+            left: 8px;
+            right: auto;
+        }
+
+        .overlay .label {
+            grid-column: 1 / -1;
+            margin-bottom: 2px;
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            white-space: nowrap;
+        }
+
+        .legend i {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex: 0 0 12px;
+        }
+
+        .areas button {
+            font: inherit;
+            font-size: 12px;
+            text-align: left;
+            white-space: nowrap;
+            border: 0;
+            border-radius: 5px;
+            padding: 4px 8px;
+            background: transparent;
+            color: var(--content-color);
+            cursor: pointer;
+        }
+
+        .areas button:hover {
+            background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+        }
+
+        .areas button.active {
+            background: color-mix(in srgb, var(--accent-color) 20%, transparent);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        /* Small size: carousel */
+        .carousel {
+            display: none;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            position: relative;
+            flex-direction: column;
+            border-radius: 8px;
+            padding: 16px 18px 6px;
+            background: color-mix(in srgb, var(--level) 16%, transparent);
+        }
+
+        .carousel.neutral {
+            background: color-mix(in srgb, var(--content-color) 3%, transparent);
+        }
+
+        .carousel .slide {
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 3px;
+            --pic: 36px;
+        }
+
+        .carousel .label {
+            max-width: 100%;
+            font-size: 11px;
+            color: color-mix(in srgb, var(--level) 50%, var(--content-color));
+        }
+
+        .carousel.neutral .label {
+            color: var(--accent-color);
+        }
+
+        .carousel .hl {
+            max-width: 100%;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.25;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .nav-indicators {
+            position: absolute;
+            top: 7px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--content-color) 20%, transparent);
+            transition: all .3s;
+            cursor: pointer;
+            border: 0;
+            padding: 0;
+        }
+
+        .nav-indicator.active {
+            background: var(--accent-color);
+            transform: scale(1.25);
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: 0;
+            color: var(--content-color);
+            opacity: .5;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .nav-button svg {
+            width: 12px;
+            height: 12px;
+            display: block;
+        }
+
+        .nav-button.prev {
+            left: 1px;
+        }
+
+        .nav-button.next {
+            right: 1px;
+        }
+
+        /* Inactive instance */
+        .inactive {
+            display: none;
+            position: absolute;
+            inset: 0;
+            padding: 16px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 13px;
+            opacity: .7;
+        }
+
+        .ww.off > * {
+            display: none !important;
+        }
+
+        .ww.off .inactive {
+            display: flex !important;
+        }
+
+        /* Size classes, set by ResizeObserver */
+        .ww.sm .split {
+            display: none;
+        }
+
+        .ww.sm .carousel {
+            display: flex;
+        }
+
+        .ww.md .toggle {
+            display: flex;
+        }
+
+        .ww.md[data-view="map"] .list {
+            display: none;
+        }
+
+        .ww.md[data-view="map"] .right {
+            display: block;
+            flex: 1;
+        }
+
+        .ww.md[data-view="map"] .split {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ww.md[data-view="map"] .left {
+            flex: 0 0 auto;
+        }
+
+        .ww.md .status .label {
+            font-size: 14px;
+        }
+
+        .ww.md .status .count .num {
+            font-size: 24px;
+        }
+
+        .ww.lg .split {
+            grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+        }
+
+        .ww.lg .right {
+            display: block;
+        }
+
+        .ww.lg.flat .split {
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, .6fr);
+        }
+
+        /* Flat: compact status in one row, compact cards */
+        .ww.flat {
+            gap: 6px;
+        }
+
+        .ww.flat .status {
+            padding: 6px 8px;
+            gap: 10px;
+        }
+
+        .ww.flat .status .label {
+            display: none;
+        }
+
+        .ww.flat .status .badge {
+            flex-basis: 32px;
+            width: 32px;
+            height: 32px;
+            --pic: 32px;
+        }
+
+        .ww.flat .status .txt {
+            justify-content: center;
+        }
+
+        .ww.flat .status .value {
+            font-size: 14px;
+        }
+
+        .ww.flat .status .count .num {
+            font-size: 18px;
+        }
+
+        .ww.flat .status .count .unit {
+            font-size: 9px;
+        }
+
+        .ww.flat .left,
+        .ww.flat .list {
+            gap: 6px;
+        }
+
+        .ww.flat .card {
+            --pic: 32px;
+            padding: 6px 8px;
+            gap: 10px;
+        }
+
+        .ww.flat .card .hl {
+            font-size: 13px;
+        }
+
+        .ww.flat .card .desc {
+            -webkit-line-clamp: 1;
+        }
+
+        .ww.no-map .right,
+        .ww.no-map .toggle {
+            display: none !important;
+        }
+
+        .ww.no-map .split {
+            grid-template-columns: 1fr !important;
+        }
+
+        .ww.no-map .list {
+            display: flex !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ww" id="ww">
+        <div class="split">
+            <div class="left">
+                <div class="status" id="status">
+                    <div class="badge" id="badge"></div>
+                    <div class="txt">
+                        <div class="label">Warning level</div>
+                        <div class="value" id="level"></div>
+                    </div>
+                    <div class="count">
+                        <div class="num" id="count"></div>
+                        <div class="unit" id="unit"></div>
+                    </div>
+                </div>
+                <div class="toggle" id="toggle">
+                    <button type="button" data-view="list">Messages</button>
+                    <button type="button" data-view="map">Map</button>
+                </div>
+                <div class="list" id="list"></div>
+            </div>
+            <div class="right">
+                <div class="map" id="map">
+                    <div class="mapfit" id="mapfit"><img id="mapimg" alt=""><div class="pin" id="pin"><svg viewBox="0 0 24 32" aria-hidden="true"><path d="M12 1C5.9 1 1 5.8 1 11.8 1 19.6 12 31 12 31s11-11.4 11-19.2C23 5.8 18.1 1 12 1Z" class="pin-body"/><circle class="pin-dot" cx="12" cy="11.5" r="4.2"/></svg></div></div>
+                </div>
+                <div class="overlay legend" id="legend">
+                    <div class="label">Legend</div>
+                    <span><i style="background: var(--lvl0)"></i>No warnings</span>
+                    <span><i style="background: var(--lvl1)"></i>Weather warning (1)</span>
+                    <span><i style="background: var(--lvl2)"></i>Marked weather warning (2)</span>
+                    <span><i style="background: var(--lvl3)"></i>Severe weather warning (3)</span>
+                    <span><i style="background: var(--lvl4)"></i>Extreme severe weather (4)</span>
+                    <span><i style="background: var(--uv)"></i>UV warning</span>
+                    <span><i style="background: var(--heat)"></i>Heat warning</span>
+                    <span><i style="background: var(--heat-x)"></i>Extreme heat</span>
+                </div>
+                <div class="overlay areas" id="areas"></div>
+                <div class="tools top-left"></div>
+                <div class="tools top-right"></div>
+                <div class="tools bottom-left"></div>
+                <div class="tools bottom-right">
+                    <button type="button" class="tool" id="area-button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20Z"/><path d="M9 4v13.5M15 6.5V20"/></svg></button>
+                    <button type="button" class="tool" id="legend-button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
+                </div>
+            </div>
+        </div>
+        <div class="carousel" id="carousel">
+            <div class="nav-indicators" id="dots"></div>
+            <button type="button" class="nav-button prev" id="prev"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+            <div class="slide" id="slide"></div>
+            <button type="button" class="nav-button next" id="next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+        </div>
+        <div class="inactive" id="inactive"></div>
+    </div>
+
+    <script>
+        const ICON_OK = '<svg class="pic" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#C5E566"/><path d="M12 20.5l5.5 5.5L28.5 14" fill="none" stroke="#1b1b1b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        const ICON_FAIL = '<svg class="pic" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 37 34H3Z" fill="#FB8C00"/><path d="M20 15v9M20 28.5v.5" stroke="#1b1b1b" stroke-width="3.2" stroke-linecap="round"/></svg>';
+
+        const ww = document.getElementById('ww');
+        let state = null;
+        let slideIndex = 0;
+        let currentMap = null;
+
+        // Margins of the tile (like the other modules)
+        (function () {
+            const p = new URLSearchParams(location.search);
+            const m = { margintop: '--margin-top', marginside: '--margin-side', marginbottom: '--margin-bottom' };
+            for (const k in m) {
+                const v = p.get(k);
+                if (v) document.documentElement.style.setProperty(m[k], v);
+            }
+        })();
+
+        function esc(text) {
+            const d = document.createElement('div');
+            d.textContent = text == null ? '' : String(text);
+            return d.innerHTML;
+        }
+
+        function picture(url) {
+            return url ? '<img class="pic" src="' + esc(url) + '" alt="">' : '<span class="pic"></span>';
+        }
+
+        // Perceived brightness of a #RRGGBB color
+        function isLight(hex) {
+            const v = parseInt(String(hex).replace('#', ''), 16);
+            if (isNaN(v)) return false;
+            return (((v >> 16) & 255) * 299 + ((v >> 8) & 255) * 587 + (v & 255) * 114) / 1000 >= 150;
+        }
+
+        // Choices of the viewer are remembered per device and instance (map area, view of the medium size)
+        function storageKey(name) {
+            return 'uww.' + name + '.' + (state ? state.id : 0);
+        }
+
+        function loadChoice(name) {
+            try {
+                return localStorage.getItem(storageKey(name));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function saveChoice(name, value) {
+            try {
+                localStorage.setItem(storageKey(name), value);
+            } catch (e) {
+                // storage not available, the choice is only kept until reload
+            }
+        }
+
+        // Called by Symcon with the JSON data of the module
+        function handleMessage(data) {
+            state = JSON.parse(data);
+            ww.classList.toggle('off', !!state.inactive);
+            if (state.inactive) {
+                document.getElementById('inactive').textContent = state.inactive;
+                return;
+            }
+            const active = state.warnings.length > 0;
+            ww.style.setProperty('--level', state.color);
+            ww.classList.toggle('stale', !!state.failed);
+            if (!ww.dataset.view) {
+                ww.dataset.view = loadChoice('view') === 'map' ? 'map' : 'list';
+            }
+            renderStatus(active);
+            renderList(active);
+            slideIndex = Math.min(slideIndex, Math.max(state.warnings.length - 1, 0));
+            renderSlide();
+            placeButtons();
+            renderMaps();
+            renderToggle();
+        }
+
+        // Moves each map button into its configured corner (or hides it), its overlay opens at the same corner
+        const POSITIONS = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+        function placeButtons() {
+            const pos = state.buttons || {};
+            // area button first, so the legend button stays at the outer edge in a shared right corner
+            [['area-button', 'areas', pos.areas || 'top-left'], ['legend-button', 'legend', pos.legend || 'bottom-right']].forEach(([buttonId, overlayId, corner]) => {
+                const button = document.getElementById(buttonId);
+                const visible = POSITIONS.includes(corner);
+                button.dataset.visible = visible ? '1' : '0';
+                if (visible) {
+                    document.querySelector('.tools.' + corner).appendChild(button);
+                }
+                POSITIONS.forEach(p => document.getElementById(overlayId).classList.toggle(p, p === corner));
+            });
+            document.getElementById('legend-button').style.display = document.getElementById('legend-button').dataset.visible === '1' ? '' : 'none';
+        }
+
+        // Four ascending bars, filled up to the warning level (health warnings without their offset of 10)
+        function levelScale(level) {
+            const base = level >= 10 ? level - 10 : level;
+            let bars = '';
+            // full 40 x 40 box: first bar flush left, fourth bar flush right and as high as the pictograms
+            for (let i = 1; i <= 4; i++) {
+                const h = i * 10;
+                bars += '<rect class="' + (i <= base ? 'on' : '') + '" x="' + ((i - 1) * 10.75) + '" y="' + (40 - h) + '" width="7.75" height="' + h + '" rx="1.5"/>';
+            }
+            return '<svg class="scale" viewBox="0 0 40 40" aria-hidden="true">' + bars + '</svg>';
+        }
+
+        function renderStatus(active) {
+            const status = document.getElementById('status');
+            status.classList.toggle('neutral', !active);
+            document.getElementById('badge').innerHTML = active ? levelScale(state.level) : ICON_OK;
+            document.getElementById('level').textContent = state.text;
+            document.getElementById('count').textContent = state.count;
+            document.getElementById('unit').textContent = state.unit;
+        }
+
+        function renderList(active) {
+            let html = '';
+            if (state.failed) {
+                html += '<div class="card hint static">' + ICON_FAIL + '<div class="body"><div class="hl">' + esc(state.failed.title) +
+                    '</div><div class="ts">' + esc(state.failed.time) + '</div><div class="desc">' + esc(state.failed.text) + '</div></div></div>';
+            }
+            state.warnings.forEach(w => {
+                html += '<div class="card">' + picture(w.icon) + '<div class="body"><div class="hl">' + esc(w.headline) +
+                    '</div><div class="ts">' + esc(w.period) + '</div><div class="desc">' + esc(w.description) + '</div></div></div>';
+            });
+            if (!active && !state.failed) {
+                html += '<div class="card static"><div class="body"><div class="label">' + esc(translate('Last update')) +
+                    '</div><div class="ts">' + esc(state.updated) + '</div><div class="desc">' + esc(state.none) + '</div></div></div>';
+            }
+            const list = document.getElementById('list');
+            list.innerHTML = html;
+            list.querySelectorAll('.card:not(.static)').forEach(c => c.addEventListener('click', () => c.classList.toggle('open')));
+        }
+
+        function renderSlide() {
+            const active = state.warnings.length > 0;
+            const many = state.warnings.length > 1;
+            document.getElementById('carousel').classList.toggle('neutral', !active);
+            const slide = document.getElementById('slide');
+            if (active) {
+                const w = state.warnings[slideIndex];
+                slide.innerHTML = picture(w.icon) + '<div class="label">' + esc(state.text) + '</div><div class="hl">' + esc(w.headline) + '</div>';
+            } else {
+                slide.innerHTML = ICON_OK + '<div class="label">' + esc(translate('Warning level')) + '</div><div class="hl">' + esc(state.text) + '</div>';
+            }
+            const dots = document.getElementById('dots');
+            dots.innerHTML = many ? state.warnings.map((_, k) => '<button type="button" class="nav-indicator' + (k === slideIndex ? ' active' : '') + '" data-index="' + k + '"></button>').join('') : '';
+            dots.querySelectorAll('.nav-indicator').forEach(d => d.addEventListener('click', () => { slideIndex = Number(d.dataset.index); renderSlide(); }));
+            document.getElementById('prev').style.display = many ? '' : 'none';
+            document.getElementById('next').style.display = many ? '' : 'none';
+        }
+
+        function stepSlide(delta) {
+            if (!state || state.warnings.length < 2) return;
+            slideIndex = (slideIndex + delta + state.warnings.length) % state.warnings.length;
+            renderSlide();
+        }
+
+        function renderToggle() {
+            document.querySelectorAll('#toggle button').forEach(b => b.classList.toggle('active', b.dataset.view === ww.dataset.view));
+        }
+
+        function renderMaps() {
+            const maps = state.maps || [];
+            ww.classList.toggle('no-map', maps.length === 0);
+            if (maps.length === 0) return;
+            document.documentElement.style.setProperty('--pin-color', state.pinColor);
+            document.documentElement.style.setProperty('--pin-contrast', isLight(state.pinColor) ? '#1b1b1b' : '#ffffff');
+            const stored = loadChoice('map');
+            const ids = maps.map(m => m.id);
+            if (!currentMap || !ids.includes(currentMap)) {
+                currentMap = (stored && ids.includes(stored)) ? stored : (ids.includes(state.map) ? state.map : ids[0]);
+            }
+            const areas = document.getElementById('areas');
+            areas.innerHTML = '<div class="label">' + esc(translate('Map area')) + '</div>' +
+                maps.map(m => '<button type="button" data-id="' + esc(m.id) + '" class="' + (m.id === currentMap ? 'active' : '') + '">' + esc(m.name) + '</button>').join('');
+            areas.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+                currentMap = b.dataset.id;
+                saveChoice('map', currentMap);
+                showOverlay(null);
+                renderMaps();
+            }));
+            const areaButton = document.getElementById('area-button');
+            areaButton.style.display = (maps.length > 1 && areaButton.dataset.visible !== '0') ? '' : 'none';
+            showMap(maps.find(m => m.id === currentMap));
+        }
+
+        function showMap(m) {
+            const box = document.getElementById('map');
+            let img = document.getElementById('mapimg');
+            if (!img) {
+                box.innerHTML = '<div class="mapfit" id="mapfit"><img id="mapimg" alt=""><div class="pin" id="pin"><svg viewBox="0 0 24 32" aria-hidden="true"><path d="M12 1C5.9 1 1 5.8 1 11.8 1 19.6 12 31 12 31s11-11.4 11-19.2C23 5.8 18.1 1 12 1Z" class="pin-body"/><circle class="pin-dot" cx="12" cy="11.5" r="4.2"/></svg></div></div>';
+                img = document.getElementById('mapimg');
+            }
+            img.onerror = () => { box.innerHTML = '<div class="map-error">' + esc(translate('The map could not be loaded from the DWD.')) + '</div>'; };
+            img.alt = m.name;
+            if (img.getAttribute('src') !== m.url) img.src = m.url;
+            const pin = document.getElementById('pin');
+            pin.style.display = m.pin ? 'block' : 'none';
+            if (m.pin) {
+                pin.style.left = (m.pin.x / m.w * 100) + '%';
+                pin.style.top = (m.pin.y / m.h * 100) + '%';
+            }
+            box.dataset.w = m.w;
+            box.dataset.h = m.h;
+            fitMap();
+        }
+
+        function fitMap() {
+            const box = document.getElementById('map');
+            const fit = document.getElementById('mapfit');
+            if (!fit || !box.dataset.w) return;
+            const r = box.getBoundingClientRect();
+            const s = Math.min(r.width / box.dataset.w, r.height / box.dataset.h);
+            fit.style.width = (box.dataset.w * s) + 'px';
+            fit.style.height = (box.dataset.h * s) + 'px';
+        }
+
+        // Only one overlay at a time: legend or map areas
+        function showOverlay(id) {
+            ['legend', 'areas'].forEach(o => {
+                const open = (o === id) && !document.getElementById(o).classList.contains('open');
+                document.getElementById(o).classList.toggle('open', open);
+                document.getElementById(o === 'legend' ? 'legend-button' : 'area-button').classList.toggle('active', open);
+            });
+            layoutOverlays();
+        }
+
+        // As many columns as fit (max. 4), each only as wide as its widest entry
+        function layoutOverlays() {
+            ['legend', 'areas'].forEach(id => {
+                const o = document.getElementById(id);
+                if (!o.classList.contains('open')) return;
+                o.style.gridTemplateColumns = 'max-content';
+                const entries = [...o.querySelectorAll('span, button')];
+                const widest = Math.max(...entries.map(e => e.scrollWidth));
+                const avail = o.parentElement.clientWidth - 16 - 24;
+                const cols = Math.max(1, Math.min(4, Math.floor((avail + 18) / (widest + 18))));
+                o.style.gridTemplateColumns = 'repeat(' + cols + ', max-content)';
+            });
+        }
+
+        document.getElementById('legend-button').addEventListener('click', () => showOverlay('legend'));
+        document.getElementById('area-button').addEventListener('click', () => showOverlay('areas'));
+        document.getElementById('prev').addEventListener('click', () => stepSlide(-1));
+        document.getElementById('next').addEventListener('click', () => stepSlide(1));
+        document.querySelectorAll('#toggle button').forEach(b => b.addEventListener('click', () => {
+            ww.dataset.view = b.dataset.view;
+            saveChoice('view', ww.dataset.view);
+            renderToggle();
+            requestAnimationFrame(fitMap);
+        }));
+
+        // Attributes are not covered by the automatic translation on load
+        document.getElementById('legend-button').title = translate('Legend');
+        document.getElementById('area-button').title = translate('Map area');
+
+        // Size classes
+        new ResizeObserver(entries => {
+            const r = entries[0].contentRect;
+            ww.classList.toggle('sm', r.width < 280);
+            ww.classList.toggle('md', r.width >= 280 && r.width < 620);
+            ww.classList.toggle('lg', r.width >= 620);
+            ww.classList.toggle('flat', r.height < 220);
+            requestAnimationFrame(() => { fitMap(); layoutOverlays(); });
+        }).observe(ww);
+        new ResizeObserver(() => fitMap()).observe(document.getElementById('map'));
+    </script>
+</body>
+
+</html>

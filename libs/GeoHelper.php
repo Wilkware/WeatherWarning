@@ -7,7 +7,7 @@
  *
  * @package       traits
  * @author        Heiko Wilknitz <heiko@wilkware.de>
- * @copyright     2025 Heiko Wilknitz
+ * @copyright     2026 Heiko Wilknitz
  * @link          https://wilkware.de
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
@@ -19,10 +19,15 @@ declare(strict_types=1);
 namespace Wilkware\WeatherWarning;
 
 /**
- * Helper Class für Geo data
+ * Helper class for geo data
  */
 trait GeoHelper
 {
+    /**
+     * Timeout for web requests in seconds
+     */
+    private const REQUEST_TIMEOUT = 10;
+
     /**
      * DWD GeoServer URL base prefix
      */
@@ -50,7 +55,7 @@ trait GeoHelper
      */
     private const DWD_GEO_MAPS = [
         # NO
-        '00' => [500, 500, 0.000000, 0.000000, 0.000000, 0.000000],     // Keine Karte
+        '00' => [500, 500, 0.000000, 0.000000, 0.000000, 0.000000],     // No map
         # BL
         '01' => [500, 365, 7.868514, 53.359067, 11.313203, 55.057374],  // Schleswig-Holstein
         '02' => [500, 225, 8.421364, 53.394925, 10.324258, 53.964437],  // Hamburg
@@ -157,16 +162,16 @@ trait GeoHelper
      * DWD Event Mapper
      */
     private const DWD_EVENT_MAP = [
-        'gewitter'    => [31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49, 90, 91, 92, 93, 95, 96],
-        'wind'        => [11, 12, 13, 14, 15, 16, 33, 36, 38, 40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 79, 96],
-        'regen'       => [61, 62, 63, 64, 65, 66],
-        'schnee'      => [70, 71, 72, 73,  74, 75, 76],
-        'nebel'       => [59],
-        'frost'       => [22, 82, 83],
-        'glaette'     => [24, 84, 85, 87],
-        'tauwetter'   => [88, 89],
-        'uv'          => [246],
-        'hitze'       => [247, 248],
+        'Gewitter'    => [31, 33, 34, 36, 38, 40, 41, 42, 44, 45, 46, 48, 49, 90, 91, 92, 93, 95, 96],
+        'Wind'        => [11, 12, 13, 14, 15, 16, 33, 36, 38, 40, 41, 44, 45, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 79, 96],
+        'Regen'       => [61, 62, 63, 64, 65, 66],
+        'Schnee'      => [70, 71, 72, 73,  74, 75, 76],
+        'Nebel'       => [59],
+        'Frost'       => [22, 82, 83],
+        'Glaette'     => [24, 84, 85, 87],
+        'Tauwetter'   => [88, 89],
+        'UV'          => [246],
+        'Hitze'       => [247, 248],
     ];
 
     /**
@@ -191,7 +196,7 @@ trait GeoHelper
      */
     private const DWD_CATEGORY = [
         'Met'    => 'Meteorologische Meldung',
-        'Health' => 'Medizin-Meteorologische Meldung', // e.g. Hitzewarnung
+        'Health' => 'Medizin-Meteorologische Meldung', // e.g. heat warning
     ];
 
     /**
@@ -206,30 +211,32 @@ trait GeoHelper
      * Images & films
      */
     private const DWD_LINKS = [
-        # Temperatur Image
+        # Temperature image
         'TEMP'      => 'https://www.dwd.de/DWD/wetter/aktuell/deutschland/bilder/wx_<STATE>_akt.jpg',
-        # Niederschlag Radar
+        # Precipitation radar
         'RADAR'     => 'https://www.dwd.de/DWD/wetter/radar/rad_<STATE>_akt.jpg',
-        # Niederschlag Radarfilm
+        # Precipitation radar film
         'MOVIE'     => 'https://www.dwd.de/DWD/wetter/radar/radfilm_<STATE>_akt.gif',
-        # Karte mit allen Warnungen
+        # Map with all warnings
         'MAPS'      => 'https://www.dwd.de/DWD/warnungen/warnapp_gemeinden/json/warnungen_gemeinde_map_<STATE>.png',
-        # Niederschlagsradar-Vorhersage
+        # Precipitation radar forecast
         'FORECAST'  => 'https://www.dwd.de/DWD/wetter/radar/radarvhs.gif',
     ];
 
     /**
-     * Symbole & Icons
+     * Warning pictograms of the DWD (the blob parameter returns the image instead of a HTML page)
      */
-    private const DWD_ICONS = [
-        # Check Icon
-        '0' => 'https://wilkware.github.io/img/dwd/warning_check.png',
-        # Level Icons
-        '1' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-        '2' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-        '3' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-        '4' => 'https://wilkware.github.io/img/dwd/<EVENT>_<LEVEL>.png',
-    ];
+    private const DWD_ICON_URL = 'https://www.dwd.de/DE/wetter/warnungen_aktuell/kriterien/pictogramme/<EVENT>_<COLOR>.png?__blob=normal';
+
+    /**
+     * Pictogram color per warning level
+     */
+    private const DWD_ICON_COLORS = [1 => 'gelb', 2 => 'ocker', 3 => 'rot', 4 => 'lila'];
+
+    /**
+     * Icon if there are no warnings (green check, inline SVG)
+     */
+    private const ICON_NO_WARNING = '<svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#C5E566"/><path d="M12 20.5l5.5 5.5L28.5 14" fill="none" stroke="#1b1b1b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     /**
      * Default stylesheets
@@ -277,20 +284,20 @@ trait GeoHelper
      * https://www.wettergefahren.de/warnungen/wetterwarnkriterien.html
      * https://www.wettergefahren.de/warnungen/unwetterwarnkriterien.html
      * https://www.wettergefahren.de/stat/warnungen/warnapp/img/icn_check.png
-     * 'Minor' => 'Wetterwarnung'                // Stufe 1 (Gelb)
-     * 'Moderate' => 'Markante Wetterwarnung'    // Stufe 2 (Orange)
-     * 'Severe' => 'Unwetterwarnung'             // Stufe 3 (Rot)
-     * 'Extreme' => 'Extreme Unwetterwarnung'    // Stufe 4 (Violett)
+     * 'Minor' => 'Wetterwarnung'                // Level 1 (yellow)
+     * 'Moderate' => 'Markante Wetterwarnung'    // Level 2 (orange)
+     * 'Severe' => 'Unwetterwarnung'             // Level 3 (red)
+     * 'Extreme' => 'Extreme Unwetterwarnung'    // Level 4 (violet)
      */
     private const DWD_SEVERITY = [
-        [0, 'None', '', 0xc5E566, 'gruen'],             // Stufe 0 (Grün)
-        [1, 'Minor', '', 0xFFEB3B, 'gelb'],             // Stufe 1 (Gelb)
-        [2, 'Moderate', '', 0xFB8C00, 'orange'],         // Stufe 2 (Orange)
-        [3, 'Severe', '', 0xE53935, 'rot'],             // Stufe 3 (Rot)
-        [4, 'Extreme', '', 0x880E4f, 'violett'],        // Stufe 4 (Violett)
-        [10, 'UV', '', 0xFE68FE, 'rosa'],               // Stufe 1 (Rosa)
-        [11, 'Heat', '', 0xCC99FF, 'lila'],             // Stufe 1 (Lila)
-        [13, 'Heat (extreme)', '', 0x9E46F8, 'violett'],   // Stufe 3 (Violett)
+        [0, 'None', '', 0xc5E566, 'gruen'],                // Level 0 (green)
+        [1, 'Minor', '', 0xFFEB3B, 'gelb'],                // Level 1 (yellow)
+        [2, 'Moderate', '', 0xFB8C00, 'orange'],           // Level 2 (orange)
+        [3, 'Severe', '', 0xE53935, 'rot'],                // Level 3 (red)
+        [4, 'Extreme', '', 0x880E4f, 'violett'],           // Level 4 (violet)
+        [10, 'UV', '', 0xFE68FE, 'rosa'],                  // Level 1 (pink)
+        [11, 'Heat', '', 0xCC99FF, 'lila'],                // Level 1 (purple)
+        [13, 'Heat (extreme)', '', 0x9E46F8, 'violett'],   // Level 3 (violet)
     ];
 
     /**
@@ -311,7 +318,21 @@ trait GeoHelper
     private static string $BASEURL = 'https://api.asmium.de/warning/de/';
 
     /**
-     * Get and extract data from json format.
+     * Requests the content of an URL with a timeout.
+     *
+     * @param string $url URL to request
+     *
+     * @return string|false Content or false on error.
+     */
+    private function RequestData(string $url): string|false
+    {
+        $context = stream_context_create(['http' => ['timeout' => self::REQUEST_TIMEOUT]]);
+        // Errors are handled by the caller via the return value
+        return @file_get_contents($url, false, $context);
+    }
+
+    /**
+     * Builds the GeoServer request URL.
      *
      * @param string $type area type
      * @param string $id Warn Cell ID
@@ -358,15 +379,14 @@ trait GeoHelper
             $url = $url . $county . '/';
         }
         // Request data
-        $json = @file_get_contents($url);
+        $json = $this->RequestData($url);
+        $data = ($json === false) ? null : json_decode($json, true);
         // error handling
-        if ($json === false) {
+        if (!is_array($data)) {
             $this->LogMessage($this->Translate('Could not load json data!'), KL_ERROR);
             $this->LogDebug(__FUNCTION__, 'ERROR LOAD DATA');
             return [];
         }
-        // Json decode
-        $data = json_decode($json, true);
         // Transform to options
         $options = [];
         // Cells ?
@@ -390,27 +410,37 @@ trait GeoHelper
     /**
      * Extract icon url from data.
      *
-     * @param array{CODE:string,LEVEL:int} $value warning data
+     * @param array{CODE?:string,LEVEL?:int|string} $value warning data
      *
      * @return string Url for warning icon.
      */
     private function ExtractIcon(array $value): string
     {
         $this->LogDebug(__FUNCTION__, $value);
-        $url = '';
+        $code = $value['CODE'] ?? '';
+        $level = (int) ($value['LEVEL'] ?? 0);
+        // The last matching event wins (e.g. thunderstorm with gusts => wind)
+        $icon = '';
         foreach (self::DWD_EVENT_MAP as $event => $map) {
-            if (in_array($value['CODE'], $map)) {
-                if ($event == 'hitze' || $event == 'uv') {
-                    // not beautiful, but rare
-                    $url = str_replace('<EVENT>', $event, self::DWD_ICONS[1]);
-                    $url = str_replace('<LEVEL>', 'lila', $url);
-                } else {
-                    $url = str_replace('<EVENT>', $event, self::DWD_ICONS[$value['LEVEL']]);
-                    $url = str_replace('<LEVEL>', self::DWD_SEVERITY[$value['LEVEL']][4], $url);
-                }
+            if (in_array($code, $map)) {
+                $icon = $event;
             }
         }
-        return $url;
+        if ($icon === '') {
+            return '';
+        }
+        // Health warnings have their own colors, all others follow the warning level
+        if ($icon === 'UV') {
+            $color = 'lila';
+        } elseif ($icon === 'Hitze') {
+            $color = ($code == 248) ? 'dunkellila' : 'lila';
+        } else {
+            $color = self::DWD_ICON_COLORS[$level] ?? '';
+        }
+        if ($color === '') {
+            return '';
+        }
+        return str_replace(['<EVENT>', '<COLOR>'], [$icon, $color], self::DWD_ICON_URL);
     }
 
     /**
@@ -446,10 +476,12 @@ trait GeoHelper
         $geo = json_decode($json, true);
         // Build new array
         $data = [];
-        foreach ($geo['features'] as $idx => $feature) {
+        foreach ($geo['features'] ?? [] as $feature) {
+            if (!is_array($feature['properties'] ?? null)) {
+                continue;
+            }
             $prop = [];
             foreach ($feature['properties'] as $key => $value) {
-                $this->LogDebug(__FUNCTION__, $key . ': ' . $value);
                 switch ($key) {
                     case 'NAME':
                         $prop['AREA'] = $value;
@@ -464,77 +496,90 @@ trait GeoHelper
                         $prop['WARNCELLID'] = $value;
                         break;
                     case 'SENT':
-                        $ts = new \DateTime($value);
-                        $prop['SENT'] = $ts->format('Y-m-d H:i:s');
+                        $prop['SENT'] = $this->FormatGeoDate($value, false);
                         break;
                     case 'STATUS':
-                        $prop['STATUS'] = self::DWD_STATUS[$value];
+                        $prop['STATUS'] = self::DWD_STATUS[$value] ?? (string) $value;
                         break;
                     case 'MSGTYPE':
-                        $prop['TYPE'] = self::DWD_MSGTYPE[$value];
+                        $prop['TYPE'] = self::DWD_MSGTYPE[$value] ?? (string) $value;
                         break;
                     case 'CATEGORY':
-                        $prop['CATEGORY'] = self::DWD_CATEGORY[$value];
+                        $prop['CATEGORY'] = self::DWD_CATEGORY[$value] ?? (string) $value;
                         break;
                     case 'EVENT':
                         $prop['EVENT'] = $value;
                         break;
                     case 'URGENCY':
-                        $prop['URGENCY'] = self::DWD_URGENCY[$value];
+                        $prop['URGENCY'] = self::DWD_URGENCY[$value] ?? (string) $value;
                         break;
                     case 'SEVERITY':
-                        $prop['SEVERITY'] = $this->Translate($value);
-                        $prop['LEVEL'] = $this->GetKeyFromProfile($value, self::DWD_SEVERITY);
+                        $prop['SEVERITY'] = $this->Translate((string) $value);
+                        $prop['LEVEL'] = $this->GetKeyFromProfile((string) $value, self::DWD_SEVERITY);
                         break;
                     case 'CERTAINTY':
-                        $prop['CERTAINTY'] = self::DWD_CERTAINTY[$value];
+                        $prop['CERTAINTY'] = self::DWD_CERTAINTY[$value] ?? (string) $value;
                         break;
                     case 'EC_II':
-                        $prop['CODE'] = $value; // . ':' . self::DWD_EVENT_CODE[$value];
+                        $prop['CODE'] = $value;
                         break;
                     case 'EC_GROUP':
                         $prop['GROUP'] = $value;
                         break;
                     case 'EFFECTIVE':
-                        $ts = new \DateTime($value);
-                        $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
-                        // no break is correct
-                        // No break. Add additional comment above this line if intentional!
-                    case 'SENT':
-                        if (!isset($prop['TIMESTAMP'])) {
-                            $ts = new \DateTime($value);
-                            $prop['TIMESTAMP'] = $ts->format('Y-m-d H:i:s');
-                        }
+                        $prop['TIMESTAMP'] = $this->FormatGeoDate($value, false);
                         break;
                     case 'ONSET':
-                        $ts = new \DateTime($value);
-                        $ts->setTimezone(new \DateTimeZone('Europe/Berlin'));
-                        $prop['START'] = $ts->format('Y-m-d H:i:s');
+                        $prop['START'] = $this->FormatGeoDate($value, true);
                         break;
                     case 'EXPIRES':
-                        if ($value != null) {
-                            $ts = new \DateTime($value);
-                            $ts->setTimezone(new \DateTimeZone('Europe/Berlin'));
-                            $prop['END'] = $ts->format('Y-m-d H:i:s');
-                        } else {
-                            $prop['END'] = '';
-                        }
+                        $prop['END'] = $this->FormatGeoDate($value, true);
                         break;
                     case 'HEADLINE':
-                        $prop['HEADLINE'] = $this->ReplaceCaseSensitiveWords($value);
+                        $prop['HEADLINE'] = $this->ReplaceCaseSensitiveWords((string) $value);
                         break;
                     case 'DESCRIPTION':
-                        $prop['DESCRIPTION'] = $value;
+                        $prop['DESCRIPTION'] = (string) $value;
                         break;
                     case 'INSTRUCTION':
                         $prop['INSTRUCTION'] = $value == null ? '' : $value;
                         break;
                 }
             }
+            // Without an effective date the sent date is used
+            if (empty($prop['TIMESTAMP']) && isset($prop['SENT'])) {
+                $prop['TIMESTAMP'] = $prop['SENT'];
+            }
+            $this->LogDebug(__FUNCTION__, $prop);
             $data[] = $prop;
         }
-        $this->LogDebug(__FUNCTION__, 'Features #' . $geo['totalFeatures']);
+        $this->LogDebug(__FUNCTION__, 'Features #' . ($geo['totalFeatures'] ?? count($data)));
         return $data;
+    }
+
+    /**
+     * Converts a date of the GeoServer into the format 'Y-m-d H:i:s'.
+     *
+     * @param mixed $value Date value of the GeoServer (ISO 8601)
+     * @param bool $local Convert to local time (Europe/Berlin)
+     *
+     * @return string Formatted date, empty if the value is missing or invalid.
+     */
+    private function FormatGeoDate(mixed $value, bool $local): string
+    {
+        if (!is_string($value) || ($value === '')) {
+            return '';
+        }
+        try {
+            $ts = new \DateTime($value);
+        } catch (\Exception $e) {
+            $this->LogDebug(__FUNCTION__, 'Invalid date: ' . $value);
+            return '';
+        }
+        if ($local) {
+            $ts->setTimezone(new \DateTimeZone('Europe/Berlin'));
+        }
+        return $ts->format('Y-m-d H:i:s');
     }
 
     /**
